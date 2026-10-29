@@ -13,8 +13,18 @@ subtitle toggles, tap-to-flag, "How do I say it?").
 
 - **Never put API keys in this repository.** The demo asks each user to type their own key
   in Settings, and it is stored only in that user's browser.
-- The full project spec lives in the "Speaking App – Project Spec" doc (v3.5).
+- The full project spec is [SPEC.md](SPEC.md) (v3.5). It is the source of truth.
+- Rules for working on the project are in [CLAUDE.md](CLAUDE.md).
 
-## Next step (build order step 1)
+## Done: build order step 1
 
-Fix the demo basics: Hebrew play button, working speed dial, live Hebrew text in "How do I say it?".
+- Hebrew play button uses the browser's Hebrew voice.
+- Speed dial uses Phonon's speaking rate (`duration_delta`). Phonon can only slow down by about 12%
+  on its own, so "Slow" adds a little browser slowdown on top. Settings has an option to use
+  only the browser's playback speed instead.
+- "How do I say it?" shows the user's Hebrew live while they speak.
+
+## Next step (build order step 2)
+
+Backend and real tutor: the services behind generic interfaces, a proper tutor prompt and a basic
+English language pack.

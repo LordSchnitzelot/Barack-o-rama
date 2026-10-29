@@ -33,6 +33,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .ic{border:0;background:#eef1fb;color:var(--blue);width:32px;height:32px;border-radius:50%;flex:none;font-size:12px}
 .big{font-size:20px}
 .note{font-size:13px;color:var(--soft);margin:0}
+.he-live{font-size:18px;margin:0;text-align:right}
 footer{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 16px calc(14px + env(safe-area-inset-bottom));background:var(--card);border-top:1px solid var(--line)}
 #mic{width:76px;height:76px;border-radius:50%;border:0;background:var(--blue);color:#fff;font-size:13px;font-weight:600;flex:none}
 #mic.rec{background:#c0152f;animation:p 1.1s infinite}
@@ -82,6 +83,8 @@ dialog h2,dialog h3{margin:0 0 6px}
   <select id="se"><option value="on">On</option><option value="tap">Tap to reveal</option><option value="hidden">Hidden</option></select>
   <label for="sh">Hebrew translation</label>
   <select id="sh"><option value="on">On</option><option value="tap">Tap to reveal</option><option value="hidden">Hidden</option></select>
+  <label for="rb">How the speed dial slows the English voice</label>
+  <select id="rb"><option value="phonon">Phonon speaking rate (natural)</option><option value="browser">Browser playback speed (stretched)</option></select>
   <p class="note" style="margin-top:12px">Your key is stored only in this browser. Speech recognition and the Hebrew voice come from the browser. The English voice is Phonon, running on your device.</p>
   <button class="close" id="save">Save</button>
 </dialog>
@@ -93,7 +96,7 @@ const $=s=>document.querySelector(s);
 const ld=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))||d}catch(e){return d}};
 const sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
 const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-let S=Object.assign({pv:'groq',rk:'',gm:'',gk:'',model:'gemini-3.8-flash',level:'intermediate',en:'on',he:'tap',speed:'1'},ld('sp2_s',{}));
+let S=Object.assign({pv:'groq',rk:'',gm:'',gk:'',model:'gemini-3.8-flash',level:'intermediate',en:'on',he:'tap',speed:'1',rateBy:'phonon'},ld('sp2_s',{}));
 let W=ld('sp_w',[]);
 if(/2\.5/.test(S.model))S.model='gemini-3.8-flash';
 const LV={beginner:['on','on'],intermediate:['on','tap'],advanced:['tap','tap']};
@@ -102,10 +105,20 @@ function toast(m){const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeou
 function needKey(){toast('Add your API key in Settings first.');$('#set').showModal()}
 
 /* ---------- English voice: Phonon, loaded in the browser ---------- */
-let ph=null,cur=null,seq=0,q=Promise.resolve();
+/* Speed dial value -> Phonon's duration_delta (positive is slower, 0 is normal). It is fixed when
+   the model loads, so changing speed reloads Phonon (from the browser cache, no new download).
+   Measured: 0.2 speaks at about 0.89x and 0.3 at about 0.875x; larger values barely slow it further,
+   so the browser's playback speed makes up whatever is left (only "Slow" needs it). */
+const DD={'1':0,'0.9':0.2,'0.75':0.3};
+const NAT={0:1,0.2:0.89,0.3:0.875};
+const SPN={'1':'Normal','0.9':'Easy','0.75':'Slow'};
+const byBrowser=P=>S.rateBy==='browser'||P.fallback;
+const rateOf=P=>{if(byBrowser(P))return +S.speed;const r=+S.speed/(NAT[P.delta]||1);return Math.abs(r-1)<0.03?1:r};
+const speedNote=P=>'English voice: Phonon ready · speed '+SPN[S.speed]+(rateOf(P)!==1?(byBrowser(P)?' (browser slowdown)':' (Phonon + a little browser slowdown)'):'');
+let PH=null,phLoad=null,phKey=null,cur=null,seq=0,q=Promise.resolve();
 const cache=new Map();
-const phReady=(async()=>{
-  try{
+function phMod(){
+  if(!PH)PH=(async()=>{
     /* Browsers refuse workers loaded from another site, so wrap the CDN worker in a same-origin blob that imports it. */
     const RW=window.Worker;
     window.Worker=function(u,o){
@@ -114,36 +127,70 @@ const phReady=(async()=>{
       return new RW(u,o);
     };
     window.Worker.prototype=RW.prototype;
-    let m;
-    try{m=await import('https://cdn.jsdelivr.net/npm/phonon-tts/+esm')}
-    catch(e){m=await import('https://cdn.jsdelivr.net/npm/phonon-tts@next/+esm')}
-    ph=await m.PhononTTS.load({lang:'en'});
-    setStatus('English voice: Phonon ready');
-  }catch(e){console.error('Phonon failed',e);setStatus('English voice: Phonon failed ('+(e&&e.message||e)+'). Using the browser voice.')}
-})();
-function synth(t){
-  if(!cache.has(t)){
-    const p=q.then(()=>ph.synthWav(t)).then(b=>URL.createObjectURL(b));
-    q=p.catch(()=>{});cache.set(t,p);p.catch(()=>cache.delete(t));
+    return await import('https://cdn.jsdelivr.net/npm/phonon-tts@0.5.0/+esm');
+  })();
+  return PH;
+}
+/* Resolves to {tts, delta, fallback} for the current speed, or null if Phonon cannot run here. */
+function phonon(){
+  const dd=S.rateBy==='browser'?0:(DD[S.speed]||0),key=String(dd);
+  if(phLoad&&phKey===key)return phLoad;
+  const old=phLoad;phKey=key;
+  phLoad=(async()=>{
+    setStatus(old?'English voice: changing speed…':'English voice: loading…');
+    let P=null;
+    try{
+      const m=await phMod();
+      try{P={tts:await m.PhononTTS.load(dd?{lang:'en',conditions:{duration_delta:dd}}:{lang:'en'}),delta:dd,fallback:false}}
+      catch(e){
+        if(!dd)throw e;
+        console.warn('Phonon speed setting failed, slowing in the browser instead',e);
+        P={tts:await m.PhononTTS.load({lang:'en'}),delta:0,fallback:true};
+      }
+    }catch(e){console.error('Phonon failed',e);setStatus('English voice: Phonon failed ('+(e&&e.message||e)+'). Using the browser voice.')}
+    /* Free the previous model once anything it was still generating has finished. */
+    if(old)old.then(o=>{if(o&&o!==P)q.then(()=>o.tts.dispose())});
+    if(P)setStatus(speedNote(P));
+    return P;
+  })();
+  return phLoad;
+}
+phonon();
+function synth(P,t){
+  const k=P.delta+'|'+t;
+  if(!cache.has(k)){
+    const p=q.then(()=>P.tts.synthWav(t)).then(b=>URL.createObjectURL(b));
+    q=p.catch(()=>{});cache.set(k,p);p.catch(()=>cache.delete(k));
   }
-  return cache.get(t);
+  return cache.get(k);
 }
 /* ---------- Voices: browser speech for Hebrew and as English fallback ---------- */
+let voices=[],lastU=null;
+function loadVoices(){voices=speechSynthesis.getVoices()}
+if(window.speechSynthesis){loadVoices();speechSynthesis.onvoiceschanged=loadVoices}
+const voiceFor=lang=>{const b=lang.slice(0,2),L=v=>v.lang.replace('_','-').toLowerCase();return voices.find(v=>L(v)===lang.toLowerCase())||voices.find(v=>L(v).startsWith(b)||(b==='he'&&L(v).startsWith('iw')))||null};
 function bspeak(t,lang){
+  if(!window.speechSynthesis){toast('This browser cannot speak text aloud.');return Promise.resolve()}
+  const v=voiceFor(lang);
+  if(!v&&lang==='he-IL'&&voices.length)toast('No Hebrew voice found on this device. Add one in your phone settings (Android: Text-to-speech; iPhone: Accessibility, Spoken Content, Voices), then reload.');
   return new Promise(r=>{
-    const u=new SpeechSynthesisUtterance(t);u.lang=lang;u.rate=lang==='en-US'?+S.speed:1;
-    u.onend=u.onerror=r;speechSynthesis.speak(u);
+    /* Kept in a variable so Android Chrome does not drop it before it finishes. */
+    const u=lastU=new SpeechSynthesisUtterance(t);u.lang=lang;if(v)u.voice=v;u.rate=lang==='en-US'?+S.speed:1;
+    const tm=setTimeout(r,3000+t.length*150);
+    u.onend=u.onerror=()=>{clearTimeout(tm);r()};
+    /* Spoken right away, inside the tap, because iPhone only allows speech that starts from a tap. */
+    speechSynthesis.resume();speechSynthesis.speak(u);
   });
 }
-function stopAudio(){seq++;speechSynthesis.cancel();if(cur)cur.pause()}
+function stopAudio(){seq++;if(window.speechSynthesis&&(speechSynthesis.speaking||speechSynthesis.pending))speechSynthesis.cancel();if(cur)cur.pause()}
 async function play(text,lang){
   try{
     if(lang==='he')return await bspeak(text,'he-IL');
-    await phReady;
-    if(!ph)return await bspeak(text,'en-US');
-    setStatus('Generating voice…');const u=await Promise.race([synth(text),new Promise((_,rj)=>setTimeout(()=>rj(new Error('Phonon took longer than 25 seconds')),25000))]);setStatus('English voice: Phonon ready');
+    const P=await phonon();
+    if(!P)return await bspeak(text,'en-US');
+    setStatus('Generating voice…');const u=await Promise.race([synth(P,text),new Promise((_,rj)=>setTimeout(()=>rj(new Error('Phonon took longer than 25 seconds')),25000))]);setStatus(speedNote(P));
     if(cur)cur.pause();
-    const a=cur=new Audio(u);a.playbackRate=+S.speed;
+    const a=cur=new Audio(u);a.preservesPitch=true;a.playbackRate=rateOf(P);
     await a.play();
     await new Promise(r=>{a.onended=r;a.onpause=r});
   }catch(e){console.error(e);toast('Voice problem ('+(e.message||e)+'). Using the browser voice.');if(lang==='en')await bspeak(text,'en-US')}
@@ -264,12 +311,18 @@ function toggle(mode){
   stopAudio();heard='';
   const r=rec=new SR();
   r.mode=mode;r.lang=mode==='say'?'he-IL':'en-US';r.interimResults=true;r.continuous=!/Android/i.test(navigator.userAgent);
-  liveEl=mode==='talk'?addUser('…',true):null;
+  if(mode==='talk')liveEl=addUser('…',true);
+  else{
+    liveEl=document.createElement('div');liveEl.className='msg say';
+    liveEl.innerHTML='<p class="note">Say it in Hebrew. Tap "Tap when done" when you finish.</p><p class="he-live" dir="rtl" lang="he">…</p>';
+    add(liveEl);
+  }
   r.onresult=e=>{
     let fin='',part='';
     for(let i=0;i<e.results.length;i++){const x=e.results[i];if(x.isFinal)fin+=x[0].transcript+' ';else part=x[0].transcript}
     heard=(fin+part).trim();
-    if(liveEl)liveEl.textContent=heard||'…';
+    if(liveEl)(liveEl.querySelector('.he-live')||liveEl).textContent=heard||'…';
+    if(liveEl)$('#chat').scrollTop=1e9;
   };
   r.onerror=e=>{if(e.error==='not-allowed'||e.error==='service-not-allowed')toast('Microphone blocked. Allow mic access, or open the page over https.')};
   r.onend=async()=>{
@@ -289,25 +342,28 @@ async function talkFlow(text){
   addTutor(d);playAll(d.sentences);
 }
 async function sayFlow(he){
-  if(!he)return toast("Didn't catch that. Try again.");
-  const d=await chat('Translate the Hebrew into one natural, simple spoken English phrase a learner can say. Reply ONLY with JSON: {"en":"the phrase"}',[{role:'user',content:he}]);
+  const c=liveEl;
+  if(!he){c.remove();return toast("Didn't catch that. Try again.")}
+  c.querySelector('.note').textContent='Finding the English…';
+  let d;
+  try{d=await chat('Translate the Hebrew into one natural, simple spoken English phrase a learner can say. Reply ONLY with JSON: {"en":"the phrase"}',[{role:'user',content:he}])}
+  catch(e){c.remove();throw e}
   flag(d.en,he,'how-do-I-say-it');
-  const c=document.createElement('div');c.className='msg say';
-  c.innerHTML=`<p class="note" dir="rtl">${esc(he)}</p><div class="sent" data-en="${esc(d.en)}"><div class="line en"><span class="t big">${esc(d.en)}</span><button class="ic" data-a="en" aria-label="Play phrase">▶</button></div></div><p class="note">Saved to My words. Now say it in the conversation.</p>`;
-  add(c);play(d.en,'en');
+  c.innerHTML=`<p class="he-live" dir="rtl" lang="he">${esc(he)}</p><div class="sent" data-en="${esc(d.en)}"><div class="line en"><span class="t big">${esc(d.en)}</span><button class="ic" data-a="en" aria-label="Play phrase">▶</button></div></div><p class="note">Saved to My words. Now say it in the conversation.</p>`;
+  $('#chat').scrollTop=1e9;play(d.en,'en');
 }
 $('#mic').onclick=()=>toggle('talk');
 $('#say').onclick=()=>toggle('say');
 
 /* ---------- Settings ---------- */
-function fill(){$('#pv').value=S.pv;$('#rk').value=S.rk;$('#gm').value=S.gm;$('#gk').value=S.gk;$('#mo').value=S.model;$('#lv').value=S.level;$('#se').value=S.en;$('#sh').value=S.he;$('#sp').value=S.speed}
+function fill(){$('#pv').value=S.pv;$('#rk').value=S.rk;$('#gm').value=S.gm;$('#gk').value=S.gk;$('#mo').value=S.model;$('#lv').value=S.level;$('#se').value=S.en;$('#sh').value=S.he;$('#sp').value=S.speed;$('#rb').value=S.rateBy}
 $('#sb').onclick=()=>{fill();$('#set').showModal()};
 $('#lv').onchange=e=>{const d=LV[e.target.value];$('#se').value=d[0];$('#sh').value=d[1]};
 $('#save').onclick=()=>{
-  groqPick=null;S=Object.assign(S,{pv:$('#pv').value,rk:$('#rk').value.trim(),gm:$('#gm').value.trim(),gk:$('#gk').value.trim(),model:$('#mo').value.trim()||S.model,level:$('#lv').value,en:$('#se').value,he:$('#sh').value});
-  sv('sp2_s',S);$('#set').close();
+  groqPick=null;S=Object.assign(S,{pv:$('#pv').value,rk:$('#rk').value.trim(),gm:$('#gm').value.trim(),gk:$('#gk').value.trim(),model:$('#mo').value.trim()||S.model,level:$('#lv').value,en:$('#se').value,he:$('#sh').value,rateBy:$('#rb').value});
+  sv('sp2_s',S);$('#set').close();phonon();
 };
-$('#sp').onchange=e=>{S.speed=e.target.value;sv('sp2_s',S)};
+$('#sp').onchange=e=>{S.speed=e.target.value;sv('sp2_s',S);phonon()};
 fill();$('#wb').textContent='My words ('+W.length+')';
 if(!(S.pv==='groq'?S.rk:S.gk))setTimeout(()=>$('#set').showModal(),300);
 </script>
