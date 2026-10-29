@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Talk – Speaking App demo v2</title>
+<style>
+:root{--bg:#E9EEF5;--ink:#14213D;--soft:#5b6a86;--card:#fff;--blue:#2547F5;--gold:#F2B705;--line:#d3dbe8}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{font-family:'Avenir Next','Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--ink);display:flex;flex-direction:column;max-width:560px;margin:0 auto;padding-top:env(safe-area-inset-top)}
+header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 4px}
+h1{font-size:22px;margin:0}
+header button{margin-left:8px}
+#st{padding:0 16px 8px;font-size:12px;color:var(--soft)}
+button{font:inherit;color:inherit;cursor:pointer}
+.pill{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 14px;font-size:14px}
+#chat{flex:1;overflow-y:auto;padding:8px 16px 16px;display:flex;flex-direction:column;gap:12px}
+.empty{margin:auto;text-align:center;color:var(--soft);max-width:280px;line-height:1.5}
+.msg{max-width:92%;border-radius:18px;padding:12px 14px}
+.user{align-self:flex-end;background:var(--ink);color:#fff;border-bottom-right-radius:6px}
+.user.live{opacity:.65}
+.tutor,.say{align-self:flex-start;background:var(--card);border-bottom-left-radius:6px;display:flex;flex-direction:column;gap:10px}
+.say{border-left:4px solid var(--gold)}
+.line{display:flex;align-items:flex-start;gap:8px;line-height:1.45}
+.line .t{flex:1}
+.en .t{font-size:18px}
+.he .t{font-size:16px;color:var(--soft);text-align:right}
+.he{flex-direction:row-reverse}
+.line.hidden .t{display:none}
+.line.tap:not(.shown) .t{filter:blur(6px);cursor:pointer;user-select:none}
+.w{border-bottom:2px solid var(--gold);cursor:pointer}
+.ic{border:0;background:#eef1fb;color:var(--blue);width:32px;height:32px;border-radius:50%;flex:none;font-size:12px}
+.big{font-size:20px}
+.note{font-size:13px;color:var(--soft);margin:0}
+footer{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 16px calc(14px + env(safe-area-inset-bottom));background:var(--card);border-top:1px solid var(--line)}
+#mic{width:76px;height:76px;border-radius:50%;border:0;background:var(--blue);color:#fff;font-size:13px;font-weight:600;flex:none}
+#mic.rec{background:#c0152f;animation:p 1.1s infinite}
+@keyframes p{50%{box-shadow:0 0 0 12px rgba(192,21,47,.18)}}
+@media (prefers-reduced-motion:reduce){#mic.rec{animation:none}}
+#say.rec{background:#c0152f;color:#fff;border-color:#c0152f}
+button:disabled{opacity:.5;cursor:default}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+select,input{font:inherit;padding:8px;border:1px solid var(--line);border-radius:10px;background:#fff;width:100%}
+label{display:block;font-size:14px;margin-top:12px;margin-bottom:4px;color:var(--soft)}
+#sp{width:auto;padding:7px 8px;font-size:14px}
+dialog{border:0;border-radius:20px;padding:20px;width:min(92vw,420px);max-height:88vh;color:var(--ink)}
+dialog::backdrop{background:rgba(20,33,61,.45)}
+dialog h2,dialog h3{margin:0 0 6px}
+.row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+.row span{flex:1}
+.close{margin-top:16px;width:100%;padding:11px;border-radius:12px;border:0;background:var(--ink);color:#fff}
+#toast{position:fixed;left:16px;right:16px;bottom:120px;max-width:528px;margin:auto;background:#c0152f;color:#fff;padding:10px 14px;border-radius:12px;font-size:14px}
+#toast[hidden]{display:none}
+</style>
+</head>
+<body>
+<header>
+  <h1>Talk</h1>
+  <div><button class="pill" id="wb">My words (0)</button><button class="pill" id="sb">Settings</button></div>
+</header>
+<div id="st">English voice: loading…</div>
+<div id="chat"><p class="empty" id="empty">Tap the mic and say hello in English. Tap again when you finish.</p></div>
+<footer>
+  <button class="pill" id="say">How do I say it?</button>
+  <button id="mic">Tap to talk</button>
+  <select id="sp" aria-label="Tutor speed"><option value="0.75">Slow</option><option value="0.9">Easy</option><option value="1">Normal</option></select>
+</footer>
+<div id="toast" hidden></div>
+
+<dialog id="set">
+  <h2>Settings</h2>
+  <label for="pv">AI provider</label>
+  <select id="pv"><option value="groq">Groq (free)</option><option value="gemini">Gemini</option></select>
+  <label for="rk">Groq API key</label><input id="rk" type="password" autocomplete="off">
+  <label for="gm">Groq model (leave empty to pick automatically)</label><input id="gm" placeholder="automatic">
+  <label for="gk">Gemini API key (free from Google AI Studio)</label><input id="gk" type="password" autocomplete="off">
+  <label for="mo">Gemini model</label><input id="mo">
+  <label for="lv">Level</label>
+  <select id="lv"><option value="beginner">Beginner</option><option value="intermediate">Intermediate</option><option value="advanced">Advanced</option></select>
+  <label for="se">English subtitles</label>
+  <select id="se"><option value="on">On</option><option value="tap">Tap to reveal</option><option value="hidden">Hidden</option></select>
+  <label for="sh">Hebrew translation</label>
+  <select id="sh"><option value="on">On</option><option value="tap">Tap to reveal</option><option value="hidden">Hidden</option></select>
+  <p class="note" style="margin-top:12px">Your key is stored only in this browser. Speech recognition and the Hebrew voice come from the browser. The English voice is Phonon, running on your device.</p>
+  <button class="close" id="save">Save</button>
+</dialog>
+<dialog id="wd"></dialog>
+<dialog id="wl"></dialog>
+
+<script>
+const $=s=>document.querySelector(s);
+const ld=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))||d}catch(e){return d}};
+const sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let S=Object.assign({pv:'groq',rk:'',gm:'',gk:'',model:'gemini-3.8-flash',level:'intermediate',en:'on',he:'tap',speed:'1'},ld('sp2_s',{}));
+let W=ld('sp_w',[]);
+if(/2\.5/.test(S.model))S.model='gemini-3.8-flash';
+const LV={beginner:['on','on'],intermediate:['on','tap'],advanced:['tap','tap']};
+const setStatus=t=>$('#st').textContent=t;
+function toast(m){const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>t.hidden=true,5000)}
+function needKey(){toast('Add your API key in Settings first.');$('#set').showModal()}
+
+/* ---------- English voice: Phonon, loaded in the browser ---------- */
+let ph=null,cur=null,seq=0,q=Promise.resolve();
+const cache=new Map();
+const phReady=(async()=>{
+  try{
+    /* Browsers refuse workers loaded from another site, so wrap the CDN worker in a same-origin blob that imports it. */
+    const RW=window.Worker;
+    window.Worker=function(u,o){
+      const x=String(u);
+      if(/^https?:/.test(x)&&new URL(x).origin!==location.origin)u=URL.createObjectURL(new Blob(['import '+JSON.stringify(x)+';'],{type:'text/javascript'}));
+      return new RW(u,o);
+    };
+    window.Worker.prototype=RW.prototype;
+    let m;
+    try{m=await import('https://cdn.jsdelivr.net/npm/phonon-tts/+esm')}
+    catch(e){m=await import('https://cdn.jsdelivr.net/npm/phonon-tts@next/+esm')}
+    ph=await m.PhononTTS.load({lang:'en'});
+    setStatus('English voice: Phonon ready');
+  }catch(e){console.error('Phonon failed',e);setStatus('English voice: Phonon failed ('+(e&&e.message||e)+'). Using the browser voice.')}
+})();
+function synth(t){
+  if(!cache.has(t)){
+    const p=q.then(()=>ph.synthWav(t)).then(b=>URL.createObjectURL(b));
+    q=p.catch(()=>{});cache.set(t,p);p.catch(()=>cache.delete(t));
+  }
+  return cache.get(t);
+}
+/* ---------- Voices: browser speech for Hebrew and as English fallback ---------- */
+function bspeak(t,lang){
+  return new Promise(r=>{
+    const u=new SpeechSynthesisUtterance(t);u.lang=lang;u.rate=lang==='en-US'?+S.speed:1;
+    u.onend=u.onerror=r;speechSynthesis.speak(u);
+  });
+}
+function stopAudio(){seq++;speechSynthesis.cancel();if(cur)cur.pause()}
+async function play(text,lang){
+  try{
+    if(lang==='he')return await bspeak(text,'he-IL');
+    await phReady;
+    if(!ph)return await bspeak(text,'en-US');
+    setStatus('Generating voice…');const u=await Promise.race([synth(text),new Promise((_,rj)=>setTimeout(()=>rj(new Error('Phonon took longer than 25 seconds')),25000))]);setStatus('English voice: Phonon ready');
+    if(cur)cur.pause();
+    const a=cur=new Audio(u);a.playbackRate=+S.speed;
+    await a.play();
+    await new Promise(r=>{a.onended=r;a.onpause=r});
+  }catch(e){console.error(e);toast('Voice problem ('+(e.message||e)+'). Using the browser voice.');if(lang==='en')await bspeak(text,'en-US')}
+}
+async function playAll(items){
+  const id=++seq;
+  for(const s of items){if(id!==seq)return;await play(s.en,'en')}
+}
+
+/* ---------- Tutor brain: Gemini ---------- */
+async function gem(system,hist){
+  const ctl=new AbortController(),tm=setTimeout(()=>ctl.abort(),40000);
+  const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+S.model+':generateContent',{
+    signal:ctl.signal,method:'POST',headers:{'content-type':'application/json','x-goog-api-key':S.gk},
+    body:JSON.stringify({systemInstruction:{parts:[{text:system}]},contents:hist.map(m=>({role:m.role==='user'?'user':'model',parts:[{text:m.content}]})),generationConfig:{responseMimeType:'application/json',thinkingConfig:{thinkingLevel:'low'}}})});
+  clearTimeout(tm);
+  const j=await r.json().catch(()=>({}));
+  if(!r.ok)throw new Error((j.error&&j.error.message)||'Gemini error '+r.status);
+  const t=((j.candidates&&j.candidates[0]&&j.candidates[0].content&&j.candidates[0].content.parts)||[]).map(p=>p.text||'').join('');
+  const m=t.match(/\{[\s\S]*\}/);
+  if(!m)throw new Error('Unexpected reply from Gemini');
+  return JSON.parse(m[0]);
+}
+const pn=()=>S.pv==='groq'?'Groq':'Gemini';
+let groqPick=null;
+async function pickGroq(){
+  if(S.gm)return S.gm;
+  if(groqPick)return groqPick;
+  const r=await fetch('https://api.groq.com/openai/v1/models',{headers:{Authorization:'Bearer '+S.rk}});
+  const j=await r.json().catch(()=>({}));
+  if(!r.ok)throw new Error((j.error&&j.error.message)||'Groq error '+r.status+' (check your key)');
+  const ids=(j.data||[]).map(m=>m.id).filter(id=>!/whisper|tts|guard|orpheus|embed|compound/i.test(id));
+  const pref=[/gpt-oss-120b/,/qwen.*(3\.6|27b|32b)/,/gpt-oss-20b/,/llama-3\.3-70b/,/llama-4/,/llama/,/qwen/];
+  let id=null;for(const x of pref){id=ids.find(i=>x.test(i));if(id)break}
+  id=id||ids[0];
+  if(!id)throw new Error('No chat models found on your Groq account');
+  groqPick=id;return id;
+}
+async function groq(system,hist){
+  const model=await pickGroq();
+  const ctl=new AbortController(),tm=setTimeout(()=>ctl.abort(),40000);
+  const body={model,messages:[{role:'system',content:system}].concat(hist.map(m=>({role:m.role,content:m.content})))};
+  if(/gpt-oss/.test(model))body.reasoning_effort='low';
+  const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{signal:ctl.signal,method:'POST',headers:{'content-type':'application/json',Authorization:'Bearer '+S.rk},body:JSON.stringify(body)});
+  clearTimeout(tm);
+  const j=await r.json().catch(()=>({}));
+  if(!r.ok)throw new Error((j.error&&j.error.message)||'Groq error '+r.status);
+  const t=(j.choices&&j.choices[0]&&j.choices[0].message&&j.choices[0].message.content)||'';
+  const m=t.match(/\{[\s\S]*\}/);
+  if(!m)throw new Error('Unexpected reply from Groq');
+  return JSON.parse(m[0]);
+}
+const chat=(sy,h)=>S.pv==='groq'?groq(sy,h):gem(sy,h);
+const sys=()=>`You are a friendly English conversation tutor for a Hebrew speaker. Student level: ${S.level}. Speak English only. Beginners: short, common words. Advanced: longer sentences and idioms. Reply in 1 to 3 short sentences and end with a question. The student's words come from speech recognition and may contain errors (for example "sheep" for "ship"): silently read through obvious errors; if a plausible, relevant mistake exists, ask "Did you mean...?". If the student makes a grammar mistake, naturally use the correct form in your reply. Reply ONLY with JSON: {"sentences":[{"en":"sentence","he":"Hebrew translation","words":[{"w":"word exactly as written in the sentence","m":"Hebrew meaning"}]}]}. List every content word in "words" (skip a, the, is, and similar).`;
+
+/* ---------- Words ---------- */
+function flag(w,m,src){
+  if(!W.some(x=>x.w.toLowerCase()===w.toLowerCase())){W.push({w,m,src,t:Date.now()});sv('sp_w',W)}
+  $('#wb').textContent='My words ('+W.length+')';
+}
+function openWord(w,m){
+  flag(w,m,'tapped');
+  $('#wd').innerHTML=`<h3>${esc(w)}</h3><p dir="rtl" style="font-size:18px;margin:4px 0 12px">${esc(m)}</p><button class="pill" id="wp">▶ Hear it</button><p class="note" style="margin-top:12px">Flagged for practice.</p><button class="close" onclick="this.closest('dialog').close()">Close</button>`;
+  $('#wp').onclick=()=>{stopAudio();play(w,'en')};
+  $('#wd').showModal();
+}
+$('#wb').onclick=()=>{
+  $('#wl').innerHTML='<h3>My words</h3>'+(W.length?W.map((x,i)=>`<div class="row"><span><b>${esc(x.w)}</b><br><small dir="auto">${esc(x.m)}</small></span><button class="ic" data-i="${i}" aria-label="Hear ${esc(x.w)}">▶</button></div>`).join(''):'<p class="note">Nothing yet. Tap a highlighted word in the tutor\'s sentences, or use How do I say it?</p>')+'<button class="close" onclick="this.closest(\'dialog\').close()">Close</button>';
+  $('#wl').querySelectorAll('.ic').forEach(b=>b.onclick=()=>{stopAudio();play(W[b.dataset.i].w,'en')});
+  $('#wl').showModal();
+};
+
+/* ---------- Rendering ---------- */
+function add(el){const e=$('#empty');if(e)e.remove();$('#chat').appendChild(el);$('#chat').scrollTop=1e9;return el}
+function addUser(t,live){const d=document.createElement('div');d.className='msg user'+(live?' live':'');d.textContent=t;return add(d)}
+function wrap(en,words){
+  return en.split(/([A-Za-z']+)/).map(p=>{
+    const f=/^[A-Za-z']+$/.test(p)&&(words||[]).find(x=>x.w.toLowerCase()===p.toLowerCase());
+    return f?`<span class="w" data-w="${esc(p)}" data-m="${esc(f.m)}">${esc(p)}</span>`:esc(p);
+  }).join('');
+}
+function addTutor(data){
+  const box=document.createElement('div');box.className='msg tutor';
+  data.sentences.forEach(s=>{
+    const d=document.createElement('div');d.className='sent';d.dataset.en=s.en;d.dataset.he=s.he;
+    d.innerHTML=`<div class="line en ${S.en}"><span class="t">${wrap(s.en,s.words)}</span><button class="ic" data-a="en" aria-label="Replay English">▶</button></div><div class="line he ${S.he}" dir="rtl"><span class="t">${esc(s.he)}</span><button class="ic" data-a="he" aria-label="Play Hebrew">▶</button></div>`;
+    box.appendChild(d);
+  });
+  add(box);
+}
+$('#chat').addEventListener('click',e=>{
+  const b=e.target.closest('.ic');
+  if(b){const s=b.closest('.sent');stopAudio();play(s.dataset[b.dataset.a],b.dataset.a);return}
+  const l=e.target.closest('.line');
+  if(!l)return;
+  if(l.classList.contains('tap')&&!l.classList.contains('shown')){l.classList.add('shown');return}
+  const w=e.target.closest('.w');
+  if(w)openWord(w.dataset.w,w.dataset.m);
+});
+
+/* ---------- Listening: the browser's speech recognition ---------- */
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+let msgs=[],busy=false,rec=null,heard='',liveEl=null;
+function ui(){
+  const m=rec&&rec.mode;
+  $('#mic').className=m==='talk'?'rec':'';
+  $('#mic').textContent=m==='talk'?'Tap to send':busy?'Thinking…':'Tap to talk';
+  $('#say').className='pill'+(m==='say'?' rec':'');
+  $('#say').textContent=m==='say'?'Tap when done':'How do I say it?';
+  $('#mic').disabled=busy||m==='say';
+  $('#say').disabled=busy||m==='talk';
+}
+function toggle(mode){
+  if(busy)return;
+  if(!SR)return toast('This browser has no speech recognition. Use Chrome or Edge.');
+  if(!(S.pv==='groq'?S.rk:S.gk))return needKey();
+  if(rec){rec.stop();return}
+  stopAudio();heard='';
+  const r=rec=new SR();
+  r.mode=mode;r.lang=mode==='say'?'he-IL':'en-US';r.interimResults=true;r.continuous=!/Android/i.test(navigator.userAgent);
+  liveEl=mode==='talk'?addUser('…',true):null;
+  r.onresult=e=>{
+    let fin='',part='';
+    for(let i=0;i<e.results.length;i++){const x=e.results[i];if(x.isFinal)fin+=x[0].transcript+' ';else part=x[0].transcript}
+    heard=(fin+part).trim();
+    if(liveEl)liveEl.textContent=heard||'…';
+  };
+  r.onerror=e=>{if(e.error==='not-allowed'||e.error==='service-not-allowed')toast('Microphone blocked. Allow mic access, or open the page over https.')};
+  r.onend=async()=>{
+    rec=null;busy=true;ui();
+    try{r.mode==='say'?await sayFlow(heard):await talkFlow(heard)}catch(e){toast(e.name==='AbortError'?'The AI took longer than 40 seconds. Free servers can be overloaded, so try again.':e.message);setStatus('Stopped: '+(e.name==='AbortError'?'the AI timed out':e.message))}
+    busy=false;ui();
+  };
+  try{r.start()}catch(e){rec=null;toast(e.message)}
+  ui();
+}
+async function talkFlow(text){
+  if(!text){if(liveEl)liveEl.remove();return toast("Didn't catch that. Try again.")}
+  liveEl.classList.remove('live');
+  msgs.push({role:'user',content:text});
+  setStatus('Asking '+pn()+'…');const t0=Date.now();const d=await chat(sys(),msgs);setStatus(pn()+(S.pv==='groq'?' ('+(S.gm||groqPick)+')':'')+' replied in '+((Date.now()-t0)/1000).toFixed(1)+'s');
+  msgs.push({role:'assistant',content:JSON.stringify(d)});
+  addTutor(d);playAll(d.sentences);
+}
+async function sayFlow(he){
+  if(!he)return toast("Didn't catch that. Try again.");
+  const d=await chat('Translate the Hebrew into one natural, simple spoken English phrase a learner can say. Reply ONLY with JSON: {"en":"the phrase"}',[{role:'user',content:he}]);
+  flag(d.en,he,'how-do-I-say-it');
+  const c=document.createElement('div');c.className='msg say';
+  c.innerHTML=`<p class="note" dir="rtl">${esc(he)}</p><div class="sent" data-en="${esc(d.en)}"><div class="line en"><span class="t big">${esc(d.en)}</span><button class="ic" data-a="en" aria-label="Play phrase">▶</button></div></div><p class="note">Saved to My words. Now say it in the conversation.</p>`;
+  add(c);play(d.en,'en');
+}
+$('#mic').onclick=()=>toggle('talk');
+$('#say').onclick=()=>toggle('say');
+
+/* ---------- Settings ---------- */
+function fill(){$('#pv').value=S.pv;$('#rk').value=S.rk;$('#gm').value=S.gm;$('#gk').value=S.gk;$('#mo').value=S.model;$('#lv').value=S.level;$('#se').value=S.en;$('#sh').value=S.he;$('#sp').value=S.speed}
+$('#sb').onclick=()=>{fill();$('#set').showModal()};
+$('#lv').onchange=e=>{const d=LV[e.target.value];$('#se').value=d[0];$('#sh').value=d[1]};
+$('#save').onclick=()=>{
+  groqPick=null;S=Object.assign(S,{pv:$('#pv').value,rk:$('#rk').value.trim(),gm:$('#gm').value.trim(),gk:$('#gk').value.trim(),model:$('#mo').value.trim()||S.model,level:$('#lv').value,en:$('#se').value,he:$('#sh').value});
+  sv('sp2_s',S);$('#set').close();
+};
+$('#sp').onchange=e=>{S.speed=e.target.value;sv('sp2_s',S)};
+fill();$('#wb').textContent='My words ('+W.length+')';
+if(!(S.pv==='groq'?S.rk:S.gk))setTimeout(()=>$('#set').showModal(),300);
+</script>
+</body>
+</html>
