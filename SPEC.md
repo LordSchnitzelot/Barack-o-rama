@@ -22,7 +22,7 @@ Job
 Current choice
 Speak (English)
 text, voice, speed in; audio out
-Phonon (by Gradium). It runs on the user's device in the browser, with no server, no API key and no per-use cost. The model is Phonon 31m under the Apache 2.0 license, which allows commercial use. It downloads once (about 65 MB) and is then cached.
+Phonon (by Gradium). It runs on the user's device in the browser, with no server, no API key and no per-use cost. The model is Phonon 31m under the Apache 2.0 license. It downloads once (about 65 MB) and is then cached.
 Speak (Hebrew)
 text in; audio out
 Browser text-to-speech. Hebrew voice quality matters little: it only reads translations to native Hebrew speakers.
@@ -211,11 +211,10 @@ To fix or build:
 5. Matching Hebrew and English answers by code. Speech recognition may return a form that is not in the stored list, for example with an article ("the book") or a different spelling. Answers are normalized in code first; what happens when there is still no match is an open question.
 6. Dictionary and sentence sources. Where the two dictionaries and the sentences come from, and their licenses (see Open questions).
 7. Levantine Arabic quality. Check whether voices sound natural in a Levantine dialect and whether recognition handles a learner's speech. Test before starting the Arabic pack, and decide which voice and recognition services to use.
-8. Costs and commercial terms. Phonon 31m and its voice catalog allow commercial use (Apache 2.0). The Phonon 40m models are non-commercial (CC BY-NC) and are not used. The AI model uses an API key and its allowance. Any paid service (including ElevenLabs for Arabic) draws on a plan, and a public release needs a check of commercial terms and of the Arabic course PDF's copyright.
-9. Mixed text direction. Hebrew and Arabic (right-to-left) and English (left-to-right) share one screen, and a Hebrew UI adds more mixing, so layout needs care.
-10. Arabic word flagging. Prefixes and suffixes attach to words, so the model's word breakdown must handle them.
-11. iPhone storage. Safari can clear site data after about a week of non-use unless the app is installed as a PWA.
-12. Browser speech support. Browser recognition works well in Chrome and Edge but not everywhere, which matters for iPhone users. Also test whether the browser's Hebrew voice reads text with nikkud more accurately, and whether Phonon reads respellings such as "red" naturally (context inside sentences already works).
+8. Mixed text direction. Hebrew and Arabic (right-to-left) and English (left-to-right) share one screen, and a Hebrew UI adds more mixing, so layout needs care.
+9. Arabic word flagging. Prefixes and suffixes attach to words, so the model's word breakdown must handle them.
+10. iPhone storage. Safari can clear site data after about a week of non-use unless the app is installed as a PWA.
+11. Browser speech support. Browser recognition works well in Chrome and Edge but not everywhere, which matters for iPhone users. Also test whether the browser's Hebrew voice reads text with nikkud more accurately, and whether Phonon reads respellings such as "red" naturally (context inside sentences already works).
 13. Open questions
 • Which speech recognition to use in the real app, for English and for Hebrew: browser recognition, ElevenLabs Scribe, Whisper or another.
 • Which free dictionary source to use, and where the frequency ranks come from (both need licenses that allow our use).
@@ -247,7 +246,7 @@ To fix or build:
 • Spaced repetition applies to flagged words and is mixed with new words.
 • The tutor handles transcription errors, so the user does not edit transcripts.
 • Subtitles are a Show or Hide setting for the target language and for the native language.
-• English voice: Phonon 31m, which runs free on the device and is licensed for commercial use. No audio files are stored.
+• English voice: Phonon 31m, which runs free on the device. No audio files are stored.
 • Hebrew voice: the browser's text-to-speech; low quality is acceptable.
 • The Chat and Guide screens use a chat-style view.
 • The Hebrew UI language is a planned setting, after the first build.
