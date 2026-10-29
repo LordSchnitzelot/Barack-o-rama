@@ -41,7 +41,7 @@ The app talks to generic services, and the provider behind each is a setting, so
 
 **Voice of the native language:** less important. The learner speaks it fluently, so the browser's built-in voice is enough. The same applies to English-speaking learners of Levantine Arabic, whose English audio can come from the browser's voice.
 
-**Speed:** the speed dial uses Phonon's speaking-rate setting (called duration\_delta). Testing it is part of the first build step.
+**Speed:** the speed dial uses Phonon's speaking-rate setting (called duration\_delta). Tested in build step 1: it works, but it only slows speech to about 0.88x, so the slowest setting adds a little browser playback slowdown on top.
 
 **Arabic voice and recognition:** to be decided after the quality test (see Risks). ElevenLabs is one candidate.
 
@@ -257,12 +257,10 @@ Demo v2 is a single-page prototype of the conversation (Chat) screen. It proved 
 - Tap-to-flag with a My Words list.
 - "How do I say it?" produces the English phrase and saves it.
 - Chat-style layout.
+- **Build step 1 (done):** the Hebrew play button uses the browser's Hebrew voice; the speed dial uses Phonon's speaking rate (Normal, Easy, Slow), with browser playback speed for the part Phonon can't reach and as a fallback; "How do I say it?" shows the user's Hebrew live while they speak.
 
 **To fix or build:**
 
-- **Hebrew play button:** connect it to the browser's Hebrew voice.
-- **Speed dial:** a dropdown exists but is not connected to the audio; connect it to Phonon's speaking-rate setting.
-- **"How do I say it?":** show the user's Hebrew live while they speak.
 - **Tutor behavior:** add tutor instructions, the learner profile, weak-spot steering and the corrections setting.
 - **Progress:** save scores, spaced repetition, the session summary and weak-spot notes (the demo saves a simple word list).
 - **Controls:** hands-free mode, slower and repeat buttons, topic cards, backup.
@@ -283,7 +281,7 @@ Demo v2 is a single-page prototype of the conversation (Chat) screen. It proved 
 
 ## 12. Risks and early tests
 
-1. **Phonon speed control.** Phonon documents a speaking-rate setting (duration\_delta), but it is not yet confirmed that the 31m model supports it, what its values mean in speed terms, or whether changing it requires reloading the model. The fallback is slowing the audio in the browser, which may sound less natural.
+1. **Phonon speed control.** Tested in build step 1: the 31m model supports duration\_delta (positive is slower, 0 is normal). The value is fixed when the model loads, so changing speed reloads the model from the browser cache (about 1 second on a laptop). Measured: 0.2 gives about 0.89x speed and 0.3 about 0.875x; larger values barely slow it further, and Phonon's docs warn they are less reliable. The slowest setting therefore adds browser playback slowdown on top. Still to check: how natural it sounds, and the reload time, on the target phones.
 2. **Phonon on phones.** The first load downloads about 65 MB. iPhone browsers use a Phonon build without Relaxed SIMD, which can be slower. Test speed and waiting time on the target phones.
 3. **Phonon is new.** Pin exact versions of the package and the model. The demo loads them from public hosts (a code CDN and Hugging Face); the real app can serve the files itself.
 4. **Speech recognition for accented English.** Test with a Hebrew speaker's English before building Drills around "Did you mean...?".
@@ -361,3 +359,5 @@ Demo v2 is a single-page prototype of the conversation (Chat) screen. It proved 
 - **v3.4:** labels stay in English and in brackets, sent to Phonon as written; optional "say as" field only on entries that need it; sentences rely on Phonon's context (tested); one word per prompt from multi-word groups.
 
 * **v3.5:** labels written in brackets and sent to Phonon as written; groups described as objects holding one or more words; progress tracked per word inside its group (for example 201\[0\] and 201\[1\]).
+
+* **v3.6:** build step 1 done; recorded the Phonon speed test results (Technology, Demo status, Risks).
