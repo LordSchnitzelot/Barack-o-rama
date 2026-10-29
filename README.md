@@ -13,7 +13,7 @@ subtitle toggles, tap-to-flag, "How do I say it?").
 
 - **Never put API keys in this repository.** The demo asks each user to type their own key
   in Settings, and it is stored only in that user's browser.
-- The full project spec is [SPEC.md](SPEC.md) (v3.5). It is the source of truth.
+- The full project spec is [SPEC.md](SPEC.md) (v3.6). It is the source of truth.
 - Rules for working on the project are in [CLAUDE.md](CLAUDE.md).
 
 ## Done: build order step 1
@@ -23,6 +23,15 @@ subtitle toggles, tap-to-flag, "How do I say it?").
   on its own, so "Slow" adds a little browser slowdown on top. Settings has an option to use
   only the browser's playback speed instead.
 - "How do I say it?" shows the user's Hebrew live while they speak.
+
+## Started early: Drills content format (part of build order step 6)
+
+- The data format for the two Drills dictionaries and the tagged sentences (spec section 3.3) is
+  described in [docs/drills-data-format.md](docs/drills-data-format.md).
+- A starter set lives in `packs/en-he/drills/`: the 300 most common English words with their Hebrew
+  partners, and 60 tagged sentences. It is hand-written test data, to be replaced in step 6.
+- A checker tests every rule: `node tools/validate-drills.js`, or open
+  `tools/validate-drills.html` in a browser.
 
 ## Next step (build order step 2)
 

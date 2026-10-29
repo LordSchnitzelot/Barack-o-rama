@@ -1,0 +1,1124 @@
+{
+  "language": "he",
+  "otherLanguage": "en",
+  "source": "Starter set written by hand for testing the format. Ranks are approximate; Hebrew ranks are copied from the English partner group. To be replaced in build step 6.",
+  "groups": [
+    {"id": 1, "pos": "verb", "verbForm": "infinitive", "otherForm": 2, "words": [
+      {"id": "he1", "text": "לִהְיוֹת", "rank": 2, "accepted": ["להיות"]}
+    ]},
+    {"id": 2, "pos": "verb", "verbForm": "past", "otherForm": 1, "words": [
+      {"id": "he2", "text": "הָיָה", "rank": 2, "accepted": ["היה", "הייתה", "היתה", "הייתי", "היית", "היינו", "הייתם", "הייתן", "היו"]}
+    ]},
+    {"id": 3, "pos": "preposition", "words": [
+      {"id": "he3", "text": "שֶׁל", "rank": 4, "accepted": ["של"]}
+    ]},
+    {"id": 4, "pos": "preposition", "words": [
+      {"id": "he4", "text": "אֶל", "rank": 7, "accepted": ["אל"]}
+    ]},
+    {"id": 5, "pos": "pronoun", "words": [
+      {"id": "he5", "text": "אֲנִי", "rank": 10, "accepted": ["אני"]}
+    ]},
+    {"id": 6, "pos": "pronoun", "words": [
+      {"id": "he6", "text": "זֶה", "rank": 11, "accepted": ["זה"]},
+      {"id": "he7", "text": "זֹאת", "rank": 11, "accepted": ["זאת"]}
+    ]},
+    {"id": 7, "pos": "preposition", "words": [
+      {"id": "he8", "text": "בִּשְׁבִיל", "rank": 12, "accepted": ["בשביל"]},
+      {"id": "he9", "text": "עֲבוּר", "rank": 12, "accepted": ["עבור"]}
+    ]},
+    {"id": 8, "pos": "pronoun", "words": [
+      {"id": "he10", "text": "אַתָּה", "rank": 13, "accepted": ["אתה"]},
+      {"id": "he11", "text": "אַתְּ", "rank": 13, "accepted": ["את"]}
+    ]},
+    {"id": 9, "pos": "pronoun", "words": [
+      {"id": "he12", "text": "אַתֶּם", "rank": 13, "accepted": ["אתם"]},
+      {"id": "he13", "text": "אַתֶּן", "rank": 13, "accepted": ["אתן"]}
+    ]},
+    {"id": 10, "pos": "pronoun", "words": [
+      {"id": "he14", "text": "הוּא", "rank": 14, "accepted": ["הוא"]}
+    ]},
+    {"id": 11, "pos": "preposition", "words": [
+      {"id": "he15", "text": "עִם", "rank": 15, "accepted": ["עם"]}
+    ]},
+    {"id": 12, "pos": "preposition", "words": [
+      {"id": "he16", "text": "עַל (on top of)", "rank": 16, "accepted": ["על"]}
+    ]},
+    {"id": 13, "pos": "verb", "verbForm": "infinitive", "otherForm": 14, "words": [
+      {"id": "he17", "text": "לַעֲשׂוֹת", "rank": 17, "accepted": ["לעשות"]}
+    ]},
+    {"id": 14, "pos": "verb", "verbForm": "past", "otherForm": 13, "words": [
+      {"id": "he18", "text": "עָשָׂה", "rank": 17, "accepted": ["עשה", "עשתה", "עשיתי", "עשית", "עשינו", "עשיתם", "עשיתן", "עשו"]}
+    ]},
+    {"id": 15, "pos": "verb", "verbForm": "infinitive", "otherForm": 16, "words": [
+      {"id": "he19", "text": "לְהַגִּיד", "rank": 18, "accepted": ["להגיד"]},
+      {"id": "he20", "text": "לוֹמַר", "rank": 18, "accepted": ["לומר"]}
+    ]},
+    {"id": 16, "pos": "verb", "verbForm": "past", "otherForm": 15, "words": [
+      {"id": "he21", "text": "אָמַר", "rank": 18, "accepted": ["אמר", "אמרה", "אמרתי", "אמרת", "אמרנו", "אמרתם", "אמרתן", "אמרו"]}
+    ]},
+    {"id": 17, "pos": "pronoun", "words": [
+      {"id": "he22", "text": "הֵם", "rank": 20, "accepted": ["הם"]},
+      {"id": "he23", "text": "הֵן", "rank": 20, "accepted": ["הן"]}
+    ]},
+    {"id": 18, "pos": "conjunction", "words": [
+      {"id": "he24", "text": "אֲבָל", "rank": 22, "accepted": ["אבל"]}
+    ]},
+    {"id": 19, "pos": "pronoun", "words": [
+      {"id": "he25", "text": "אֲנַחְנוּ", "rank": 23, "accepted": ["אנחנו"]}
+    ]},
+    {"id": 20, "pos": "pronoun", "words": [
+      {"id": "he26", "text": "שֶׁלּוֹ", "rank": 24, "accepted": ["שלו"]}
+    ]},
+    {"id": 21, "pos": "preposition", "words": [
+      {"id": "he27", "text": "מִן", "rank": 25, "accepted": ["מן"]}
+    ]},
+    {"id": 22, "pos": "adverb", "words": [
+      {"id": "he28", "text": "לֹא", "rank": 26, "accepted": ["לא"]}
+    ]},
+    {"id": 23, "pos": "pronoun", "words": [
+      {"id": "he29", "text": "הִיא", "rank": 28, "accepted": ["היא"]}
+    ]},
+    {"id": 24, "pos": "conjunction", "words": [
+      {"id": "he30", "text": "אוֹ", "rank": 29, "accepted": ["או"]}
+    ]},
+    {"id": 25, "pos": "question", "words": [
+      {"id": "he31", "text": "מָה", "rank": 31, "accepted": ["מה"]}
+    ]},
+    {"id": 26, "pos": "verb", "verbForm": "infinitive", "otherForm": 27, "words": [
+      {"id": "he32", "text": "לָלֶכֶת", "rank": 32, "accepted": ["ללכת"]}
+    ]},
+    {"id": 27, "pos": "verb", "verbForm": "past", "otherForm": 26, "words": [
+      {"id": "he33", "text": "הָלַךְ", "rank": 32, "accepted": ["הלך", "הלכה", "הלכתי", "הלכת", "הלכנו", "הלכתם", "הלכתן", "הלכו"]}
+    ]},
+    {"id": 28, "pos": "pronoun", "words": [
+      {"id": "he34", "text": "שֶׁלָּהֶם", "rank": 33, "accepted": ["שלהם"]},
+      {"id": "he35", "text": "שֶׁלָּהֶן", "rank": 33, "accepted": ["שלהן"]}
+    ]},
+    {"id": 29, "pos": "modal", "words": [
+      {"id": "he36", "text": "יָכוֹל", "rank": 34, "accepted": ["יכול", "יכולה", "יכולים", "יכולות"]}
+    ]},
+    {"id": 30, "pos": "question", "words": [
+      {"id": "he37", "text": "מִי", "rank": 35, "accepted": ["מי"]}
+    ]},
+    {"id": 31, "pos": "verb", "verbForm": "infinitive", "otherForm": 32, "words": [
+      {"id": "he38", "text": "לְקַבֵּל", "rank": 36, "accepted": ["לקבל"]}
+    ]},
+    {"id": 32, "pos": "verb", "verbForm": "past", "otherForm": 31, "words": [
+      {"id": "he39", "text": "קִבֵּל", "rank": 36, "accepted": ["קיבל", "קיבלה", "קיבלתי", "קיבלת", "קיבלנו", "קיבלתם", "קיבלתן", "קיבלו"]}
+    ]},
+    {"id": 33, "pos": "conjunction", "words": [
+      {"id": "he40", "text": "אִם", "rank": 37, "accepted": ["אם"]}
+    ]},
+    {"id": 34, "pos": "pronoun", "words": [
+      {"id": "he41", "text": "שֶׁלָּהּ", "rank": 39, "accepted": ["שלה"]}
+    ]},
+    {"id": 35, "pos": "pronoun", "words": [
+      {"id": "he42", "text": "אוֹתָהּ", "rank": 39, "accepted": ["אותה"]}
+    ]},
+    {"id": 36, "pos": "determiner", "words": [
+      {"id": "he43", "text": "כָּל", "rank": 40, "accepted": ["כל"]}
+    ]},
+    {"id": 37, "pos": "pronoun", "words": [
+      {"id": "he44", "text": "שֶׁלִּי", "rank": 41, "accepted": ["שלי"]}
+    ]},
+    {"id": 38, "pos": "preposition", "words": [
+      {"id": "he45", "text": "עַל (about a topic)", "rank": 43, "accepted": ["על"]}
+    ]},
+    {"id": 39, "pos": "adverb", "words": [
+      {"id": "he46", "text": "בְּעֵרֶךְ", "rank": 43, "accepted": ["בערך"]}
+    ]},
+    {"id": 40, "pos": "verb", "verbForm": "infinitive", "otherForm": 41, "words": [
+      {"id": "he47", "text": "לָדַעַת", "rank": 44, "accepted": ["לדעת"]}
+    ]},
+    {"id": 41, "pos": "verb", "verbForm": "past", "otherForm": 40, "words": [
+      {"id": "he48", "text": "יָדַע", "rank": 44, "accepted": ["ידע", "ידעה", "ידעתי", "ידעת", "ידענו", "ידעתם", "ידעתן", "ידעו"]}
+    ]},
+    {"id": 42, "pos": "verb", "verbForm": "infinitive", "otherForm": 43, "words": [
+      {"id": "he49", "text": "לְהַכִּיר", "rank": 44, "accepted": ["להכיר"]}
+    ]},
+    {"id": 43, "pos": "verb", "verbForm": "past", "otherForm": 42, "words": [
+      {"id": "he50", "text": "הִכִּיר", "rank": 44, "accepted": ["הכיר", "הכירה", "הכרתי", "הכרת", "הכרנו", "הכרתם", "הכרתן", "הכירו"]}
+    ]},
+    {"id": 44, "pos": "adverb", "words": [
+      {"id": "he51", "text": "לְמַעְלָה", "rank": 46, "accepted": ["למעלה"]}
+    ]},
+    {"id": 45, "pos": "number", "words": [
+      {"id": "he52", "text": "אֶחָד", "rank": 47, "accepted": ["אחד", "אחת"]}
+    ]},
+    {"id": 46, "pos": "noun", "words": [
+      {"id": "he53", "text": "פַּעַם", "rank": 48, "accepted": ["פעם"]}
+    ]},
+    {"id": 47, "pos": "noun", "words": [
+      {"id": "he54", "text": "זְמַן", "rank": 48, "accepted": ["זמן"]}
+    ]},
+    {"id": 48, "pos": "adverb", "words": [
+      {"id": "he55", "text": "שָׁם", "rank": 49, "accepted": ["שם"]}
+    ]},
+    {"id": 49, "pos": "noun", "words": [
+      {"id": "he56", "text": "שָׁנָה", "rank": 50, "accepted": ["שנה"]}
+    ]},
+    {"id": 50, "pos": "adverb", "words": [
+      {"id": "he57", "text": "אָז", "rank": 51, "accepted": ["אז"]}
+    ]},
+    {"id": 51, "pos": "adverb", "words": [
+      {"id": "he58", "text": "כָּל כָּךְ", "rank": 51, "accepted": ["כל כך"]}
+    ]},
+    {"id": 52, "pos": "verb", "verbForm": "infinitive", "otherForm": 53, "words": [
+      {"id": "he59", "text": "לַחְשֹׁב", "rank": 52, "accepted": ["לחשוב"]}
+    ]},
+    {"id": 53, "pos": "verb", "verbForm": "past", "otherForm": 52, "words": [
+      {"id": "he60", "text": "חָשַׁב", "rank": 52, "accepted": ["חשב", "חשבה", "חשבתי", "חשבת", "חשבנו", "חשבתם", "חשבתן", "חשבו"]}
+    ]},
+    {"id": 54, "pos": "question", "words": [
+      {"id": "he61", "text": "מָתַי", "rank": 53, "accepted": ["מתי"]}
+    ]},
+    {"id": 55, "pos": "question", "words": [
+      {"id": "he62", "text": "אֵיזֶה", "rank": 54, "accepted": ["איזה", "איזו", "אילו"]}
+    ]},
+    {"id": 56, "pos": "pronoun", "words": [
+      {"id": "he63", "text": "אוֹתָם", "rank": 55, "accepted": ["אותם", "אותן"]}
+    ]},
+    {"id": 57, "pos": "determiner", "words": [
+      {"id": "he64", "text": "כַּמָּה", "rank": 56, "accepted": ["כמה"]}
+    ]},
+    {"id": 58, "pos": "pronoun", "words": [
+      {"id": "he65", "text": "אוֹתִי", "rank": 57, "accepted": ["אותי"]}
+    ]},
+    {"id": 59, "pos": "noun", "words": [
+      {"id": "he66", "text": "אָדָם", "rank": 58, "accepted": ["אדם"]},
+      {"id": "he67", "text": "בֶּן אָדָם", "rank": 58, "accepted": ["בן אדם"]}
+    ]},
+    {"id": 60, "pos": "verb", "verbForm": "infinitive", "otherForm": 61, "words": [
+      {"id": "he68", "text": "לָקַחַת", "rank": 59, "accepted": ["לקחת"]}
+    ]},
+    {"id": 61, "pos": "verb", "verbForm": "past", "otherForm": 60, "words": [
+      {"id": "he69", "text": "לָקַח", "rank": 59, "accepted": ["לקח", "לקחה", "לקחתי", "לקחת", "לקחנו", "לקחתם", "לקחתן", "לקחו"]}
+    ]},
+    {"id": 62, "pos": "adverb", "words": [
+      {"id": "he70", "text": "הַחוּצָה", "rank": 60, "accepted": ["החוצה"]}
+    ]},
+    {"id": 63, "pos": "adverb", "words": [
+      {"id": "he71", "text": "רַק", "rank": 62, "accepted": ["רק"]}
+    ]},
+    {"id": 64, "pos": "verb", "verbForm": "infinitive", "otherForm": 65, "words": [
+      {"id": "he72", "text": "לִרְאוֹת", "rank": 63, "accepted": ["לראות"]}
+    ]},
+    {"id": 65, "pos": "verb", "verbForm": "past", "otherForm": 64, "words": [
+      {"id": "he73", "text": "רָאָה", "rank": 63, "accepted": ["ראה", "ראתה", "ראיתי", "ראית", "ראינו", "ראיתם", "ראיתן", "ראו"]}
+    ]},
+    {"id": 66, "pos": "pronoun", "words": [
+      {"id": "he74", "text": "אוֹתוֹ", "rank": 64, "accepted": ["אותו"]}
+    ]},
+    {"id": 67, "pos": "pronoun", "words": [
+      {"id": "he75", "text": "שֶׁלְּךָ", "rank": 65, "accepted": ["שלך"]},
+      {"id": "he76", "text": "שֶׁלָּךְ", "rank": 65, "accepted": ["שלך"]}
+    ]},
+    {"id": 68, "pos": "pronoun", "words": [
+      {"id": "he77", "text": "שֶׁלָּכֶם", "rank": 65, "accepted": ["שלכם"]},
+      {"id": "he78", "text": "שֶׁלָּכֶן", "rank": 65, "accepted": ["שלכן"]}
+    ]},
+    {"id": 69, "pos": "verb", "verbForm": "infinitive", "otherForm": 70, "words": [
+      {"id": "he79", "text": "לָבוֹא", "rank": 66, "accepted": ["לבוא"]}
+    ]},
+    {"id": 70, "pos": "verb", "verbForm": "past", "otherForm": 69, "words": [
+      {"id": "he80", "text": "בָּא", "rank": 66, "accepted": ["בא", "באה", "באתי", "באת", "באנו", "באתם", "באתן", "באו"]}
+    ]},
+    {"id": 71, "pos": "adverb", "words": [
+      {"id": "he81", "text": "עַכְשָׁיו", "rank": 68, "accepted": ["עכשיו"]}
+    ]},
+    {"id": 72, "pos": "verb", "verbForm": "infinitive", "otherForm": 73, "words": [
+      {"id": "he82", "text": "לֶאֱהֹב", "rank": 70, "accepted": ["לאהוב"]}
+    ]},
+    {"id": 73, "pos": "verb", "verbForm": "past", "otherForm": 72, "words": [
+      {"id": "he83", "text": "אָהַב", "rank": 70, "accepted": ["אהב", "אהבה", "אהבתי", "אהבת", "אהבנו", "אהבתם", "אהבתן", "אהבו"]}
+    ]},
+    {"id": 74, "pos": "preposition", "words": [
+      {"id": "he84", "text": "כְּמוֹ", "rank": 70, "accepted": ["כמו"]}
+    ]},
+    {"id": 75, "pos": "adjective", "words": [
+      {"id": "he85", "text": "אַחֵר", "rank": 71, "accepted": ["אחר", "אחרת", "אחרים", "אחרות"]}
+    ]},
+    {"id": 76, "pos": "question", "words": [
+      {"id": "he86", "text": "אֵיךְ", "rank": 72, "accepted": ["איך"]}
+    ]},
+    {"id": 77, "pos": "pronoun", "words": [
+      {"id": "he87", "text": "שֶׁלָּנוּ", "rank": 75, "accepted": ["שלנו"]}
+    ]},
+    {"id": 78, "pos": "number", "words": [
+      {"id": "he88", "text": "שְׁנַיִם", "rank": 76, "accepted": ["שניים", "שנים", "שני", "שתיים", "שתים", "שתי"]}
+    ]},
+    {"id": 79, "pos": "adverb", "words": [
+      {"id": "he89", "text": "יוֹתֵר", "rank": 77, "accepted": ["יותר"]}
+    ]},
+    {"id": 80, "pos": "pronoun", "words": [
+      {"id": "he90", "text": "אֵלֶּה", "rank": 78, "accepted": ["אלה"]},
+      {"id": "he91", "text": "אֵלּוּ", "rank": 78, "accepted": ["אלו"]}
+    ]},
+    {"id": 81, "pos": "verb", "verbForm": "infinitive", "otherForm": 82, "words": [
+      {"id": "he92", "text": "לִרְצוֹת", "rank": 79, "accepted": ["לרצות"]}
+    ]},
+    {"id": 82, "pos": "verb", "verbForm": "past", "otherForm": 81, "words": [
+      {"id": "he93", "text": "רָצָה", "rank": 79, "accepted": ["רצה", "רצתה", "רציתי", "רצית", "רצינו", "רציתם", "רציתן", "רצו"]}
+    ]},
+    {"id": 83, "pos": "noun", "words": [
+      {"id": "he94", "text": "דֶּרֶךְ", "rank": 80, "accepted": ["דרך"]}
+    ]},
+    {"id": 84, "pos": "verb", "verbForm": "infinitive", "otherForm": 85, "words": [
+      {"id": "he95", "text": "לְהִסְתַּכֵּל", "rank": 81, "accepted": ["להסתכל"]}
+    ]},
+    {"id": 85, "pos": "verb", "verbForm": "past", "otherForm": 84, "words": [
+      {"id": "he96", "text": "הִסְתַּכֵּל", "rank": 81, "accepted": ["הסתכל", "הסתכלה", "הסתכלתי", "הסתכלת", "הסתכלנו", "הסתכלתם", "הסתכלתן", "הסתכלו"]}
+    ]},
+    {"id": 86, "pos": "adjective", "words": [
+      {"id": "he97", "text": "רִאשׁוֹן", "rank": 82, "accepted": ["ראשון", "ראשונה", "ראשונים", "ראשונות"]}
+    ]},
+    {"id": 87, "pos": "adverb", "words": [
+      {"id": "he98", "text": "גַּם", "rank": 83, "accepted": ["גם"]}
+    ]},
+    {"id": 88, "pos": "adjective", "words": [
+      {"id": "he99", "text": "חָדָשׁ", "rank": 84, "accepted": ["חדש", "חדשה", "חדשים", "חדשות"]}
+    ]},
+    {"id": 89, "pos": "conjunction", "words": [
+      {"id": "he100", "text": "כִּי", "rank": 85, "accepted": ["כי"]}
+    ]},
+    {"id": 90, "pos": "noun", "words": [
+      {"id": "he101", "text": "יוֹם", "rank": 86, "accepted": ["יום"]}
+    ]},
+    {"id": 91, "pos": "verb", "verbForm": "infinitive", "otherForm": 92, "words": [
+      {"id": "he102", "text": "לְהִשְׁתַּמֵּשׁ", "rank": 87, "accepted": ["להשתמש"]}
+    ]},
+    {"id": 92, "pos": "verb", "verbForm": "past", "otherForm": 91, "words": [
+      {"id": "he103", "text": "הִשְׁתַּמֵּשׁ", "rank": 87, "accepted": ["השתמש", "השתמשה", "השתמשתי", "השתמשת", "השתמשנו", "השתמשתם", "השתמשתן", "השתמשו"]}
+    ]},
+    {"id": 93, "pos": "noun", "words": [
+      {"id": "he104", "text": "גֶּבֶר", "rank": 89, "accepted": ["גבר"]},
+      {"id": "he105", "text": "אִישׁ", "rank": 89, "accepted": ["איש"]}
+    ]},
+    {"id": 94, "pos": "verb", "verbForm": "infinitive", "otherForm": 95, "words": [
+      {"id": "he106", "text": "לִמְצֹא", "rank": 90, "accepted": ["למצוא"]}
+    ]},
+    {"id": 95, "pos": "verb", "verbForm": "past", "otherForm": 94, "words": [
+      {"id": "he107", "text": "מָצָא", "rank": 90, "accepted": ["מצא", "מצאה", "מצאתי", "מצאת", "מצאנו", "מצאתם", "מצאתן", "מצאו"]}
+    ]},
+    {"id": 96, "pos": "adverb", "words": [
+      {"id": "he108", "text": "פֹּה", "rank": 91, "accepted": ["פה"]},
+      {"id": "he109", "text": "כָּאן", "rank": 91, "accepted": ["כאן"]}
+    ]},
+    {"id": 97, "pos": "noun", "words": [
+      {"id": "he110", "text": "דָּבָר", "rank": 92, "accepted": ["דבר"]}
+    ]},
+    {"id": 98, "pos": "verb", "verbForm": "infinitive", "otherForm": 99, "words": [
+      {"id": "he111", "text": "לָתֵת", "rank": 93, "accepted": ["לתת"]}
+    ]},
+    {"id": 99, "pos": "verb", "verbForm": "past", "otherForm": 98, "words": [
+      {"id": "he112", "text": "נָתַן", "rank": 93, "accepted": ["נתן", "נתנה", "נתתי", "נתת", "נתנו", "נתתם", "נתתן"]}
+    ]},
+    {"id": 100, "pos": "determiner", "words": [
+      {"id": "he113", "text": "הַרְבֵּה", "rank": 94, "accepted": ["הרבה"]}
+    ]},
+    {"id": 101, "pos": "verb", "verbForm": "infinitive", "otherForm": 102, "words": [
+      {"id": "he114", "text": "לְסַפֵּר", "rank": 98, "accepted": ["לספר"]}
+    ]},
+    {"id": 102, "pos": "verb", "verbForm": "past", "otherForm": 101, "words": [
+      {"id": "he115", "text": "סִפֵּר", "rank": 98, "accepted": ["סיפר", "סיפרה", "סיפרתי", "סיפרת", "סיפרנו", "סיפרתם", "סיפרתן", "סיפרו"]}
+    ]},
+    {"id": 103, "pos": "adverb", "words": [
+      {"id": "he116", "text": "מְאוֹד", "rank": 99, "accepted": ["מאוד", "מאד"]}
+    ]},
+    {"id": 104, "pos": "adverb", "words": [
+      {"id": "he117", "text": "אֲפִילוּ", "rank": 100, "accepted": ["אפילו"]}
+    ]},
+    {"id": 105, "pos": "noun", "words": [
+      {"id": "he118", "text": "גַּב", "rank": 101, "accepted": ["גב"]}
+    ]},
+    {"id": 106, "pos": "adverb", "words": [
+      {"id": "he119", "text": "בַּחֲזָרָה", "rank": 101, "accepted": ["בחזרה"]}
+    ]},
+    {"id": 107, "pos": "adjective", "words": [
+      {"id": "he120", "text": "טוֹב", "rank": 103, "accepted": ["טוב", "טובה", "טובים", "טובות"]}
+    ]},
+    {"id": 108, "pos": "noun", "words": [
+      {"id": "he121", "text": "אִשָּׁה", "rank": 104, "accepted": ["אישה", "אשה"]}
+    ]},
+    {"id": 109, "pos": "pronoun", "words": [
+      {"id": "he122", "text": "אוֹתָנוּ", "rank": 106, "accepted": ["אותנו"]}
+    ]},
+    {"id": 110, "pos": "noun", "words": [
+      {"id": "he123", "text": "חַיִּים", "rank": 107, "accepted": ["חיים"]}
+    ]},
+    {"id": 111, "pos": "noun", "words": [
+      {"id": "he124", "text": "יֶלֶד", "rank": 108, "accepted": ["ילד"]}
+    ]},
+    {"id": 112, "pos": "noun", "words": [
+      {"id": "he125", "text": "עֲבוֹדָה", "rank": 109, "accepted": ["עבודה"]}
+    ]},
+    {"id": 113, "pos": "verb", "verbForm": "infinitive", "otherForm": 114, "words": [
+      {"id": "he126", "text": "לַעֲבֹד", "rank": 109, "accepted": ["לעבוד"]}
+    ]},
+    {"id": 114, "pos": "verb", "verbForm": "past", "otherForm": 113, "words": [
+      {"id": "he127", "text": "עָבַד", "rank": 109, "accepted": ["עבד", "עבדה", "עבדתי", "עבדת", "עבדנו", "עבדתם", "עבדתן", "עבדו"]}
+    ]},
+    {"id": 115, "pos": "adverb", "words": [
+      {"id": "he128", "text": "לְמַטָּה", "rank": 110, "accepted": ["למטה"]}
+    ]},
+    {"id": 116, "pos": "preposition", "words": [
+      {"id": "he129", "text": "אַחֲרֵי", "rank": 112, "accepted": ["אחרי"]}
+    ]},
+    {"id": 117, "pos": "verb", "verbForm": "infinitive", "otherForm": 118, "words": [
+      {"id": "he130", "text": "לְהִתְקַשֵּׁר", "rank": 114, "accepted": ["להתקשר"]}
+    ]},
+    {"id": 118, "pos": "verb", "verbForm": "past", "otherForm": 117, "words": [
+      {"id": "he131", "text": "הִתְקַשֵּׁר", "rank": 114, "accepted": ["התקשר", "התקשרה", "התקשרתי", "התקשרת", "התקשרנו", "התקשרתם", "התקשרתן", "התקשרו"]}
+    ]},
+    {"id": 119, "pos": "noun", "words": [
+      {"id": "he132", "text": "עוֹלָם", "rank": 115, "accepted": ["עולם"]}
+    ]},
+    {"id": 120, "pos": "noun", "words": [
+      {"id": "he133", "text": "בֵּית סֵפֶר", "rank": 117, "accepted": ["בית ספר"]}
+    ]},
+    {"id": 121, "pos": "adverb", "words": [
+      {"id": "he134", "text": "עֲדַיִן", "rank": 118, "accepted": ["עדיין"]}
+    ]},
+    {"id": 122, "pos": "verb", "verbForm": "infinitive", "otherForm": 123, "words": [
+      {"id": "he135", "text": "לְנַסּוֹת", "rank": 119, "accepted": ["לנסות"]}
+    ]},
+    {"id": 123, "pos": "verb", "verbForm": "past", "otherForm": 122, "words": [
+      {"id": "he136", "text": "נִסָּה", "rank": 119, "accepted": ["ניסה", "ניסתה", "ניסיתי", "ניסית", "ניסינו", "ניסיתם", "ניסיתן", "ניסו"]}
+    ]},
+    {"id": 124, "pos": "adjective", "words": [
+      {"id": "he137", "text": "אַחֲרוֹן", "rank": 120, "accepted": ["אחרון", "אחרונה", "אחרונים", "אחרונות"]}
+    ]},
+    {"id": 125, "pos": "verb", "verbForm": "infinitive", "otherForm": 126, "words": [
+      {"id": "he138", "text": "לִשְׁאֹל", "rank": 121, "accepted": ["לשאול"]}
+    ]},
+    {"id": 126, "pos": "verb", "verbForm": "past", "otherForm": 125, "words": [
+      {"id": "he139", "text": "שָׁאַל", "rank": 121, "accepted": ["שאל", "שאלה", "שאלתי", "שאלת", "שאלנו", "שאלתם", "שאלתן", "שאלו"]}
+    ]},
+    {"id": 127, "pos": "modal", "words": [
+      {"id": "he140", "text": "צָרִיךְ", "rank": 122, "accepted": ["צריך", "צריכה", "צריכים", "צריכות"]}
+    ]},
+    {"id": 128, "pos": "adverb", "words": [
+      {"id": "he141", "text": "מִדַּי", "rank": 123, "accepted": ["מדי"]}
+    ]},
+    {"id": 129, "pos": "verb", "verbForm": "infinitive", "otherForm": 130, "words": [
+      {"id": "he142", "text": "לְהַרְגִּישׁ", "rank": 124, "accepted": ["להרגיש"]}
+    ]},
+    {"id": 130, "pos": "verb", "verbForm": "past", "otherForm": 129, "words": [
+      {"id": "he143", "text": "הִרְגִּישׁ", "rank": 124, "accepted": ["הרגיש", "הרגישה", "הרגשתי", "הרגשת", "הרגשנו", "הרגשתם", "הרגשתן", "הרגישו"]}
+    ]},
+    {"id": 131, "pos": "number", "words": [
+      {"id": "he144", "text": "שָׁלוֹשׁ", "rank": 125, "accepted": ["שלוש", "שלושה"]}
+    ]},
+    {"id": 132, "pos": "adverb", "words": [
+      {"id": "he145", "text": "אַף פַּעַם", "rank": 127, "accepted": ["אף פעם"]}
+    ]},
+    {"id": 133, "pos": "preposition", "words": [
+      {"id": "he146", "text": "בֵּין", "rank": 129, "accepted": ["בין"]}
+    ]},
+    {"id": 134, "pos": "adjective", "words": [
+      {"id": "he147", "text": "גָּבוֹהַּ", "rank": 130, "accepted": ["גבוה", "גבוהה", "גבוהים", "גבוהות"]}
+    ]},
+    {"id": 135, "pos": "adverb", "words": [
+      {"id": "he148", "text": "בֶּאֱמֶת", "rank": 131, "accepted": ["באמת"]}
+    ]},
+    {"id": 136, "pos": "pronoun", "words": [
+      {"id": "he149", "text": "מַשֶּׁהוּ", "rank": 132, "accepted": ["משהו"]}
+    ]},
+    {"id": 137, "pos": "noun", "words": [
+      {"id": "he150", "text": "מִשְׁפָּחָה", "rank": 136, "accepted": ["משפחה"]}
+    ]},
+    {"id": 138, "pos": "verb", "verbForm": "infinitive", "otherForm": 139, "words": [
+      {"id": "he151", "text": "לַעֲזֹב", "rank": 138, "accepted": ["לעזוב"]}
+    ]},
+    {"id": 139, "pos": "verb", "verbForm": "past", "otherForm": 138, "words": [
+      {"id": "he152", "text": "עָזַב", "rank": 138, "accepted": ["עזב", "עזבה", "עזבתי", "עזבת", "עזבנו", "עזבתם", "עזבתן", "עזבו"]}
+    ]},
+    {"id": 140, "pos": "verb", "verbForm": "infinitive", "otherForm": 141, "words": [
+      {"id": "he153", "text": "לָשִׂים", "rank": 139, "accepted": ["לשים"]}
+    ]},
+    {"id": 141, "pos": "verb", "verbForm": "past", "otherForm": 140, "words": [
+      {"id": "he154", "text": "שָׂם", "rank": 139, "accepted": ["שם", "שמה", "שמתי", "שמת", "שמנו", "שמתם", "שמתן", "שמו"]}
+    ]},
+    {"id": 142, "pos": "adjective", "words": [
+      {"id": "he155", "text": "זָקֵן", "rank": 140, "accepted": ["זקן", "זקנה", "זקנים", "זקנות"]}
+    ]},
+    {"id": 143, "pos": "adjective", "words": [
+      {"id": "he156", "text": "יָשָׁן", "rank": 140, "accepted": ["ישן", "ישנה", "ישנים", "ישנות"]}
+    ]},
+    {"id": 144, "pos": "verb", "verbForm": "infinitive", "otherForm": 145, "words": [
+      {"id": "he157", "text": "לְהִתְכַּוֵּן", "rank": 142, "accepted": ["להתכוון"]}
+    ]},
+    {"id": 145, "pos": "verb", "verbForm": "past", "otherForm": 144, "words": [
+      {"id": "he158", "text": "הִתְכַּוֵּן", "rank": 142, "accepted": ["התכוון", "התכוונה", "התכוונתי", "התכוונת", "התכוונו", "התכוונתם", "התכוונתן"]}
+    ]},
+    {"id": 146, "pos": "verb", "verbForm": "infinitive", "otherForm": 147, "words": [
+      {"id": "he159", "text": "לִשְׁמֹר", "rank": 143, "accepted": ["לשמור"]}
+    ]},
+    {"id": 147, "pos": "verb", "verbForm": "past", "otherForm": 146, "words": [
+      {"id": "he160", "text": "שָׁמַר", "rank": 143, "accepted": ["שמר", "שמרה", "שמרתי", "שמרת", "שמרנו", "שמרתם", "שמרתן", "שמרו"]}
+    ]},
+    {"id": 148, "pos": "noun", "words": [
+      {"id": "he161", "text": "תַּלְמִיד", "rank": 144, "accepted": ["תלמיד", "תלמידה"]}
+    ]},
+    {"id": 149, "pos": "question", "words": [
+      {"id": "he162", "text": "לָמָּה", "rank": 145, "accepted": ["למה"]},
+      {"id": "he163", "text": "מַדּוּעַ", "rank": 145, "accepted": ["מדוע"]}
+    ]},
+    {"id": 150, "pos": "adjective", "words": [
+      {"id": "he164", "text": "נֶהְדָּר", "rank": 147, "accepted": ["נהדר", "נהדרת", "נהדרים", "נהדרות"]}
+    ]},
+    {"id": 151, "pos": "adjective", "words": [
+      {"id": "he165", "text": "גָּדוֹל", "rank": 149, "accepted": ["גדול", "גדולה", "גדולים", "גדולות"]}
+    ]},
+    {"id": 152, "pos": "verb", "verbForm": "infinitive", "otherForm": 153, "words": [
+      {"id": "he166", "text": "לְהַתְחִיל", "rank": 151, "accepted": ["להתחיל"]}
+    ]},
+    {"id": 153, "pos": "verb", "verbForm": "past", "otherForm": 152, "words": [
+      {"id": "he167", "text": "הִתְחִיל", "rank": 151, "accepted": ["התחיל", "התחילה", "התחלתי", "התחלת", "התחלנו", "התחלתם", "התחלתן", "התחילו"]}
+    ]},
+    {"id": 154, "pos": "noun", "words": [
+      {"id": "he168", "text": "מְדִינָה", "rank": 153, "accepted": ["מדינה"]},
+      {"id": "he169", "text": "אֶרֶץ", "rank": 153, "accepted": ["ארץ"]}
+    ]},
+    {"id": 155, "pos": "verb", "verbForm": "infinitive", "otherForm": 156, "words": [
+      {"id": "he170", "text": "לַעֲזֹר", "rank": 154, "accepted": ["לעזור"]}
+    ]},
+    {"id": 156, "pos": "verb", "verbForm": "past", "otherForm": 155, "words": [
+      {"id": "he171", "text": "עָזַר", "rank": 154, "accepted": ["עזר", "עזרה", "עזרתי", "עזרת", "עזרנו", "עזרתם", "עזרתן", "עזרו"]}
+    ]},
+    {"id": 157, "pos": "verb", "verbForm": "infinitive", "otherForm": 158, "words": [
+      {"id": "he172", "text": "לְדַבֵּר", "rank": 155, "accepted": ["לדבר"]}
+    ]},
+    {"id": 158, "pos": "verb", "verbForm": "past", "otherForm": 157, "words": [
+      {"id": "he173", "text": "דִּבֵּר", "rank": 155, "accepted": ["דיבר", "דיברה", "דיברתי", "דיברת", "דיברנו", "דיברתם", "דיברתן", "דיברו"]}
+    ]},
+    {"id": 159, "pos": "question", "words": [
+      {"id": "he174", "text": "אֵיפֹה", "rank": 156, "accepted": ["איפה"]}
+    ]},
+    {"id": 160, "pos": "noun", "words": [
+      {"id": "he175", "text": "בְּעָיָה", "rank": 158, "accepted": ["בעיה"]}
+    ]},
+    {"id": 161, "pos": "noun", "words": [
+      {"id": "he176", "text": "יָד", "rank": 161, "accepted": ["יד"]}
+    ]},
+    {"id": 162, "pos": "verb", "verbForm": "infinitive", "otherForm": 163, "words": [
+      {"id": "he177", "text": "לְהַרְאוֹת", "rank": 164, "accepted": ["להראות"]}
+    ]},
+    {"id": 163, "pos": "verb", "verbForm": "past", "otherForm": 162, "words": [
+      {"id": "he178", "text": "הֶרְאָה", "rank": 164, "accepted": ["הראה", "הראתה", "הראיתי", "הראית", "הראינו", "הראיתם", "הראיתן", "הראו"]}
+    ]},
+    {"id": 164, "pos": "noun", "words": [
+      {"id": "he179", "text": "חֵלֶק", "rank": 165, "accepted": ["חלק"]}
+    ]},
+    {"id": 165, "pos": "noun", "words": [
+      {"id": "he180", "text": "מָקוֹם", "rank": 167, "accepted": ["מקום"]}
+    ]},
+    {"id": 166, "pos": "adverb", "words": [
+      {"id": "he181", "text": "שׁוּב", "rank": 169, "accepted": ["שוב"]},
+      {"id": "he182", "text": "עוֹד פַּעַם", "rank": 169, "accepted": ["עוד פעם"]}
+    ]},
+    {"id": 167, "pos": "noun", "words": [
+      {"id": "he183", "text": "שָׁבוּעַ", "rank": 172, "accepted": ["שבוע"]}
+    ]},
+    {"id": 168, "pos": "noun", "words": [
+      {"id": "he184", "text": "יָמִין", "rank": 176, "accepted": ["ימין"]}
+    ]},
+    {"id": 169, "pos": "adjective", "words": [
+      {"id": "he185", "text": "נָכוֹן", "rank": 176, "accepted": ["נכון", "נכונה", "נכונים", "נכונות"]}
+    ]},
+    {"id": 170, "pos": "noun", "words": [
+      {"id": "he186", "text": "שְׂמֹאל", "rank": 177, "accepted": ["שמאל"]}
+    ]},
+    {"id": 171, "pos": "verb", "verbForm": "infinitive", "otherForm": 172, "words": [
+      {"id": "he187", "text": "לִשְׁמֹעַ", "rank": 179, "accepted": ["לשמוע"]}
+    ]},
+    {"id": 172, "pos": "verb", "verbForm": "past", "otherForm": 171, "words": [
+      {"id": "he188", "text": "שָׁמַע", "rank": 179, "accepted": ["שמע", "שמעה", "שמעתי", "שמעת", "שמענו", "שמעתם", "שמעתן", "שמעו"]}
+    ]},
+    {"id": 173, "pos": "noun", "words": [
+      {"id": "he189", "text": "שְׁאֵלָה", "rank": 180, "accepted": ["שאלה"]}
+    ]},
+    {"id": 174, "pos": "verb", "verbForm": "infinitive", "otherForm": 175, "words": [
+      {"id": "he190", "text": "לְשַׂחֵק", "rank": 182, "accepted": ["לשחק"]}
+    ]},
+    {"id": 175, "pos": "verb", "verbForm": "past", "otherForm": 174, "words": [
+      {"id": "he191", "text": "שִׂחֵק", "rank": 182, "accepted": ["שיחק", "שיחקה", "שיחקתי", "שיחקת", "שיחקנו", "שיחקתם", "שיחקתן", "שיחקו"]}
+    ]},
+    {"id": 176, "pos": "verb", "verbForm": "infinitive", "otherForm": 177, "words": [
+      {"id": "he192", "text": "לָרוּץ", "rank": 184, "accepted": ["לרוץ"]}
+    ]},
+    {"id": 177, "pos": "verb", "verbForm": "past", "otherForm": 176, "words": [
+      {"id": "he193", "text": "רָץ", "rank": 184, "accepted": ["רץ", "רצה", "רצתי", "רצת", "רצנו", "רצתם", "רצתן", "רצו"]}
+    ]},
+    {"id": 178, "pos": "adjective", "words": [
+      {"id": "he194", "text": "קָטָן", "rank": 185, "accepted": ["קטן", "קטנה", "קטנים", "קטנות"]}
+    ]},
+    {"id": 179, "pos": "noun", "words": [
+      {"id": "he195", "text": "מִסְפָּר", "rank": 186, "accepted": ["מספר"]}
+    ]},
+    {"id": 180, "pos": "adverb", "words": [
+      {"id": "he196", "text": "תָּמִיד", "rank": 188, "accepted": ["תמיד"]}
+    ]},
+    {"id": 181, "pos": "verb", "verbForm": "infinitive", "otherForm": 182, "words": [
+      {"id": "he197", "text": "לָזוּז", "rank": 189, "accepted": ["לזוז"]}
+    ]},
+    {"id": 182, "pos": "verb", "verbForm": "past", "otherForm": 181, "words": [
+      {"id": "he198", "text": "זָז", "rank": 189, "accepted": ["זז", "זזה", "זזתי", "זזת", "זזנו", "זזתם", "זזתן", "זזו"]}
+    ]},
+    {"id": 183, "pos": "noun", "words": [
+      {"id": "he199", "text": "לַיְלָה", "rank": 190, "accepted": ["לילה"]}
+    ]},
+    {"id": 184, "pos": "verb", "verbForm": "infinitive", "otherForm": 185, "words": [
+      {"id": "he200", "text": "לִחְיוֹת", "rank": 191, "accepted": ["לחיות"]}
+    ]},
+    {"id": 185, "pos": "verb", "verbForm": "past", "otherForm": 184, "words": [
+      {"id": "he201", "text": "חַי", "rank": 191, "accepted": ["חי", "חיה", "חייתי", "חיית", "חיינו", "חייתם", "חייתן", "חיו"]}
+    ]},
+    {"id": 186, "pos": "verb", "verbForm": "infinitive", "otherForm": 187, "words": [
+      {"id": "he202", "text": "לָגוּר", "rank": 191, "accepted": ["לגור"]}
+    ]},
+    {"id": 187, "pos": "verb", "verbForm": "past", "otherForm": 186, "words": [
+      {"id": "he203", "text": "גָּר", "rank": 191, "accepted": ["גר", "גרה", "גרתי", "גרת", "גרנו", "גרתם", "גרתן", "גרו"]}
+    ]},
+    {"id": 188, "pos": "verb", "verbForm": "infinitive", "otherForm": 189, "words": [
+      {"id": "he204", "text": "לְהַאֲמִין", "rank": 193, "accepted": ["להאמין"]}
+    ]},
+    {"id": 189, "pos": "verb", "verbForm": "past", "otherForm": 188, "words": [
+      {"id": "he205", "text": "הֶאֱמִין", "rank": 193, "accepted": ["האמין", "האמינה", "האמנתי", "האמנת", "האמנו", "האמנתם", "האמנתן", "האמינו"]}
+    ]},
+    {"id": 190, "pos": "verb", "verbForm": "infinitive", "otherForm": 191, "words": [
+      {"id": "he206", "text": "לְהַחֲזִיק", "rank": 194, "accepted": ["להחזיק"]}
+    ]},
+    {"id": 191, "pos": "verb", "verbForm": "past", "otherForm": 190, "words": [
+      {"id": "he207", "text": "הֶחֱזִיק", "rank": 194, "accepted": ["החזיק", "החזיקה", "החזקתי", "החזקת", "החזקנו", "החזקתם", "החזקתן", "החזיקו"]}
+    ]},
+    {"id": 192, "pos": "adverb", "words": [
+      {"id": "he208", "text": "הַיּוֹם", "rank": 195, "accepted": ["היום"]}
+    ]},
+    {"id": 193, "pos": "verb", "verbForm": "infinitive", "otherForm": 194, "words": [
+      {"id": "he209", "text": "לְהָבִיא", "rank": 196, "accepted": ["להביא"]}
+    ]},
+    {"id": 194, "pos": "verb", "verbForm": "past", "otherForm": 193, "words": [
+      {"id": "he210", "text": "הֵבִיא", "rank": 196, "accepted": ["הביא", "הביאה", "הבאתי", "הבאת", "הבאנו", "הבאתם", "הבאתן", "הביאו"]}
+    ]},
+    {"id": 195, "pos": "verb", "verbForm": "infinitive", "otherForm": 196, "words": [
+      {"id": "he211", "text": "לִקְרוֹת", "rank": 197, "accepted": ["לקרות"]}
+    ]},
+    {"id": 196, "pos": "verb", "verbForm": "past", "otherForm": 195, "words": [
+      {"id": "he212", "text": "קָרָה", "rank": 197, "accepted": ["קרה", "קרתה", "קריתי", "קרית", "קרינו", "קריתם", "קריתן", "קרו"]}
+    ]},
+    {"id": 197, "pos": "preposition", "words": [
+      {"id": "he213", "text": "בְּלִי", "rank": 199, "accepted": ["בלי"]}
+    ]},
+    {"id": 198, "pos": "preposition", "words": [
+      {"id": "he214", "text": "לִפְנֵי", "rank": 200, "accepted": ["לפני"]}
+    ]},
+    {"id": 199, "pos": "noun", "words": [
+      {"id": "he215", "text": "בַּיִת", "rank": 204, "accepted": ["בית"]}
+    ]},
+    {"id": 200, "pos": "preposition", "words": [
+      {"id": "he216", "text": "מִתַּחַת", "rank": 205, "accepted": ["מתחת"]}
+    ]},
+    {"id": 201, "pos": "noun", "words": [
+      {"id": "he217", "text": "מַיִם", "rank": 206, "accepted": ["מים"]}
+    ]},
+    {"id": 202, "pos": "noun", "words": [
+      {"id": "he218", "text": "חֶדֶר", "rank": 207, "accepted": ["חדר"]}
+    ]},
+    {"id": 203, "pos": "verb", "verbForm": "infinitive", "otherForm": 204, "words": [
+      {"id": "he219", "text": "לִכְתֹּב", "rank": 208, "accepted": ["לכתוב"]}
+    ]},
+    {"id": 204, "pos": "verb", "verbForm": "past", "otherForm": 203, "words": [
+      {"id": "he220", "text": "כָּתַב", "rank": 208, "accepted": ["כתב", "כתבה", "כתבתי", "כתבת", "כתבנו", "כתבתם", "כתבתן", "כתבו"]}
+    ]},
+    {"id": 205, "pos": "noun", "words": [
+      {"id": "he221", "text": "אִמָּא", "rank": 209, "accepted": ["אמא"]},
+      {"id": "he222", "text": "אֵם", "rank": 209, "accepted": ["אם"]}
+    ]},
+    {"id": 206, "pos": "noun", "words": [
+      {"id": "he223", "text": "כֶּסֶף", "rank": 212, "accepted": ["כסף"]}
+    ]},
+    {"id": 207, "pos": "noun", "words": [
+      {"id": "he224", "text": "סִפּוּר", "rank": 213, "accepted": ["סיפור"]}
+    ]},
+    {"id": 208, "pos": "adjective", "words": [
+      {"id": "he225", "text": "צָעִיר", "rank": 214, "accepted": ["צעיר", "צעירה", "צעירים", "צעירות"]}
+    ]},
+    {"id": 209, "pos": "noun", "words": [
+      {"id": "he226", "text": "חֹדֶשׁ", "rank": 216, "accepted": ["חודש"]}
+    ]},
+    {"id": 210, "pos": "adjective", "words": [
+      {"id": "he227", "text": "שׁוֹנֶה", "rank": 217, "accepted": ["שונה", "שונים", "שונות"]}
+    ]},
+    {"id": 211, "pos": "verb", "verbForm": "infinitive", "otherForm": 212, "words": [
+      {"id": "he228", "text": "לִלְמֹד", "rank": 219, "accepted": ["ללמוד"]}
+    ]},
+    {"id": 212, "pos": "verb", "verbForm": "past", "otherForm": 211, "words": [
+      {"id": "he229", "text": "לָמַד", "rank": 219, "accepted": ["למד", "למדה", "למדתי", "למדת", "למדנו", "למדתם", "למדתן", "למדו"]}
+    ]},
+    {"id": 213, "pos": "noun", "words": [
+      {"id": "he230", "text": "סֵפֶר", "rank": 220, "accepted": ["ספר"]}
+    ]},
+    {"id": 214, "pos": "noun", "words": [
+      {"id": "he231", "text": "עַיִן", "rank": 221, "accepted": ["עין"]}
+    ]},
+    {"id": 215, "pos": "noun", "words": [
+      {"id": "he232", "text": "מִלָּה", "rank": 223, "accepted": ["מילה", "מלה"]}
+    ]},
+    {"id": 216, "pos": "noun", "words": [
+      {"id": "he233", "text": "סוּג", "rank": 228, "accepted": ["סוג"]}
+    ]},
+    {"id": 217, "pos": "adjective", "words": [
+      {"id": "he234", "text": "נֶחְמָד", "rank": 228, "accepted": ["נחמד", "נחמדה", "נחמדים", "נחמדות"]}
+    ]},
+    {"id": 218, "pos": "number", "words": [
+      {"id": "he235", "text": "אַרְבַּע", "rank": 229, "accepted": ["ארבע", "ארבעה"]}
+    ]},
+    {"id": 219, "pos": "noun", "words": [
+      {"id": "he236", "text": "רֹאשׁ", "rank": 230, "accepted": ["ראש"]}
+    ]},
+    {"id": 220, "pos": "adjective", "words": [
+      {"id": "he237", "text": "רָחוֹק", "rank": 231, "accepted": ["רחוק", "רחוקה", "רחוקים", "רחוקות"]}
+    ]},
+    {"id": 221, "pos": "adjective", "words": [
+      {"id": "he238", "text": "שָׁחֹר", "rank": 232, "accepted": ["שחור", "שחורה", "שחורים", "שחורות"]}
+    ]},
+    {"id": 222, "pos": "adjective", "words": [
+      {"id": "he239", "text": "אָרֹךְ", "rank": 233, "accepted": ["ארוך", "ארוכה", "ארוכים", "ארוכות"]}
+    ]},
+    {"id": 223, "pos": "interjection", "words": [
+      {"id": "he240", "text": "כֵּן", "rank": 236, "accepted": ["כן"]}
+    ]},
+    {"id": 224, "pos": "noun", "words": [
+      {"id": "he241", "text": "חָבֵר", "rank": 241, "accepted": ["חבר", "חברה"]}
+    ]},
+    {"id": 225, "pos": "adjective", "words": [
+      {"id": "he242", "text": "חָשׁוּב", "rank": 242, "accepted": ["חשוב", "חשובה", "חשובים", "חשובות"]}
+    ]},
+    {"id": 226, "pos": "noun", "words": [
+      {"id": "he243", "text": "אַבָּא", "rank": 243, "accepted": ["אבא"]},
+      {"id": "he244", "text": "אָב", "rank": 243, "accepted": ["אב"]}
+    ]},
+    {"id": 227, "pos": "verb", "verbForm": "infinitive", "otherForm": 228, "words": [
+      {"id": "he245", "text": "לָשֶׁבֶת", "rank": 244, "accepted": ["לשבת"]}
+    ]},
+    {"id": 228, "pos": "verb", "verbForm": "past", "otherForm": 227, "words": [
+      {"id": "he246", "text": "יָשַׁב", "rank": 244, "accepted": ["ישב", "ישבה", "ישבתי", "ישבת", "ישבנו", "ישבתם", "ישבתן", "ישבו"]}
+    ]},
+    {"id": 229, "pos": "preposition", "words": [
+      {"id": "he247", "text": "עַד", "rank": 246, "accepted": ["עד"]}
+    ]},
+    {"id": 230, "pos": "noun", "words": [
+      {"id": "he248", "text": "שָׁעָה", "rank": 248, "accepted": ["שעה"]}
+    ]},
+    {"id": 231, "pos": "noun", "words": [
+      {"id": "he249", "text": "מִשְׂחָק", "rank": 249, "accepted": ["משחק"]}
+    ]},
+    {"id": 232, "pos": "adverb", "words": [
+      {"id": "he250", "text": "לְעִתִּים קְרוֹבוֹת", "rank": 250, "accepted": ["לעיתים קרובות", "לעתים קרובות"]}
+    ]},
+    {"id": 233, "pos": "verb", "verbForm": "infinitive", "otherForm": 234, "words": [
+      {"id": "he251", "text": "לַעֲמֹד", "rank": 257, "accepted": ["לעמוד"]}
+    ]},
+    {"id": 234, "pos": "verb", "verbForm": "past", "otherForm": 233, "words": [
+      {"id": "he252", "text": "עָמַד", "rank": 257, "accepted": ["עמד", "עמדה", "עמדתי", "עמדת", "עמדנו", "עמדתם", "עמדתן", "עמדו"]}
+    ]},
+    {"id": 235, "pos": "adjective", "words": [
+      {"id": "he253", "text": "רַע", "rank": 258, "accepted": ["רע", "רעה", "רעים", "רעות"]}
+    ]},
+    {"id": 236, "pos": "verb", "verbForm": "infinitive", "otherForm": 237, "words": [
+      {"id": "he254", "text": "לְאַבֵּד", "rank": 259, "accepted": ["לאבד"]}
+    ]},
+    {"id": 237, "pos": "verb", "verbForm": "past", "otherForm": 236, "words": [
+      {"id": "he255", "text": "אִבֵּד", "rank": 259, "accepted": ["איבד", "איבדה", "איבדתי", "איבדת", "איבדנו", "איבדתם", "איבדתן", "איבדו"]}
+    ]},
+    {"id": 238, "pos": "verb", "verbForm": "infinitive", "otherForm": 239, "words": [
+      {"id": "he256", "text": "לְהַפְסִיד", "rank": 259, "accepted": ["להפסיד"]}
+    ]},
+    {"id": 239, "pos": "verb", "verbForm": "past", "otherForm": 238, "words": [
+      {"id": "he257", "text": "הִפְסִיד", "rank": 259, "accepted": ["הפסיד", "הפסידה", "הפסדתי", "הפסדת", "הפסדנו", "הפסדתם", "הפסדתן", "הפסידו"]}
+    ]},
+    {"id": 240, "pos": "verb", "verbForm": "infinitive", "otherForm": 241, "words": [
+      {"id": "he258", "text": "לְשַׁלֵּם", "rank": 262, "accepted": ["לשלם"]}
+    ]},
+    {"id": 241, "pos": "verb", "verbForm": "past", "otherForm": 240, "words": [
+      {"id": "he259", "text": "שִׁלֵּם", "rank": 262, "accepted": ["שילם", "שילמה", "שילמתי", "שילמת", "שילמנו", "שילמתם", "שילמתן", "שילמו"]}
+    ]},
+    {"id": 242, "pos": "verb", "verbForm": "infinitive", "otherForm": 243, "words": [
+      {"id": "he260", "text": "לִפְגֹּשׁ", "rank": 264, "accepted": ["לפגוש"]}
+    ]},
+    {"id": 243, "pos": "verb", "verbForm": "past", "otherForm": 242, "words": [
+      {"id": "he261", "text": "פָּגַשׁ", "rank": 264, "accepted": ["פגש", "פגשה", "פגשתי", "פגשת", "פגשנו", "פגשתם", "פגשתן", "פגשו"]}
+    ]},
+    {"id": 244, "pos": "noun", "words": [
+      {"id": "he262", "text": "מְכוֹנִית", "rank": 265, "accepted": ["מכונית"]}
+    ]},
+    {"id": 245, "pos": "noun", "words": [
+      {"id": "he263", "text": "עִיר", "rank": 266, "accepted": ["עיר"]}
+    ]},
+    {"id": 246, "pos": "adverb", "words": [
+      {"id": "he264", "text": "כִּמְעַט", "rank": 267, "accepted": ["כמעט"]}
+    ]},
+    {"id": 247, "pos": "verb", "verbForm": "infinitive", "otherForm": 248, "words": [
+      {"id": "he265", "text": "לְהַמְשִׁיךְ", "rank": 269, "accepted": ["להמשיך"]}
+    ]},
+    {"id": 248, "pos": "verb", "verbForm": "past", "otherForm": 247, "words": [
+      {"id": "he266", "text": "הִמְשִׁיךְ", "rank": 269, "accepted": ["המשיך", "המשיכה", "המשכתי", "המשכת", "המשכנו", "המשכתם", "המשכתן", "המשיכו"]}
+    ]},
+    {"id": 249, "pos": "adverb", "words": [
+      {"id": "he267", "text": "אַחַר כָּךְ", "rank": 271, "accepted": ["אחר כך", "אחרי כן"]}
+    ]},
+    {"id": 250, "pos": "noun", "words": [
+      {"id": "he268", "text": "שֵׁם", "rank": 273, "accepted": ["שם"]}
+    ]},
+    {"id": 251, "pos": "number", "words": [
+      {"id": "he269", "text": "חָמֵשׁ", "rank": 274, "accepted": ["חמש", "חמישה"]}
+    ]},
+    {"id": 252, "pos": "adjective", "words": [
+      {"id": "he270", "text": "לָבָן", "rank": 276, "accepted": ["לבן", "לבנה", "לבנים", "לבנות"]}
+    ]},
+    {"id": 253, "pos": "verb", "verbForm": "infinitive", "otherForm": 254, "words": [
+      {"id": "he271", "text": "לְשַׁנּוֹת", "rank": 281, "accepted": ["לשנות"]}
+    ]},
+    {"id": 254, "pos": "verb", "verbForm": "past", "otherForm": 253, "words": [
+      {"id": "he272", "text": "שִׁנָּה", "rank": 281, "accepted": ["שינה", "שינתה", "שיניתי", "שינית", "שינינו", "שיניתם", "שיניתן", "שינו"]}
+    ]},
+    {"id": 255, "pos": "noun", "words": [
+      {"id": "he273", "text": "דַּקָּה", "rank": 283, "accepted": ["דקה"]}
+    ]},
+    {"id": 256, "pos": "noun", "words": [
+      {"id": "he274", "text": "רַעְיוֹן", "rank": 286, "accepted": ["רעיון"]}
+    ]},
+    {"id": 257, "pos": "noun", "words": [
+      {"id": "he275", "text": "גּוּף", "rank": 288, "accepted": ["גוף"]}
+    ]},
+    {"id": 258, "pos": "pronoun", "words": [
+      {"id": "he276", "text": "שׁוּם דָּבָר", "rank": 290, "accepted": ["שום דבר"]},
+      {"id": "he277", "text": "כְּלוּם", "rank": 290, "accepted": ["כלום"]}
+    ]},
+    {"id": 259, "pos": "verb", "verbForm": "infinitive", "otherForm": 260, "words": [
+      {"id": "he278", "text": "לְהָבִין", "rank": 294, "accepted": ["להבין"]}
+    ]},
+    {"id": 260, "pos": "verb", "verbForm": "past", "otherForm": 259, "words": [
+      {"id": "he279", "text": "הֵבִין", "rank": 294, "accepted": ["הבין", "הבינה", "הבנתי", "הבנת", "הבנו", "הבנתם", "הבנתן", "הבינו"]}
+    ]},
+    {"id": 261, "pos": "verb", "verbForm": "infinitive", "otherForm": 262, "words": [
+      {"id": "he280", "text": "לִצְפּוֹת", "rank": 296, "accepted": ["לצפות"]}
+    ]},
+    {"id": 262, "pos": "verb", "verbForm": "past", "otherForm": 261, "words": [
+      {"id": "he281", "text": "צָפָה", "rank": 296, "accepted": ["צפה", "צפתה", "צפיתי", "צפית", "צפינו", "צפיתם", "צפיתן", "צפו"]}
+    ]},
+    {"id": 263, "pos": "adverb", "words": [
+      {"id": "he282", "text": "בְּיַחַד", "rank": 297, "accepted": ["ביחד"]},
+      {"id": "he283", "text": "יַחַד", "rank": 297, "accepted": ["יחד"]}
+    ]},
+    {"id": 264, "pos": "verb", "verbForm": "infinitive", "otherForm": 265, "words": [
+      {"id": "he284", "text": "לְהַפְסִיק", "rank": 300, "accepted": ["להפסיק"]},
+      {"id": "he285", "text": "לַעֲצֹר", "rank": 300, "accepted": ["לעצור"]}
+    ]},
+    {"id": 265, "pos": "verb", "verbForm": "past", "otherForm": 264, "words": [
+      {"id": "he286", "text": "הִפְסִיק", "rank": 300, "accepted": ["הפסיק", "הפסיקה", "הפסקתי", "הפסקת", "הפסקנו", "הפסקתם", "הפסקתן", "הפסיקו"]},
+      {"id": "he287", "text": "עָצַר", "rank": 300, "accepted": ["עצר", "עצרה", "עצרתי", "עצרת", "עצרנו", "עצרתם", "עצרתן", "עצרו"]}
+    ]},
+    {"id": 266, "pos": "noun", "words": [
+      {"id": "he288", "text": "פָּנִים", "rank": 301, "accepted": ["פנים"]}
+    ]},
+    {"id": 267, "pos": "adverb", "words": [
+      {"id": "he289", "text": "כְּבָר", "rank": 305, "accepted": ["כבר"]}
+    ]},
+    {"id": 268, "pos": "verb", "verbForm": "infinitive", "otherForm": 269, "words": [
+      {"id": "he290", "text": "לִקְרֹא", "rank": 308, "accepted": ["לקרוא"]}
+    ]},
+    {"id": 269, "pos": "verb", "verbForm": "past", "otherForm": 268, "words": [
+      {"id": "he291", "text": "קָרָא", "rank": 308, "accepted": ["קרא", "קראה", "קראתי", "קראת", "קראנו", "קראתם", "קראתן", "קראו"]}
+    ]},
+    {"id": 270, "pos": "noun", "words": [
+      {"id": "he292", "text": "דֶּלֶת", "rank": 314, "accepted": ["דלת"]}
+    ]},
+    {"id": 271, "pos": "verb", "verbForm": "infinitive", "otherForm": 272, "words": [
+      {"id": "he293", "text": "לִפְתֹּחַ", "rank": 325, "accepted": ["לפתוח"]}
+    ]},
+    {"id": 272, "pos": "verb", "verbForm": "past", "otherForm": 271, "words": [
+      {"id": "he294", "text": "פָּתַח", "rank": 325, "accepted": ["פתח", "פתחה", "פתחתי", "פתחת", "פתחנו", "פתחתם", "פתחתן", "פתחו"]}
+    ]},
+    {"id": 273, "pos": "noun", "words": [
+      {"id": "he295", "text": "בֹּקֶר", "rank": 326, "accepted": ["בוקר"]}
+    ]},
+    {"id": 274, "pos": "verb", "verbForm": "infinitive", "otherForm": 275, "words": [
+      {"id": "he296", "text": "לְנַצֵּחַ", "rank": 330, "accepted": ["לנצח"]}
+    ]},
+    {"id": 275, "pos": "verb", "verbForm": "past", "otherForm": 274, "words": [
+      {"id": "he297", "text": "נִצֵּחַ", "rank": 330, "accepted": ["ניצח", "ניצחה", "ניצחתי", "ניצחת", "ניצחנו", "ניצחתם", "ניצחתן", "ניצחו"]}
+    ]},
+    {"id": 276, "pos": "noun", "words": [
+      {"id": "he298", "text": "יַלְדָּה", "rank": 332, "accepted": ["ילדה"]}
+    ]},
+    {"id": 277, "pos": "adjective", "words": [
+      {"id": "he299", "text": "מֻקְדָּם", "rank": 334, "accepted": ["מוקדם", "מוקדמת", "מוקדמים", "מוקדמות"]}
+    ]},
+    {"id": 278, "pos": "noun", "words": [
+      {"id": "he300", "text": "אֹכֶל", "rank": 335, "accepted": ["אוכל"]}
+    ]},
+    {"id": 279, "pos": "noun", "words": [
+      {"id": "he301", "text": "מוֹרֶה", "rank": 339, "accepted": ["מורה"]}
+    ]},
+    {"id": 280, "pos": "adverb", "words": [
+      {"id": "he302", "text": "מַסְפִּיק", "rank": 342, "accepted": ["מספיק"]}
+    ]},
+    {"id": 281, "pos": "verb", "verbForm": "infinitive", "otherForm": 282, "words": [
+      {"id": "he303", "text": "לִזְכֹּר", "rank": 346, "accepted": ["לזכור"]}
+    ]},
+    {"id": 282, "pos": "verb", "verbForm": "past", "otherForm": 281, "words": [
+      {"id": "he304", "text": "זָכַר", "rank": 346, "accepted": ["זכר", "זכרה", "זכרתי", "זכרת", "זכרנו", "זכרתם", "זכרתן", "זכרו"]}
+    ]},
+    {"id": 283, "pos": "noun", "words": [
+      {"id": "he305", "text": "רֶגֶל", "rank": 347, "accepted": ["רגל"]}
+    ]},
+    {"id": 284, "pos": "adverb", "words": [
+      {"id": "he306", "text": "אוּלַי", "rank": 350, "accepted": ["אולי"]}
+    ]},
+    {"id": 285, "pos": "pronoun", "words": [
+      {"id": "he307", "text": "הַכֹּל", "rank": 355, "accepted": ["הכל", "הכול"]}
+    ]},
+    {"id": 286, "pos": "noun", "words": [
+      {"id": "he308", "text": "מוּזִיקָה", "rank": 358, "accepted": ["מוזיקה", "מוסיקה"]}
+    ]},
+    {"id": 287, "pos": "verb", "verbForm": "infinitive", "otherForm": 288, "words": [
+      {"id": "he309", "text": "לִקְנוֹת", "rank": 363, "accepted": ["לקנות"]}
+    ]},
+    {"id": 288, "pos": "verb", "verbForm": "past", "otherForm": 287, "words": [
+      {"id": "he310", "text": "קָנָה", "rank": 363, "accepted": ["קנה", "קנתה", "קניתי", "קנית", "קנינו", "קניתם", "קניתן", "קנו"]}
+    ]},
+    {"id": 289, "pos": "adverb", "words": [
+      {"id": "he311", "text": "כַּנִּרְאֶה", "rank": 364, "accepted": ["כנראה"]}
+    ]},
+    {"id": 290, "pos": "verb", "verbForm": "infinitive", "otherForm": 291, "words": [
+      {"id": "he312", "text": "לְחַכּוֹת", "rank": 366, "accepted": ["לחכות"]}
+    ]},
+    {"id": 291, "pos": "verb", "verbForm": "past", "otherForm": 290, "words": [
+      {"id": "he313", "text": "חִכָּה", "rank": 366, "accepted": ["חיכה", "חיכתה", "חיכיתי", "חיכית", "חיכינו", "חיכיתם", "חיכיתן", "חיכו"]}
+    ]},
+    {"id": 292, "pos": "verb", "verbForm": "infinitive", "otherForm": 293, "words": [
+      {"id": "he314", "text": "לָמוּת", "rank": 369, "accepted": ["למות"]}
+    ]},
+    {"id": 293, "pos": "verb", "verbForm": "past", "otherForm": 292, "words": [
+      {"id": "he315", "text": "מֵת", "rank": 369, "accepted": ["מת", "מתה", "מתי", "מתנו", "מתם", "מתן", "מתו"]}
+    ]},
+    {"id": 294, "pos": "verb", "verbForm": "infinitive", "otherForm": 295, "words": [
+      {"id": "he316", "text": "לִשְׁלֹחַ", "rank": 370, "accepted": ["לשלוח"]}
+    ]},
+    {"id": 295, "pos": "verb", "verbForm": "past", "otherForm": 294, "words": [
+      {"id": "he317", "text": "שָׁלַח", "rank": 370, "accepted": ["שלח", "שלחה", "שלחתי", "שלחת", "שלחנו", "שלחתם", "שלחתן", "שלחו"]}
+    ]},
+    {"id": 296, "pos": "verb", "verbForm": "infinitive", "otherForm": 297, "words": [
+      {"id": "he318", "text": "לְהִשָּׁאֵר", "rank": 374, "accepted": ["להישאר"]}
+    ]},
+    {"id": 297, "pos": "verb", "verbForm": "past", "otherForm": 296, "words": [
+      {"id": "he319", "text": "נִשְׁאַר", "rank": 374, "accepted": ["נשאר", "נשארה", "נשארתי", "נשארת", "נשארנו", "נשארתם", "נשארתן", "נשארו"]}
+    ]},
+    {"id": 298, "pos": "verb", "verbForm": "infinitive", "otherForm": 299, "words": [
+      {"id": "he320", "text": "לִפֹּל", "rank": 375, "accepted": ["ליפול"]}
+    ]},
+    {"id": 299, "pos": "verb", "verbForm": "past", "otherForm": 298, "words": [
+      {"id": "he321", "text": "נָפַל", "rank": 375, "accepted": ["נפל", "נפלה", "נפלתי", "נפלת", "נפלנו", "נפלתם", "נפלתן", "נפלו"]}
+    ]},
+    {"id": 300, "pos": "pronoun", "words": [
+      {"id": "he322", "text": "מִישֶׁהוּ", "rank": 384, "accepted": ["מישהו"]}
+    ]},
+    {"id": 301, "pos": "preposition", "words": [
+      {"id": "he323", "text": "מֵאֲחוֹרֵי", "rank": 386, "accepted": ["מאחורי"]}
+    ]},
+    {"id": 302, "pos": "number", "words": [
+      {"id": "he324", "text": "שֵׁשׁ", "rank": 390, "accepted": ["שש", "שישה"]}
+    ]},
+    {"id": 303, "pos": "noun", "words": [
+      {"id": "he325", "text": "כִּתָּה", "rank": 395, "accepted": ["כיתה"]}
+    ]},
+    {"id": 304, "pos": "adjective", "words": [
+      {"id": "he326", "text": "מְאֻחָר", "rank": 400, "accepted": ["מאוחר", "מאוחרת", "מאוחרים", "מאוחרות"]}
+    ]},
+    {"id": 305, "pos": "adjective", "words": [
+      {"id": "he327", "text": "קָשֶׁה", "rank": 401, "accepted": ["קשה", "קשים", "קשות"]}
+    ]},
+    {"id": 306, "pos": "verb", "verbForm": "infinitive", "otherForm": 307, "words": [
+      {"id": "he328", "text": "לִמְכֹּר", "rank": 406, "accepted": ["למכור"]}
+    ]},
+    {"id": 307, "pos": "verb", "verbForm": "past", "otherForm": 306, "words": [
+      {"id": "he329", "text": "מָכַר", "rank": 406, "accepted": ["מכר", "מכרה", "מכרתי", "מכרת", "מכרנו", "מכרתם", "מכרתן", "מכרו"]}
+    ]},
+    {"id": 308, "pos": "adverb", "words": [
+      {"id": "he330", "text": "לִפְעָמִים", "rank": 408, "accepted": ["לפעמים"]}
+    ]},
+    {"id": 309, "pos": "verb", "verbForm": "infinitive", "otherForm": 310, "words": [
+      {"id": "he331", "text": "לְהַחְלִיט", "rank": 418, "accepted": ["להחליט"]}
+    ]},
+    {"id": 310, "pos": "verb", "verbForm": "past", "otherForm": 309, "words": [
+      {"id": "he332", "text": "הֶחְלִיט", "rank": 418, "accepted": ["החליט", "החליטה", "החלטתי", "החלטת", "החלטנו", "החלטתם", "החלטתן", "החליטו"]}
+    ]},
+    {"id": 311, "pos": "adjective", "words": [
+      {"id": "he333", "text": "חָזָק", "rank": 420, "accepted": ["חזק", "חזקה", "חזקים", "חזקות"]}
+    ]},
+    {"id": 312, "pos": "adjective", "words": [
+      {"id": "he334", "text": "אֶפְשָׁרִי", "rank": 421, "accepted": ["אפשרי", "אפשרית", "אפשריים", "אפשריות"]}
+    ]},
+    {"id": 313, "pos": "noun", "words": [
+      {"id": "he335", "text": "לֵב", "rank": 422, "accepted": ["לב"]}
+    ]},
+    {"id": 314, "pos": "noun", "words": [
+      {"id": "he336", "text": "קוֹל", "rank": 426, "accepted": ["קול"]}
+    ]},
+    {"id": 315, "pos": "noun", "words": [
+      {"id": "he337", "text": "מִשְׁטָרָה", "rank": 428, "accepted": ["משטרה"]}
+    ]},
+    {"id": 316, "pos": "adverb", "words": [
+      {"id": "he338", "text": "סוֹף סוֹף", "rank": 430, "accepted": ["סוף סוף"]}
+    ]},
+    {"id": 317, "pos": "verb", "verbForm": "infinitive", "otherForm": 318, "words": [
+      {"id": "he339", "text": "לַחֲזֹר", "rank": 432, "accepted": ["לחזור"]}
+    ]},
+    {"id": 318, "pos": "verb", "verbForm": "past", "otherForm": 317, "words": [
+      {"id": "he340", "text": "חָזַר", "rank": 432, "accepted": ["חזר", "חזרה", "חזרתי", "חזרת", "חזרנו", "חזרתם", "חזרתן", "חזרו"]}
+    ]},
+    {"id": 319, "pos": "noun", "words": [
+      {"id": "he341", "text": "מְחִיר", "rank": 435, "accepted": ["מחיר"]}
+    ]},
+    {"id": 320, "pos": "verb", "verbForm": "infinitive", "otherForm": 321, "words": [
+      {"id": "he342", "text": "לְהַסְבִּיר", "rank": 439, "accepted": ["להסביר"]}
+    ]},
+    {"id": 321, "pos": "verb", "verbForm": "past", "otherForm": 320, "words": [
+      {"id": "he343", "text": "הִסְבִּיר", "rank": 439, "accepted": ["הסביר", "הסבירה", "הסברתי", "הסברת", "הסברנו", "הסברתם", "הסברתן", "הסבירו"]}
+    ]},
+    {"id": 322, "pos": "noun", "words": [
+      {"id": "he344", "text": "בֵּן", "rank": 440, "accepted": ["בן"]}
+    ]},
+    {"id": 323, "pos": "verb", "verbForm": "infinitive", "otherForm": 324, "words": [
+      {"id": "he345", "text": "לְקַוּוֹת", "rank": 441, "accepted": ["לקוות"]}
+    ]},
+    {"id": 324, "pos": "verb", "verbForm": "past", "otherForm": 323, "words": [
+      {"id": "he346", "text": "קִוָּה", "rank": 441, "accepted": ["קיווה", "קיוותה", "קיוויתי", "קיווית", "קיווינו", "קיוויתם", "קיוויתן", "קיווו"]}
+    ]},
+    {"id": 325, "pos": "noun", "words": [
+      {"id": "he347", "text": "כְּבִישׁ", "rank": 447, "accepted": ["כביש"]}
+    ]},
+    {"id": 326, "pos": "verb", "verbForm": "infinitive", "otherForm": 327, "words": [
+      {"id": "he348", "text": "לִנְהֹג", "rank": 448, "accepted": ["לנהוג"]}
+    ]},
+    {"id": 327, "pos": "verb", "verbForm": "past", "otherForm": 326, "words": [
+      {"id": "he349", "text": "נָהַג", "rank": 448, "accepted": ["נהג", "נהגה", "נהגתי", "נהגת", "נהגנו", "נהגתם", "נהגתן", "נהגו"]}
+    ]},
+    {"id": 328, "pos": "noun", "words": [
+      {"id": "he350", "text": "זְרוֹעַ", "rank": 449, "accepted": ["זרוע"]}
+    ]},
+    {"id": 329, "pos": "noun", "words": [
+      {"id": "he351", "text": "קְבוּצָה", "rank": 150, "accepted": ["קבוצה"]}
+    ]},
+    {"id": 330, "pos": "preposition", "words": [
+      {"id": "he352", "text": "נֶגֶד", "rank": 166, "accepted": ["נגד"]}
+    ]},
+    {"id": 331, "pos": "noun", "words": [
+      {"id": "he353", "text": "חֶבְרָה", "rank": 173, "accepted": ["חברה"]}
+    ]},
+    {"id": 332, "pos": "noun", "words": [
+      {"id": "he354", "text": "מַעֲרֶכֶת", "rank": 174, "accepted": ["מערכת"]}
+    ]},
+    {"id": 333, "pos": "noun", "words": [
+      {"id": "he355", "text": "תָּכְנִית", "rank": 178, "accepted": ["תוכנית", "תכנית"]}
+    ]},
+    {"id": 334, "pos": "preposition", "words": [
+      {"id": "he356", "text": "בְּמֶשֶׁךְ", "rank": 181, "accepted": ["במשך"]}
+    ]},
+    {"id": 335, "pos": "noun", "words": [
+      {"id": "he357", "text": "מֶמְשָׁלָה", "rank": 183, "accepted": ["ממשלה"]}
+    ]},
+    {"id": 336, "pos": "number", "words": [
+      {"id": "he358", "text": "מִילְיוֹן", "rank": 202, "accepted": ["מיליון"]}
+    ]},
+    {"id": 337, "pos": "noun", "words": [
+      {"id": "he359", "text": "אֵזוֹר", "rank": 210, "accepted": ["אזור", "איזור"]}
+    ]},
+    {"id": 338, "pos": "noun", "words": [
+      {"id": "he360", "text": "עֻבְדָּה", "rank": 215, "accepted": ["עובדה"]}
+    ]},
+    {"id": 339, "pos": "noun", "words": [
+      {"id": "he361", "text": "עֵסֶק", "rank": 225, "accepted": ["עסק"]}
+    ]},
+    {"id": 340, "pos": "noun", "words": [
+      {"id": "he362", "text": "צַד", "rank": 227, "accepted": ["צד"]}
+    ]},
+    {"id": 341, "pos": "noun", "words": [
+      {"id": "he363", "text": "שֵׁרוּת", "rank": 239, "accepted": ["שירות"]}
+    ]},
+    {"id": 342, "pos": "adverb", "words": [
+      {"id": "he364", "text": "מִסָּבִיב", "rank": 240, "accepted": ["מסביב"]}
+    ]},
+    {"id": 343, "pos": "noun", "words": [
+      {"id": "he365", "text": "כֹּחַ", "rank": 247, "accepted": ["כוח"]}
+    ]},
+    {"id": 344, "pos": "noun", "words": [
+      {"id": "he366", "text": "קַו", "rank": 252, "accepted": ["קו"]}
+    ]},
+    {"id": 345, "pos": "noun", "words": [
+      {"id": "he367", "text": "סוֹף", "rank": 254, "accepted": ["סוף"]}
+    ]},
+    {"id": 346, "pos": "noun", "words": [
+      {"id": "he368", "text": "חֹק", "rank": 263, "accepted": ["חוק"]}
+    ]},
+    {"id": 347, "pos": "noun", "words": [
+      {"id": "he369", "text": "קְהִלָּה", "rank": 272, "accepted": ["קהילה"]}
+    ]},
+    {"id": 348, "pos": "noun", "words": [
+      {"id": "he370", "text": "נָשִׂיא", "rank": 278, "accepted": ["נשיא"]}
+    ]},
+    {"id": 349, "pos": "noun", "words": [
+      {"id": "he371", "text": "מֵידָע", "rank": 289, "accepted": ["מידע"]}
+    ]},
+    {"id": 350, "pos": "noun", "words": [
+      {"id": "he372", "text": "הוֹרֶה", "rank": 299, "accepted": ["הורה"]}
+    ]},
+    {"id": 351, "pos": "noun", "words": [
+      {"id": "he373", "text": "רָמָה", "rank": 309, "accepted": ["רמה"]}
+    ]},
+    {"id": 352, "pos": "noun", "words": [
+      {"id": "he374", "text": "מִשְׂרָד", "rank": 312, "accepted": ["משרד"]}
+    ]},
+    {"id": 353, "pos": "noun", "words": [
+      {"id": "he375", "text": "בְּרִיאוּת", "rank": 315, "accepted": ["בריאות"]}
+    ]},
+    {"id": 354, "pos": "noun", "words": [
+      {"id": "he376", "text": "אָמָּנוּת", "rank": 317, "accepted": ["אמנות", "אומנות"]}
+    ]},
+    {"id": 355, "pos": "noun", "words": [
+      {"id": "he377", "text": "מִלְחָמָה", "rank": 319, "accepted": ["מלחמה"]}
+    ]},
+    {"id": 356, "pos": "noun", "words": [
+      {"id": "he378", "text": "הִיסְטוֹרְיָה", "rank": 320, "accepted": ["היסטוריה"]}
+    ]},
+    {"id": 357, "pos": "noun", "words": [
+      {"id": "he379", "text": "מְסִבָּה", "rank": 321, "accepted": ["מסיבה"]}
+    ]},
+    {"id": 358, "pos": "noun", "words": [
+      {"id": "he380", "text": "מִפְלָגָה", "rank": 321, "accepted": ["מפלגה"]}
+    ]},
+    {"id": 359, "pos": "noun", "words": [
+      {"id": "he381", "text": "סִבָּה", "rank": 328, "accepted": ["סיבה"]}
+    ]},
+    {"id": 360, "pos": "adjective", "words": [
+      {"id": "he382", "text": "נָמוּךְ", "rank": 329, "accepted": ["נמוך", "נמוכה", "נמוכים", "נמוכות"]}
+    ]},
+    {"id": 361, "pos": "noun", "words": [
+      {"id": "he383", "text": "מֶחְקָר", "rank": 331, "accepted": ["מחקר"]}
+    ]},
+    {"id": 362, "pos": "noun", "words": [
+      {"id": "he384", "text": "רֶגַע", "rank": 336, "accepted": ["רגע"]}
+    ]},
+    {"id": 363, "pos": "noun", "words": [
+      {"id": "he385", "text": "אֲוִיר", "rank": 338, "accepted": ["אוויר", "אויר"]}
+    ]},
+    {"id": 364, "pos": "noun", "words": [
+      {"id": "he386", "text": "חִנּוּךְ", "rank": 343, "accepted": ["חינוך"]}
+    ]},
+    {"id": 365, "pos": "noun", "words": [
+      {"id": "he387", "text": "גִּיל", "rank": 353, "accepted": ["גיל"]}
+    ]}
+  ]
+}
