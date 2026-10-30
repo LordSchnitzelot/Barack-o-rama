@@ -26,6 +26,8 @@
 
 ## Project notes
 - `index.html` is the whole demo (one page, plain HTML, CSS and JavaScript).
+- `drills.js` is the Drills logic (no screen yet); `drills.test.mjs` tests it. Run `node --test`
+  after any change to it. Choices for the spec's open questions are marked `DEFAULT (open question)`.
 - English voice: Phonon (`phonon-tts`, pinned to an exact version) running in the browser.
   Hebrew voice and speech recognition: the browser's own.
 - Phonon's speaking rate (`duration_delta`) is fixed when the model loads, so changing speed

@@ -58,7 +58,7 @@ The app talks to generic services, and the provider behind each is a setting, so
 
 Drills run mostly on stored data, so the AI model is not needed to supply words, to check word answers, or to choose the next exercise.
 
-- **Source:** free dictionary data with a license that allows our use, copied and sorted into the structure below. The specific source is chosen at build time (see Open questions).
+- **Source:** English Wiktionary, downloaded as ready-made files from kaikki.org (license CC BY-SA 4.0). It is written by people, and nearly all of its Hebrew entries already have nikkud. Its entries are copied and sorted into the structure below. The app is a personal project that will not be sold; the sources are credited in the app, and the dictionary files we build are shared under the same license. The research is in `docs/dictionary-sources.md`.
 - **Two dictionaries:** English to Hebrew and Hebrew to English.
 - **Unique entries:** every entry is distinct. When one spelling has several meanings that sound the same, each meaning is its own entry with a label in brackets: "bat (animal)" and "bat (sports)"; קֶרֶן (light), קֶרֶן (animal horn), קֶרֶן (finance) and קֶרֶן (geometry). The same applies when one word covers two words in the other language: "know (a fact)" points at יָדַע and "know (a person)" points at הִכִּיר. Words spelled differently, such as "bare" and "bear", need no label. Labels are in English and written in brackets, such as "bat (sports)" or "read (past tense)". The same text is shown on screen and sent to Phonon as is, and Phonon reads the brackets naturally (tested: "bat (sports)" is read as "bat, sports").
 - **Nikkud:** every Hebrew entry is written with nikkud. Nikkud separates words with the same letters but a different pronunciation: אֵלָה (goddess), אַלָּה (bat, as in sports) and אֵלֶּה (these). Nikkud is shown to the learner, and it may also help the browser voice read Hebrew correctly.
@@ -66,7 +66,8 @@ Drills run mostly on stored data, so the AI model is not needed to supply words,
 - **Dictionary forms:** each entry is in its basic dictionary form. Nouns are singular and carry no attached particles: in Hebrew, no ו (and), ה (the), prepositions such as ב, ל, מ and כ, ש (that), plural endings or the dual ending (as in עֵינַיִם).
 - **Verbs:** two entries per verb, tested separately: the past form (Hebrew masculine past, הָלַךְ; English simple past, "went") and the infinitive (Hebrew לָלֶכֶת; English "to go"). Each translates only to its matching form: הָלַךְ is "went", and לָלֶכֶת is "to go" ("go" is also accepted). Saying "go" or "to go" for הָלַךְ is wrong, and knowing one form does not count for the other.
 - **Accepted forms:** an entry also lists the inflected forms accepted in answers. A Hebrew past verb accepts every person and gender (הָלַךְ, הָלְכָה, הָלַכְתִּי, הָלַכְתָּ, הָלְכוּ, and so on). A Hebrew adjective accepts every gender and number (נֶחְמָד, נֶחְמָדָה, נֶחְמָדִים, נֶחְמָדוֹת).
-- **Frequency:** every entry has a frequency rank. New words are introduced from the most common down, with an occasional less common word mixed in.
+- **Frequency:** every entry has a frequency rank. New words are introduced from the most common down, with an occasional less common word mixed in. Ranks come from word counts in film and TV subtitles (Hermit Dave's OpenSubtitles lists, for Hebrew and for English; wordfreq is the alternative for English). A word's count is the total of all its forms, for example בַּיִת counts בית, הבית, בבית and so on.
+- **Missing nikkud:** where the source has no nikkud, it is added with Dicta's free nikkud model (DictaBERT-menaked) and checked by a person.
 - **Word answers:** checked by code, with no AI, against the accepted forms of every word in the target group. The answer is normalized first: lowercase, punctuation removed, and nikkud removed, because speech recognition returns Hebrew without nikkud.
 - **Sentences:** English sentences and Hebrew sentences are generated in advance in chunks and stored as text, without translations, because many translations can be right. Sentence answers are checked by the AI model, by meaning.
 - **Sentence tags:** each sentence is tagged with the words it contains, each linked to its exact entry (with its label or nikkud). The tags power tap-to-flag, crediting each word when a sentence is answered correctly, choosing sentences that fit the learner's profile, and rating difficulty.
@@ -286,7 +287,7 @@ Demo v2 is a single-page prototype of the conversation (Chat) screen. It proved 
 3. **Phonon is new.** Pin exact versions of the package and the model. The demo loads them from public hosts (a code CDN and Hugging Face); the real app can serve the files itself.
 4. **Speech recognition for accented English.** Test with a Hebrew speaker's English before building Drills around "Did you mean...?".
 5. **Matching Hebrew and English answers by code.** Speech recognition may return a form that is not in the stored list, for example with an article ("the book") or a different spelling. Answers are normalized in code first; what happens when there is still no match is an open question.
-6. **Dictionary and sentence sources.** Where the two dictionaries and the sentences come from, and their licenses (see Open questions).
+6. **Dictionary content.** The dictionary and frequency sources are chosen (section 3.3). Still to do: the build step must form the synonym groups, add labels and fill missing nikkud, and the most common few thousand words need a human check.
 7. **Levantine Arabic quality.** Check whether voices sound natural in a Levantine dialect and whether recognition handles a learner's speech. Test before starting the Arabic pack, and decide which voice and recognition services to use.
 8. **Mixed text direction.** Hebrew and Arabic (right-to-left) and English (left-to-right) share one screen, and a Hebrew UI adds more mixing, so layout needs care.
 9. **Arabic word flagging.** Prefixes and suffixes attach to words, so the model's word breakdown must handle them.
@@ -296,7 +297,6 @@ Demo v2 is a single-page prototype of the conversation (Chat) screen. It proved 
 ## 13. Open questions
 
 - Which speech recognition to use in the real app, for English and for Hebrew: browser recognition, ElevenLabs Scribe, Whisper or another.
-- Which free dictionary source to use, and where the frequency ranks come from (both need licenses that allow our use).
 - How the algorithm picks a new group and a word inside it: randomly or in some order.
 - Articles in answers: whether "a book" or "the book" is accepted for ספר, and whether הספר is accepted for "book".
 - When speech recognition returns a form that is not in the stored list, whether the AI is asked as a fallback, or the answer goes straight to "Did you mean...?".
@@ -339,6 +339,7 @@ Demo v2 is a single-page prototype of the conversation (Chat) screen. It proved 
 * Every dictionary entry is unique: same-sounding homonyms get labels in brackets, Hebrew entries carry nikkud, and each entry belongs to one group of synonyms that points at exactly one group in the other language. Hebrew past verbs accept every person and gender, and adjectives every gender and number.
 * Every word has a frequency rank, and new words come in order of frequency.
 * Sentences are tagged with their words and rated for difficulty.
+* Dictionary source: English Wiktionary (via kaikki.org). Frequency ranks: OpenSubtitles word counts. Missing nikkud: Dicta's nikkud model, checked by a person. The app is personal and not for sale; sources are credited in the app.
 
 - Labels are in English and in brackets ("bat (sports)"); the same text is shown on screen and sent to Phonon.
 - Nikkud is shown to the learner.
@@ -348,7 +349,7 @@ Demo v2 is a single-page prototype of the conversation (Chat) screen. It proved 
 
 - **v1:** original spec from the planning chat.
 - **v2:** reorganized into one structure; added technology table, tutor behavior, Settings section, demo status, and build step 1; replaced the ElevenLabs default with Phonon and browser voices; added the live Hebrew text in "How do I say it?", the speed dial requirement, and the Hebrew UI option.
-- **v3:** defined the three modes (Chat, Guide, Drills) and renamed Practice to Drills; replaced levels with a Show or Hide subtitle setting per language; Drills now run on stored word dictionaries and sentences with a code-based next-drill algorithm, using the AI only to check sentence answers; verified Phonon 31m is free on-device and commercially licensed, so stored audio was dropped; reorganized so decided items come first and uncertain items sit in Risks and Open questions.
+- **v3:** defined the three modes (Chat, Guide, Drills) and renamed Practice to Drills; replaced levels with a Show or Hide subtitle setting per language; Drills now run on stored word dictionaries and sentences with a code-based next-drill algorithm, using the AI only to check sentence answers; verified Phonon 31m is free on-device and openly licensed, so stored audio was dropped; reorganized so decided items come first and uncertain items sit in Risks and Open questions.
 
 * **v3.1:** added dictionary forms and the verb rule, meaning groups, frequency ranks, and sentence tags and difficulty to the Drill content; set hands-free after the first build and corrections to "as we go" by default; updated build step 6, risks and open questions.
 
@@ -361,3 +362,5 @@ Demo v2 is a single-page prototype of the conversation (Chat) screen. It proved 
 * **v3.5:** labels written in brackets and sent to Phonon as written; groups described as objects holding one or more words; progress tracked per word inside its group (for example 201\[0\] and 201\[1\]).
 
 * **v3.6:** build step 1 done; recorded the Phonon speed test results (Technology, Demo status, Risks).
+
+- **v3.6:** chose the dictionary source (English Wiktionary via kaikki.org), the frequency source (OpenSubtitles word counts) and the tool for missing nikkud (Dicta's model); recorded that the app is a personal, non-commercial project.
