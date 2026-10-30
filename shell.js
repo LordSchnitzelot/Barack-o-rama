@@ -6,6 +6,7 @@ import { createAI, createSpeech } from './services.js';
 import { buildIndex, lookup, meaningOf } from './dictionary.js';
 import * as Words from './words.js';
 import * as store from './store.js';
+import { isListed } from './drill-data.js';
 
 export { pack };
 export const $ = s => document.querySelector(s);
@@ -55,9 +56,10 @@ export const meaning = entry => meaningOf(dict, entry);
 
 /* ---------- My words: saved on the device with scores (spec 8) ----------
    Only dictionary entries are saved (spec 3.2); anything else is shown in the chat only. */
-export const W = new Map(); // id -> record
-export const byNewest = () => [...W.values()].sort((a, b) => b.modified - a.modified);
-export const countWords = () => { const b = $('#wb'); if (b) b.textContent = 'My words (' + W.size + ')'; };
+export const W = new Map(); // id -> record, including words only practiced in Drills
+/* My words lists the flagged words and weak spots (spec 6), newest first. */
+export const byNewest = () => [...W.values()].filter(isListed).sort((a, b) => b.modified - a.modified);
+export const countWords = () => { const b = $('#wb'); if (b) b.textContent = 'My words (' + byNewest().length + ')'; };
 /* Loads the saved words, and carries over the first demo's list (kept in localStorage) once.
    Words saved before only dictionary words were kept are removed. */
 export const wordsReady = (async () => {

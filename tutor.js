@@ -187,3 +187,17 @@ export function parseSummary(text) {
     words: wordList(d.words),
   };
 }
+
+/* ---------- Drills: checking a spoken sentence by meaning (spec 6.2) ---------- */
+
+export function sentenceCheckPrompt(pack) {
+  return `You check a language learner's spoken translation. The learner heard a sentence and said it in the other language (${pack.target.name} or ${pack.native.name}). Their answer comes from speech recognition, so ignore spelling, punctuation and small recognition errors, and judge only the meaning.
+Reply ONLY with JSON: {"correct": true or false, "better": "one natural, correct translation of the sentence, in the answer's language", "note": "if not correct, one short sentence in ${pack.target.name} saying what was wrong; otherwise empty"}
+- "correct" is true when the answer means the same as the sentence, even if worded differently.`;
+}
+export const sentenceCheckMessage = (sentence, answer, answerLang) =>
+  `Sentence: "${sentence}"\nThe learner's answer (in ${answerLang}): "${answer}"`;
+export function parseCheck(text) {
+  const d = extractJSON(text);
+  return { correct: d.correct === true, better: str(d.better), note: str(d.note) };
+}

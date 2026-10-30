@@ -147,3 +147,10 @@ test('the end-of-session summary: transcript, prompt and reply', () => {
     words: [{ w: 'went', d: 'went', m: 'הָלַךְ' }],
   });
 });
+
+test('Drills: checking a sentence by meaning', () => {
+  assert.ok(T.sentenceCheckPrompt(pack).includes('"correct"'));
+  assert.ok(T.sentenceCheckMessage('I want water.', 'אני רוצה מים', 'Hebrew').includes('אני רוצה מים'));
+  assert.deepEqual(T.parseCheck('{"correct":true,"better":"אני רוצה מים","note":""}'), { correct: true, better: 'אני רוצה מים', note: '' });
+  assert.equal(T.parseCheck('{"correct":"yes"}').correct, false);
+});
