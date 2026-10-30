@@ -9,6 +9,9 @@ The user talks with an AI tutor and drills words and sentences out loud.
 (tap to talk, tutor replies with English, Hebrew and word breakdown, Phonon English voice,
 subtitle toggles, tap-to-flag, "How do I say it?").
 
+`drills.js` is the Drills logic (spec sections 3.3, 6 and 8) as plain code, not yet connected
+to the page. Its automated tests are in `drills.test.mjs`; run them with `node --test`.
+
 ## Important
 
 - **Never put API keys in this repository.** The demo asks each user to type their own key
