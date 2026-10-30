@@ -1,0 +1,1131 @@
+{
+  "language": "en",
+  "otherLanguage": "he",
+  "source": "Starter set written by hand for testing the format. Ranks are approximate; Hebrew ranks are copied from the English partner group. To be replaced in build step 6.",
+  "groups": [
+    {"id": 1, "pos": "verb", "verbForm": "infinitive", "otherForm": 2, "words": [
+      {"id": "en1", "text": "to be", "rank": 2, "accepted": ["to be", "be"]}
+    ]},
+    {"id": 2, "pos": "verb", "verbForm": "past", "otherForm": 1, "words": [
+      {"id": "en2", "text": "was", "rank": 2, "accepted": ["was"]},
+      {"id": "en3", "text": "were", "rank": 2, "accepted": ["were"]}
+    ]},
+    {"id": 3, "pos": "preposition", "words": [
+      {"id": "en4", "text": "of", "rank": 4, "accepted": ["of"]}
+    ]},
+    {"id": 4, "pos": "preposition", "words": [
+      {"id": "en5", "text": "to", "rank": 7, "accepted": ["to"]}
+    ]},
+    {"id": 5, "pos": "pronoun", "words": [
+      {"id": "en6", "text": "I", "rank": 10, "accepted": ["i"]}
+    ]},
+    {"id": 6, "pos": "pronoun", "words": [
+      {"id": "en7", "text": "this", "rank": 19, "accepted": ["this"]},
+      {"id": "en8", "text": "that", "rank": 11, "accepted": ["that"]}
+    ]},
+    {"id": 7, "pos": "preposition", "words": [
+      {"id": "en9", "text": "for", "rank": 12, "accepted": ["for"]}
+    ]},
+    {"id": 8, "pos": "pronoun", "words": [
+      {"id": "en10", "text": "you (singular)", "rank": 13, "accepted": ["you"]}
+    ]},
+    {"id": 9, "pos": "pronoun", "words": [
+      {"id": "en11", "text": "you (plural)", "rank": 13, "accepted": ["you"]}
+    ]},
+    {"id": 10, "pos": "pronoun", "words": [
+      {"id": "en12", "text": "he", "rank": 14, "accepted": ["he"]}
+    ]},
+    {"id": 11, "pos": "preposition", "words": [
+      {"id": "en13", "text": "with", "rank": 15, "accepted": ["with"]}
+    ]},
+    {"id": 12, "pos": "preposition", "words": [
+      {"id": "en14", "text": "on", "rank": 16, "accepted": ["on"]}
+    ]},
+    {"id": 13, "pos": "verb", "verbForm": "infinitive", "otherForm": 14, "words": [
+      {"id": "en15", "text": "to do", "rank": 17, "accepted": ["to do", "do"]},
+      {"id": "en16", "text": "to make", "rank": 42, "accepted": ["to make", "make"]}
+    ]},
+    {"id": 14, "pos": "verb", "verbForm": "past", "otherForm": 13, "words": [
+      {"id": "en17", "text": "did", "rank": 17, "accepted": ["did"]},
+      {"id": "en18", "text": "made", "rank": 42, "accepted": ["made"]}
+    ]},
+    {"id": 15, "pos": "verb", "verbForm": "infinitive", "otherForm": 16, "words": [
+      {"id": "en19", "text": "to say", "rank": 18, "accepted": ["to say", "say"]}
+    ]},
+    {"id": 16, "pos": "verb", "verbForm": "past", "otherForm": 15, "words": [
+      {"id": "en20", "text": "said", "rank": 18, "accepted": ["said"]}
+    ]},
+    {"id": 17, "pos": "pronoun", "words": [
+      {"id": "en21", "text": "they", "rank": 20, "accepted": ["they"]}
+    ]},
+    {"id": 18, "pos": "conjunction", "words": [
+      {"id": "en22", "text": "but", "rank": 22, "accepted": ["but"]}
+    ]},
+    {"id": 19, "pos": "pronoun", "words": [
+      {"id": "en23", "text": "we", "rank": 23, "accepted": ["we"]}
+    ]},
+    {"id": 20, "pos": "pronoun", "words": [
+      {"id": "en24", "text": "his", "rank": 24, "accepted": ["his"]}
+    ]},
+    {"id": 21, "pos": "preposition", "words": [
+      {"id": "en25", "text": "from", "rank": 25, "accepted": ["from"]}
+    ]},
+    {"id": 22, "pos": "adverb", "words": [
+      {"id": "en26", "text": "no", "rank": 88, "accepted": ["no"]},
+      {"id": "en27", "text": "not", "rank": 26, "accepted": ["not"]}
+    ]},
+    {"id": 23, "pos": "pronoun", "words": [
+      {"id": "en28", "text": "she", "rank": 28, "accepted": ["she"]}
+    ]},
+    {"id": 24, "pos": "conjunction", "words": [
+      {"id": "en29", "text": "or", "rank": 29, "accepted": ["or"]}
+    ]},
+    {"id": 25, "pos": "question", "words": [
+      {"id": "en30", "text": "what", "rank": 31, "accepted": ["what"]}
+    ]},
+    {"id": 26, "pos": "verb", "verbForm": "infinitive", "otherForm": 27, "words": [
+      {"id": "en31", "text": "to go", "rank": 32, "accepted": ["to go", "go"]},
+      {"id": "en32", "text": "to walk", "rank": 327, "accepted": ["to walk", "walk"]}
+    ]},
+    {"id": 27, "pos": "verb", "verbForm": "past", "otherForm": 26, "words": [
+      {"id": "en33", "text": "went", "rank": 32, "accepted": ["went"]},
+      {"id": "en34", "text": "walked", "rank": 327, "accepted": ["walked"]}
+    ]},
+    {"id": 28, "pos": "pronoun", "words": [
+      {"id": "en35", "text": "their", "rank": 33, "accepted": ["their"]}
+    ]},
+    {"id": 29, "pos": "modal", "words": [
+      {"id": "en36", "text": "can", "rank": 34, "accepted": ["can"]}
+    ]},
+    {"id": 30, "pos": "question", "words": [
+      {"id": "en37", "text": "who", "rank": 35, "accepted": ["who"]}
+    ]},
+    {"id": 31, "pos": "verb", "verbForm": "infinitive", "otherForm": 32, "words": [
+      {"id": "en38", "text": "to get", "rank": 36, "accepted": ["to get", "get"]}
+    ]},
+    {"id": 32, "pos": "verb", "verbForm": "past", "otherForm": 31, "words": [
+      {"id": "en39", "text": "got", "rank": 36, "accepted": ["got"]}
+    ]},
+    {"id": 33, "pos": "conjunction", "words": [
+      {"id": "en40", "text": "if", "rank": 37, "accepted": ["if"]}
+    ]},
+    {"id": 34, "pos": "pronoun", "words": [
+      {"id": "en41", "text": "her (possessive)", "rank": 39, "accepted": ["her"]}
+    ]},
+    {"id": 35, "pos": "pronoun", "words": [
+      {"id": "en42", "text": "her (object)", "rank": 39, "accepted": ["her"]}
+    ]},
+    {"id": 36, "pos": "determiner", "words": [
+      {"id": "en43", "text": "all", "rank": 40, "accepted": ["all"]},
+      {"id": "en44", "text": "every", "rank": 159, "accepted": ["every"]}
+    ]},
+    {"id": 37, "pos": "pronoun", "words": [
+      {"id": "en45", "text": "my", "rank": 41, "accepted": ["my"]}
+    ]},
+    {"id": 38, "pos": "preposition", "words": [
+      {"id": "en46", "text": "about (a topic)", "rank": 43, "accepted": ["about"]}
+    ]},
+    {"id": 39, "pos": "adverb", "words": [
+      {"id": "en47", "text": "about (approximately)", "rank": 43, "accepted": ["about"]}
+    ]},
+    {"id": 40, "pos": "verb", "verbForm": "infinitive", "otherForm": 41, "words": [
+      {"id": "en48", "text": "to know (a fact)", "rank": 44, "accepted": ["to know", "know"]}
+    ]},
+    {"id": 41, "pos": "verb", "verbForm": "past", "otherForm": 40, "words": [
+      {"id": "en49", "text": "knew (a fact)", "rank": 44, "accepted": ["knew"]}
+    ]},
+    {"id": 42, "pos": "verb", "verbForm": "infinitive", "otherForm": 43, "words": [
+      {"id": "en50", "text": "to know (a person)", "rank": 44, "accepted": ["to know", "know"]}
+    ]},
+    {"id": 43, "pos": "verb", "verbForm": "past", "otherForm": 42, "words": [
+      {"id": "en51", "text": "knew (a person)", "rank": 44, "accepted": ["knew"]}
+    ]},
+    {"id": 44, "pos": "adverb", "words": [
+      {"id": "en52", "text": "up", "rank": 46, "accepted": ["up"]}
+    ]},
+    {"id": 45, "pos": "number", "words": [
+      {"id": "en53", "text": "one", "rank": 47, "accepted": ["one"]}
+    ]},
+    {"id": 46, "pos": "noun", "words": [
+      {"id": "en54", "text": "time (occasion)", "rank": 48, "accepted": ["time"]}
+    ]},
+    {"id": 47, "pos": "noun", "words": [
+      {"id": "en55", "text": "time (duration)", "rank": 48, "accepted": ["time"]}
+    ]},
+    {"id": 48, "pos": "adverb", "words": [
+      {"id": "en56", "text": "there", "rank": 49, "accepted": ["there"]}
+    ]},
+    {"id": 49, "pos": "noun", "words": [
+      {"id": "en57", "text": "year", "rank": 50, "accepted": ["year"]}
+    ]},
+    {"id": 50, "pos": "adverb", "words": [
+      {"id": "en58", "text": "then", "rank": 73, "accepted": ["then"]},
+      {"id": "en59", "text": "so (therefore)", "rank": 51, "accepted": ["so"]}
+    ]},
+    {"id": 51, "pos": "adverb", "words": [
+      {"id": "en60", "text": "so (very)", "rank": 51, "accepted": ["so"]}
+    ]},
+    {"id": 52, "pos": "verb", "verbForm": "infinitive", "otherForm": 53, "words": [
+      {"id": "en61", "text": "to think", "rank": 52, "accepted": ["to think", "think"]}
+    ]},
+    {"id": 53, "pos": "verb", "verbForm": "past", "otherForm": 52, "words": [
+      {"id": "en62", "text": "thought", "rank": 52, "accepted": ["thought"]}
+    ]},
+    {"id": 54, "pos": "question", "words": [
+      {"id": "en63", "text": "when", "rank": 53, "accepted": ["when"]}
+    ]},
+    {"id": 55, "pos": "question", "words": [
+      {"id": "en64", "text": "which", "rank": 54, "accepted": ["which"]}
+    ]},
+    {"id": 56, "pos": "pronoun", "words": [
+      {"id": "en65", "text": "them", "rank": 55, "accepted": ["them"]}
+    ]},
+    {"id": 57, "pos": "determiner", "words": [
+      {"id": "en66", "text": "some", "rank": 56, "accepted": ["some"]}
+    ]},
+    {"id": 58, "pos": "pronoun", "words": [
+      {"id": "en67", "text": "me", "rank": 57, "accepted": ["me"]}
+    ]},
+    {"id": 59, "pos": "noun", "words": [
+      {"id": "en68", "text": "person", "rank": 58, "accepted": ["person"]}
+    ]},
+    {"id": 60, "pos": "verb", "verbForm": "infinitive", "otherForm": 61, "words": [
+      {"id": "en69", "text": "to take", "rank": 59, "accepted": ["to take", "take"]}
+    ]},
+    {"id": 61, "pos": "verb", "verbForm": "past", "otherForm": 60, "words": [
+      {"id": "en70", "text": "took", "rank": 59, "accepted": ["took"]}
+    ]},
+    {"id": 62, "pos": "adverb", "words": [
+      {"id": "en71", "text": "out", "rank": 60, "accepted": ["out"]}
+    ]},
+    {"id": 63, "pos": "adverb", "words": [
+      {"id": "en72", "text": "only", "rank": 96, "accepted": ["only"]},
+      {"id": "en73", "text": "just", "rank": 62, "accepted": ["just"]}
+    ]},
+    {"id": 64, "pos": "verb", "verbForm": "infinitive", "otherForm": 65, "words": [
+      {"id": "en74", "text": "to see", "rank": 63, "accepted": ["to see", "see"]}
+    ]},
+    {"id": 65, "pos": "verb", "verbForm": "past", "otherForm": 64, "words": [
+      {"id": "en75", "text": "saw", "rank": 63, "accepted": ["saw"]}
+    ]},
+    {"id": 66, "pos": "pronoun", "words": [
+      {"id": "en76", "text": "him", "rank": 64, "accepted": ["him"]}
+    ]},
+    {"id": 67, "pos": "pronoun", "words": [
+      {"id": "en77", "text": "your (singular)", "rank": 65, "accepted": ["your"]}
+    ]},
+    {"id": 68, "pos": "pronoun", "words": [
+      {"id": "en78", "text": "your (plural)", "rank": 65, "accepted": ["your"]}
+    ]},
+    {"id": 69, "pos": "verb", "verbForm": "infinitive", "otherForm": 70, "words": [
+      {"id": "en79", "text": "to come", "rank": 66, "accepted": ["to come", "come"]}
+    ]},
+    {"id": 70, "pos": "verb", "verbForm": "past", "otherForm": 69, "words": [
+      {"id": "en80", "text": "came", "rank": 66, "accepted": ["came"]}
+    ]},
+    {"id": 71, "pos": "adverb", "words": [
+      {"id": "en81", "text": "now", "rank": 68, "accepted": ["now"]}
+    ]},
+    {"id": 72, "pos": "verb", "verbForm": "infinitive", "otherForm": 73, "words": [
+      {"id": "en82", "text": "to like", "rank": 70, "accepted": ["to like", "like"]},
+      {"id": "en83", "text": "to love", "rank": 356, "accepted": ["to love", "love"]}
+    ]},
+    {"id": 73, "pos": "verb", "verbForm": "past", "otherForm": 72, "words": [
+      {"id": "en84", "text": "liked", "rank": 70, "accepted": ["liked"]},
+      {"id": "en85", "text": "loved", "rank": 356, "accepted": ["loved"]}
+    ]},
+    {"id": 74, "pos": "preposition", "words": [
+      {"id": "en86", "text": "like (similar to)", "rank": 70, "accepted": ["like"]}
+    ]},
+    {"id": 75, "pos": "adjective", "words": [
+      {"id": "en87", "text": "other", "rank": 71, "accepted": ["other"]}
+    ]},
+    {"id": 76, "pos": "question", "words": [
+      {"id": "en88", "text": "how", "rank": 72, "accepted": ["how"]}
+    ]},
+    {"id": 77, "pos": "pronoun", "words": [
+      {"id": "en89", "text": "our", "rank": 75, "accepted": ["our"]}
+    ]},
+    {"id": 78, "pos": "number", "words": [
+      {"id": "en90", "text": "two", "rank": 76, "accepted": ["two"]}
+    ]},
+    {"id": 79, "pos": "adverb", "words": [
+      {"id": "en91", "text": "more", "rank": 77, "accepted": ["more"]}
+    ]},
+    {"id": 80, "pos": "pronoun", "words": [
+      {"id": "en92", "text": "these", "rank": 78, "accepted": ["these"]},
+      {"id": "en93", "text": "those", "rank": 97, "accepted": ["those"]}
+    ]},
+    {"id": 81, "pos": "verb", "verbForm": "infinitive", "otherForm": 82, "words": [
+      {"id": "en94", "text": "to want", "rank": 79, "accepted": ["to want", "want"]}
+    ]},
+    {"id": 82, "pos": "verb", "verbForm": "past", "otherForm": 81, "words": [
+      {"id": "en95", "text": "wanted", "rank": 79, "accepted": ["wanted"]}
+    ]},
+    {"id": 83, "pos": "noun", "words": [
+      {"id": "en96", "text": "way", "rank": 80, "accepted": ["way"]}
+    ]},
+    {"id": 84, "pos": "verb", "verbForm": "infinitive", "otherForm": 85, "words": [
+      {"id": "en97", "text": "to look", "rank": 81, "accepted": ["to look", "look"]}
+    ]},
+    {"id": 85, "pos": "verb", "verbForm": "past", "otherForm": 84, "words": [
+      {"id": "en98", "text": "looked", "rank": 81, "accepted": ["looked"]}
+    ]},
+    {"id": 86, "pos": "adjective", "words": [
+      {"id": "en99", "text": "first", "rank": 82, "accepted": ["first"]}
+    ]},
+    {"id": 87, "pos": "adverb", "words": [
+      {"id": "en100", "text": "also", "rank": 83, "accepted": ["also"]},
+      {"id": "en101", "text": "too (also)", "rank": 123, "accepted": ["too"]}
+    ]},
+    {"id": 88, "pos": "adjective", "words": [
+      {"id": "en102", "text": "new", "rank": 84, "accepted": ["new"]}
+    ]},
+    {"id": 89, "pos": "conjunction", "words": [
+      {"id": "en103", "text": "because", "rank": 85, "accepted": ["because"]}
+    ]},
+    {"id": 90, "pos": "noun", "words": [
+      {"id": "en104", "text": "day", "rank": 86, "accepted": ["day"]}
+    ]},
+    {"id": 91, "pos": "verb", "verbForm": "infinitive", "otherForm": 92, "words": [
+      {"id": "en105", "text": "to use", "rank": 87, "accepted": ["to use", "use"]}
+    ]},
+    {"id": 92, "pos": "verb", "verbForm": "past", "otherForm": 91, "words": [
+      {"id": "en106", "text": "used", "rank": 87, "accepted": ["used"]}
+    ]},
+    {"id": 93, "pos": "noun", "words": [
+      {"id": "en107", "text": "man", "rank": 89, "accepted": ["man"]}
+    ]},
+    {"id": 94, "pos": "verb", "verbForm": "infinitive", "otherForm": 95, "words": [
+      {"id": "en108", "text": "to find", "rank": 90, "accepted": ["to find", "find"]}
+    ]},
+    {"id": 95, "pos": "verb", "verbForm": "past", "otherForm": 94, "words": [
+      {"id": "en109", "text": "found", "rank": 90, "accepted": ["found"]}
+    ]},
+    {"id": 96, "pos": "adverb", "words": [
+      {"id": "en110", "text": "here", "rank": 91, "accepted": ["here"]}
+    ]},
+    {"id": 97, "pos": "noun", "words": [
+      {"id": "en111", "text": "thing", "rank": 92, "accepted": ["thing"]}
+    ]},
+    {"id": 98, "pos": "verb", "verbForm": "infinitive", "otherForm": 99, "words": [
+      {"id": "en112", "text": "to give", "rank": 93, "accepted": ["to give", "give"]}
+    ]},
+    {"id": 99, "pos": "verb", "verbForm": "past", "otherForm": 98, "words": [
+      {"id": "en113", "text": "gave", "rank": 93, "accepted": ["gave"]}
+    ]},
+    {"id": 100, "pos": "determiner", "words": [
+      {"id": "en114", "text": "many", "rank": 94, "accepted": ["many"]},
+      {"id": "en115", "text": "much", "rank": 135, "accepted": ["much"]}
+    ]},
+    {"id": 101, "pos": "verb", "verbForm": "infinitive", "otherForm": 102, "words": [
+      {"id": "en116", "text": "to tell", "rank": 98, "accepted": ["to tell", "tell"]}
+    ]},
+    {"id": 102, "pos": "verb", "verbForm": "past", "otherForm": 101, "words": [
+      {"id": "en117", "text": "told", "rank": 98, "accepted": ["told"]}
+    ]},
+    {"id": 103, "pos": "adverb", "words": [
+      {"id": "en118", "text": "very", "rank": 99, "accepted": ["very"]}
+    ]},
+    {"id": 104, "pos": "adverb", "words": [
+      {"id": "en119", "text": "even", "rank": 100, "accepted": ["even"]}
+    ]},
+    {"id": 105, "pos": "noun", "words": [
+      {"id": "en120", "text": "back (body part)", "rank": 101, "accepted": ["back"]}
+    ]},
+    {"id": 106, "pos": "adverb", "words": [
+      {"id": "en121", "text": "back (again)", "rank": 101, "accepted": ["back"]}
+    ]},
+    {"id": 107, "pos": "adjective", "words": [
+      {"id": "en122", "text": "good", "rank": 103, "accepted": ["good"]}
+    ]},
+    {"id": 108, "pos": "noun", "words": [
+      {"id": "en123", "text": "woman", "rank": 104, "accepted": ["woman"]},
+      {"id": "en124", "text": "wife", "rank": 427, "accepted": ["wife"]}
+    ]},
+    {"id": 109, "pos": "pronoun", "words": [
+      {"id": "en125", "text": "us", "rank": 106, "accepted": ["us"]}
+    ]},
+    {"id": 110, "pos": "noun", "words": [
+      {"id": "en126", "text": "life", "rank": 107, "accepted": ["life"]}
+    ]},
+    {"id": 111, "pos": "noun", "words": [
+      {"id": "en127", "text": "child", "rank": 108, "accepted": ["child"]},
+      {"id": "en128", "text": "boy", "rank": 349, "accepted": ["boy"]}
+    ]},
+    {"id": 112, "pos": "noun", "words": [
+      {"id": "en129", "text": "work (job)", "rank": 109, "accepted": ["work"]},
+      {"id": "en130", "text": "job", "rank": 222, "accepted": ["job"]}
+    ]},
+    {"id": 113, "pos": "verb", "verbForm": "infinitive", "otherForm": 114, "words": [
+      {"id": "en131", "text": "to work", "rank": 109, "accepted": ["to work", "work"]}
+    ]},
+    {"id": 114, "pos": "verb", "verbForm": "past", "otherForm": 113, "words": [
+      {"id": "en132", "text": "worked", "rank": 109, "accepted": ["worked"]}
+    ]},
+    {"id": 115, "pos": "adverb", "words": [
+      {"id": "en133", "text": "down", "rank": 110, "accepted": ["down"]}
+    ]},
+    {"id": 116, "pos": "preposition", "words": [
+      {"id": "en134", "text": "after", "rank": 112, "accepted": ["after"]}
+    ]},
+    {"id": 117, "pos": "verb", "verbForm": "infinitive", "otherForm": 118, "words": [
+      {"id": "en135", "text": "to call (on the phone)", "rank": 114, "accepted": ["to call", "call"]}
+    ]},
+    {"id": 118, "pos": "verb", "verbForm": "past", "otherForm": 117, "words": [
+      {"id": "en136", "text": "called (on the phone)", "rank": 114, "accepted": ["called"]}
+    ]},
+    {"id": 119, "pos": "noun", "words": [
+      {"id": "en137", "text": "world", "rank": 115, "accepted": ["world"]}
+    ]},
+    {"id": 120, "pos": "noun", "words": [
+      {"id": "en138", "text": "school", "rank": 117, "accepted": ["school"]}
+    ]},
+    {"id": 121, "pos": "adverb", "words": [
+      {"id": "en139", "text": "still", "rank": 118, "accepted": ["still"]}
+    ]},
+    {"id": 122, "pos": "verb", "verbForm": "infinitive", "otherForm": 123, "words": [
+      {"id": "en140", "text": "to try", "rank": 119, "accepted": ["to try", "try"]}
+    ]},
+    {"id": 123, "pos": "verb", "verbForm": "past", "otherForm": 122, "words": [
+      {"id": "en141", "text": "tried", "rank": 119, "accepted": ["tried"]}
+    ]},
+    {"id": 124, "pos": "adjective", "words": [
+      {"id": "en142", "text": "last", "rank": 120, "accepted": ["last"]}
+    ]},
+    {"id": 125, "pos": "verb", "verbForm": "infinitive", "otherForm": 126, "words": [
+      {"id": "en143", "text": "to ask", "rank": 121, "accepted": ["to ask", "ask"]}
+    ]},
+    {"id": 126, "pos": "verb", "verbForm": "past", "otherForm": 125, "words": [
+      {"id": "en144", "text": "asked", "rank": 121, "accepted": ["asked"]}
+    ]},
+    {"id": 127, "pos": "modal", "words": [
+      {"id": "en145", "text": "need", "rank": 122, "accepted": ["need"]}
+    ]},
+    {"id": 128, "pos": "adverb", "words": [
+      {"id": "en146", "text": "too (too much)", "rank": 123, "accepted": ["too"]}
+    ]},
+    {"id": 129, "pos": "verb", "verbForm": "infinitive", "otherForm": 130, "words": [
+      {"id": "en147", "text": "to feel", "rank": 124, "accepted": ["to feel", "feel"]}
+    ]},
+    {"id": 130, "pos": "verb", "verbForm": "past", "otherForm": 129, "words": [
+      {"id": "en148", "text": "felt", "rank": 124, "accepted": ["felt"]}
+    ]},
+    {"id": 131, "pos": "number", "words": [
+      {"id": "en149", "text": "three", "rank": 125, "accepted": ["three"]}
+    ]},
+    {"id": 132, "pos": "adverb", "words": [
+      {"id": "en150", "text": "never", "rank": 127, "accepted": ["never"]}
+    ]},
+    {"id": 133, "pos": "preposition", "words": [
+      {"id": "en151", "text": "between", "rank": 129, "accepted": ["between"]}
+    ]},
+    {"id": 134, "pos": "adjective", "words": [
+      {"id": "en152", "text": "high", "rank": 130, "accepted": ["high"]}
+    ]},
+    {"id": 135, "pos": "adverb", "words": [
+      {"id": "en153", "text": "really", "rank": 131, "accepted": ["really"]}
+    ]},
+    {"id": 136, "pos": "pronoun", "words": [
+      {"id": "en154", "text": "something", "rank": 132, "accepted": ["something"]}
+    ]},
+    {"id": 137, "pos": "noun", "words": [
+      {"id": "en155", "text": "family", "rank": 136, "accepted": ["family"]}
+    ]},
+    {"id": 138, "pos": "verb", "verbForm": "infinitive", "otherForm": 139, "words": [
+      {"id": "en156", "text": "to leave", "rank": 138, "accepted": ["to leave", "leave"]}
+    ]},
+    {"id": 139, "pos": "verb", "verbForm": "past", "otherForm": 138, "words": [
+      {"id": "en157", "text": "left (went away)", "rank": 138, "accepted": ["left"]}
+    ]},
+    {"id": 140, "pos": "verb", "verbForm": "infinitive", "otherForm": 141, "words": [
+      {"id": "en158", "text": "to put", "rank": 139, "accepted": ["to put", "put"]}
+    ]},
+    {"id": 141, "pos": "verb", "verbForm": "past", "otherForm": 140, "words": [
+      {"id": "en159", "text": "put (past tense)", "rank": 139, "accepted": ["put"]}
+    ]},
+    {"id": 142, "pos": "adjective", "words": [
+      {"id": "en160", "text": "old (person)", "rank": 140, "accepted": ["old"]}
+    ]},
+    {"id": 143, "pos": "adjective", "words": [
+      {"id": "en161", "text": "old (thing)", "rank": 140, "accepted": ["old"]}
+    ]},
+    {"id": 144, "pos": "verb", "verbForm": "infinitive", "otherForm": 145, "words": [
+      {"id": "en162", "text": "to mean", "rank": 142, "accepted": ["to mean", "mean"]}
+    ]},
+    {"id": 145, "pos": "verb", "verbForm": "past", "otherForm": 144, "words": [
+      {"id": "en163", "text": "meant", "rank": 142, "accepted": ["meant"]}
+    ]},
+    {"id": 146, "pos": "verb", "verbForm": "infinitive", "otherForm": 147, "words": [
+      {"id": "en164", "text": "to keep", "rank": 143, "accepted": ["to keep", "keep"]}
+    ]},
+    {"id": 147, "pos": "verb", "verbForm": "past", "otherForm": 146, "words": [
+      {"id": "en165", "text": "kept", "rank": 143, "accepted": ["kept"]}
+    ]},
+    {"id": 148, "pos": "noun", "words": [
+      {"id": "en166", "text": "student", "rank": 144, "accepted": ["student"]}
+    ]},
+    {"id": 149, "pos": "question", "words": [
+      {"id": "en167", "text": "why", "rank": 145, "accepted": ["why"]}
+    ]},
+    {"id": 150, "pos": "adjective", "words": [
+      {"id": "en168", "text": "great", "rank": 147, "accepted": ["great"]}
+    ]},
+    {"id": 151, "pos": "adjective", "words": [
+      {"id": "en169", "text": "big", "rank": 149, "accepted": ["big"]},
+      {"id": "en170", "text": "large", "rank": 201, "accepted": ["large"]}
+    ]},
+    {"id": 152, "pos": "verb", "verbForm": "infinitive", "otherForm": 153, "words": [
+      {"id": "en171", "text": "to begin", "rank": 151, "accepted": ["to begin", "begin"]},
+      {"id": "en172", "text": "to start", "rank": 160, "accepted": ["to start", "start"]}
+    ]},
+    {"id": 153, "pos": "verb", "verbForm": "past", "otherForm": 152, "words": [
+      {"id": "en173", "text": "began", "rank": 151, "accepted": ["began"]},
+      {"id": "en174", "text": "started", "rank": 160, "accepted": ["started"]}
+    ]},
+    {"id": 154, "pos": "noun", "words": [
+      {"id": "en175", "text": "country", "rank": 153, "accepted": ["country"]}
+    ]},
+    {"id": 155, "pos": "verb", "verbForm": "infinitive", "otherForm": 156, "words": [
+      {"id": "en176", "text": "to help", "rank": 154, "accepted": ["to help", "help"]}
+    ]},
+    {"id": 156, "pos": "verb", "verbForm": "past", "otherForm": 155, "words": [
+      {"id": "en177", "text": "helped", "rank": 154, "accepted": ["helped"]}
+    ]},
+    {"id": 157, "pos": "verb", "verbForm": "infinitive", "otherForm": 158, "words": [
+      {"id": "en178", "text": "to talk", "rank": 155, "accepted": ["to talk", "talk"]},
+      {"id": "en179", "text": "to speak", "rank": 306, "accepted": ["to speak", "speak"]}
+    ]},
+    {"id": 158, "pos": "verb", "verbForm": "past", "otherForm": 157, "words": [
+      {"id": "en180", "text": "talked", "rank": 155, "accepted": ["talked"]},
+      {"id": "en181", "text": "spoke", "rank": 306, "accepted": ["spoke"]}
+    ]},
+    {"id": 159, "pos": "question", "words": [
+      {"id": "en182", "text": "where", "rank": 156, "accepted": ["where"]}
+    ]},
+    {"id": 160, "pos": "noun", "words": [
+      {"id": "en183", "text": "problem", "rank": 158, "accepted": ["problem"]}
+    ]},
+    {"id": 161, "pos": "noun", "words": [
+      {"id": "en184", "text": "hand", "rank": 161, "accepted": ["hand"]}
+    ]},
+    {"id": 162, "pos": "verb", "verbForm": "infinitive", "otherForm": 163, "words": [
+      {"id": "en185", "text": "to show", "rank": 164, "accepted": ["to show", "show"]}
+    ]},
+    {"id": 163, "pos": "verb", "verbForm": "past", "otherForm": 162, "words": [
+      {"id": "en186", "text": "showed", "rank": 164, "accepted": ["showed"]}
+    ]},
+    {"id": 164, "pos": "noun", "words": [
+      {"id": "en187", "text": "part", "rank": 165, "accepted": ["part"]}
+    ]},
+    {"id": 165, "pos": "noun", "words": [
+      {"id": "en188", "text": "place", "rank": 167, "accepted": ["place"]}
+    ]},
+    {"id": 166, "pos": "adverb", "words": [
+      {"id": "en189", "text": "again", "rank": 169, "accepted": ["again"]}
+    ]},
+    {"id": 167, "pos": "noun", "words": [
+      {"id": "en190", "text": "week", "rank": 172, "accepted": ["week"]}
+    ]},
+    {"id": 168, "pos": "noun", "words": [
+      {"id": "en191", "text": "right (direction)", "rank": 176, "accepted": ["right"]}
+    ]},
+    {"id": 169, "pos": "adjective", "words": [
+      {"id": "en192", "text": "right (correct)", "rank": 176, "accepted": ["right"]},
+      {"id": "en193", "text": "true", "rank": 450, "accepted": ["true"]}
+    ]},
+    {"id": 170, "pos": "noun", "words": [
+      {"id": "en194", "text": "left (direction)", "rank": 177, "accepted": ["left"]}
+    ]},
+    {"id": 171, "pos": "verb", "verbForm": "infinitive", "otherForm": 172, "words": [
+      {"id": "en195", "text": "to hear", "rank": 179, "accepted": ["to hear", "hear"]}
+    ]},
+    {"id": 172, "pos": "verb", "verbForm": "past", "otherForm": 171, "words": [
+      {"id": "en196", "text": "heard", "rank": 179, "accepted": ["heard"]}
+    ]},
+    {"id": 173, "pos": "noun", "words": [
+      {"id": "en197", "text": "question", "rank": 180, "accepted": ["question"]}
+    ]},
+    {"id": 174, "pos": "verb", "verbForm": "infinitive", "otherForm": 175, "words": [
+      {"id": "en198", "text": "to play", "rank": 182, "accepted": ["to play", "play"]}
+    ]},
+    {"id": 175, "pos": "verb", "verbForm": "past", "otherForm": 174, "words": [
+      {"id": "en199", "text": "played", "rank": 182, "accepted": ["played"]}
+    ]},
+    {"id": 176, "pos": "verb", "verbForm": "infinitive", "otherForm": 177, "words": [
+      {"id": "en200", "text": "to run", "rank": 184, "accepted": ["to run", "run"]}
+    ]},
+    {"id": 177, "pos": "verb", "verbForm": "past", "otherForm": 176, "words": [
+      {"id": "en201", "text": "ran", "rank": 184, "accepted": ["ran"]}
+    ]},
+    {"id": 178, "pos": "adjective", "words": [
+      {"id": "en202", "text": "small", "rank": 185, "accepted": ["small"]},
+      {"id": "en203", "text": "little", "rank": 234, "accepted": ["little"]}
+    ]},
+    {"id": 179, "pos": "noun", "words": [
+      {"id": "en204", "text": "number", "rank": 186, "accepted": ["number"]}
+    ]},
+    {"id": 180, "pos": "adverb", "words": [
+      {"id": "en205", "text": "always", "rank": 188, "accepted": ["always"]}
+    ]},
+    {"id": 181, "pos": "verb", "verbForm": "infinitive", "otherForm": 182, "words": [
+      {"id": "en206", "text": "to move", "rank": 189, "accepted": ["to move", "move"]}
+    ]},
+    {"id": 182, "pos": "verb", "verbForm": "past", "otherForm": 181, "words": [
+      {"id": "en207", "text": "moved", "rank": 189, "accepted": ["moved"]}
+    ]},
+    {"id": 183, "pos": "noun", "words": [
+      {"id": "en208", "text": "night", "rank": 190, "accepted": ["night"]}
+    ]},
+    {"id": 184, "pos": "verb", "verbForm": "infinitive", "otherForm": 185, "words": [
+      {"id": "en209", "text": "to live (be alive)", "rank": 191, "accepted": ["to live", "live"]}
+    ]},
+    {"id": 185, "pos": "verb", "verbForm": "past", "otherForm": 184, "words": [
+      {"id": "en210", "text": "lived (was alive)", "rank": 191, "accepted": ["lived"]}
+    ]},
+    {"id": 186, "pos": "verb", "verbForm": "infinitive", "otherForm": 187, "words": [
+      {"id": "en211", "text": "to live (in a place)", "rank": 191, "accepted": ["to live", "live"]}
+    ]},
+    {"id": 187, "pos": "verb", "verbForm": "past", "otherForm": 186, "words": [
+      {"id": "en212", "text": "lived (in a place)", "rank": 191, "accepted": ["lived"]}
+    ]},
+    {"id": 188, "pos": "verb", "verbForm": "infinitive", "otherForm": 189, "words": [
+      {"id": "en213", "text": "to believe", "rank": 193, "accepted": ["to believe", "believe"]}
+    ]},
+    {"id": 189, "pos": "verb", "verbForm": "past", "otherForm": 188, "words": [
+      {"id": "en214", "text": "believed", "rank": 193, "accepted": ["believed"]}
+    ]},
+    {"id": 190, "pos": "verb", "verbForm": "infinitive", "otherForm": 191, "words": [
+      {"id": "en215", "text": "to hold", "rank": 194, "accepted": ["to hold", "hold"]}
+    ]},
+    {"id": 191, "pos": "verb", "verbForm": "past", "otherForm": 190, "words": [
+      {"id": "en216", "text": "held", "rank": 194, "accepted": ["held"]}
+    ]},
+    {"id": 192, "pos": "adverb", "words": [
+      {"id": "en217", "text": "today", "rank": 195, "accepted": ["today"]}
+    ]},
+    {"id": 193, "pos": "verb", "verbForm": "infinitive", "otherForm": 194, "words": [
+      {"id": "en218", "text": "to bring", "rank": 196, "accepted": ["to bring", "bring"]}
+    ]},
+    {"id": 194, "pos": "verb", "verbForm": "past", "otherForm": 193, "words": [
+      {"id": "en219", "text": "brought", "rank": 196, "accepted": ["brought"]}
+    ]},
+    {"id": 195, "pos": "verb", "verbForm": "infinitive", "otherForm": 196, "words": [
+      {"id": "en220", "text": "to happen", "rank": 197, "accepted": ["to happen", "happen"]}
+    ]},
+    {"id": 196, "pos": "verb", "verbForm": "past", "otherForm": 195, "words": [
+      {"id": "en221", "text": "happened", "rank": 197, "accepted": ["happened"]}
+    ]},
+    {"id": 197, "pos": "preposition", "words": [
+      {"id": "en222", "text": "without", "rank": 199, "accepted": ["without"]}
+    ]},
+    {"id": 198, "pos": "preposition", "words": [
+      {"id": "en223", "text": "before", "rank": 200, "accepted": ["before"]}
+    ]},
+    {"id": 199, "pos": "noun", "words": [
+      {"id": "en224", "text": "house", "rank": 235, "accepted": ["house"]},
+      {"id": "en225", "text": "home", "rank": 204, "accepted": ["home"]}
+    ]},
+    {"id": 200, "pos": "preposition", "words": [
+      {"id": "en226", "text": "under", "rank": 205, "accepted": ["under"]}
+    ]},
+    {"id": 201, "pos": "noun", "words": [
+      {"id": "en227", "text": "water", "rank": 206, "accepted": ["water"]}
+    ]},
+    {"id": 202, "pos": "noun", "words": [
+      {"id": "en228", "text": "room", "rank": 207, "accepted": ["room"]}
+    ]},
+    {"id": 203, "pos": "verb", "verbForm": "infinitive", "otherForm": 204, "words": [
+      {"id": "en229", "text": "to write", "rank": 208, "accepted": ["to write", "write"]}
+    ]},
+    {"id": 204, "pos": "verb", "verbForm": "past", "otherForm": 203, "words": [
+      {"id": "en230", "text": "wrote", "rank": 208, "accepted": ["wrote"]}
+    ]},
+    {"id": 205, "pos": "noun", "words": [
+      {"id": "en231", "text": "mother", "rank": 209, "accepted": ["mother"]}
+    ]},
+    {"id": 206, "pos": "noun", "words": [
+      {"id": "en232", "text": "money", "rank": 212, "accepted": ["money"]}
+    ]},
+    {"id": 207, "pos": "noun", "words": [
+      {"id": "en233", "text": "story", "rank": 213, "accepted": ["story"]}
+    ]},
+    {"id": 208, "pos": "adjective", "words": [
+      {"id": "en234", "text": "young", "rank": 214, "accepted": ["young"]}
+    ]},
+    {"id": 209, "pos": "noun", "words": [
+      {"id": "en235", "text": "month", "rank": 216, "accepted": ["month"]}
+    ]},
+    {"id": 210, "pos": "adjective", "words": [
+      {"id": "en236", "text": "different", "rank": 217, "accepted": ["different"]}
+    ]},
+    {"id": 211, "pos": "verb", "verbForm": "infinitive", "otherForm": 212, "words": [
+      {"id": "en237", "text": "to learn", "rank": 279, "accepted": ["to learn", "learn"]},
+      {"id": "en238", "text": "to study", "rank": 219, "accepted": ["to study", "study"]}
+    ]},
+    {"id": 212, "pos": "verb", "verbForm": "past", "otherForm": 211, "words": [
+      {"id": "en239", "text": "learned", "rank": 279, "accepted": ["learned"]},
+      {"id": "en240", "text": "studied", "rank": 219, "accepted": ["studied"]}
+    ]},
+    {"id": 213, "pos": "noun", "words": [
+      {"id": "en241", "text": "book", "rank": 220, "accepted": ["book"]}
+    ]},
+    {"id": 214, "pos": "noun", "words": [
+      {"id": "en242", "text": "eye", "rank": 221, "accepted": ["eye"]}
+    ]},
+    {"id": 215, "pos": "noun", "words": [
+      {"id": "en243", "text": "word", "rank": 223, "accepted": ["word"]}
+    ]},
+    {"id": 216, "pos": "noun", "words": [
+      {"id": "en244", "text": "kind (type)", "rank": 228, "accepted": ["kind"]}
+    ]},
+    {"id": 217, "pos": "adjective", "words": [
+      {"id": "en245", "text": "kind (nice)", "rank": 228, "accepted": ["kind"]}
+    ]},
+    {"id": 218, "pos": "number", "words": [
+      {"id": "en246", "text": "four", "rank": 229, "accepted": ["four"]}
+    ]},
+    {"id": 219, "pos": "noun", "words": [
+      {"id": "en247", "text": "head", "rank": 230, "accepted": ["head"]}
+    ]},
+    {"id": 220, "pos": "adjective", "words": [
+      {"id": "en248", "text": "far", "rank": 231, "accepted": ["far"]}
+    ]},
+    {"id": 221, "pos": "adjective", "words": [
+      {"id": "en249", "text": "black", "rank": 232, "accepted": ["black"]}
+    ]},
+    {"id": 222, "pos": "adjective", "words": [
+      {"id": "en250", "text": "long", "rank": 233, "accepted": ["long"]}
+    ]},
+    {"id": 223, "pos": "interjection", "words": [
+      {"id": "en251", "text": "yes", "rank": 236, "accepted": ["yes"]}
+    ]},
+    {"id": 224, "pos": "noun", "words": [
+      {"id": "en252", "text": "friend", "rank": 241, "accepted": ["friend"]}
+    ]},
+    {"id": 225, "pos": "adjective", "words": [
+      {"id": "en253", "text": "important", "rank": 242, "accepted": ["important"]}
+    ]},
+    {"id": 226, "pos": "noun", "words": [
+      {"id": "en254", "text": "father", "rank": 243, "accepted": ["father"]}
+    ]},
+    {"id": 227, "pos": "verb", "verbForm": "infinitive", "otherForm": 228, "words": [
+      {"id": "en255", "text": "to sit", "rank": 244, "accepted": ["to sit", "sit"]}
+    ]},
+    {"id": 228, "pos": "verb", "verbForm": "past", "otherForm": 227, "words": [
+      {"id": "en256", "text": "sat", "rank": 244, "accepted": ["sat"]}
+    ]},
+    {"id": 229, "pos": "preposition", "words": [
+      {"id": "en257", "text": "until", "rank": 246, "accepted": ["until"]}
+    ]},
+    {"id": 230, "pos": "noun", "words": [
+      {"id": "en258", "text": "hour", "rank": 248, "accepted": ["hour"]}
+    ]},
+    {"id": 231, "pos": "noun", "words": [
+      {"id": "en259", "text": "game", "rank": 249, "accepted": ["game"]}
+    ]},
+    {"id": 232, "pos": "adverb", "words": [
+      {"id": "en260", "text": "often", "rank": 250, "accepted": ["often"]}
+    ]},
+    {"id": 233, "pos": "verb", "verbForm": "infinitive", "otherForm": 234, "words": [
+      {"id": "en261", "text": "to stand", "rank": 257, "accepted": ["to stand", "stand"]}
+    ]},
+    {"id": 234, "pos": "verb", "verbForm": "past", "otherForm": 233, "words": [
+      {"id": "en262", "text": "stood", "rank": 257, "accepted": ["stood"]}
+    ]},
+    {"id": 235, "pos": "adjective", "words": [
+      {"id": "en263", "text": "bad", "rank": 258, "accepted": ["bad"]}
+    ]},
+    {"id": 236, "pos": "verb", "verbForm": "infinitive", "otherForm": 237, "words": [
+      {"id": "en264", "text": "to lose (something)", "rank": 259, "accepted": ["to lose", "lose"]}
+    ]},
+    {"id": 237, "pos": "verb", "verbForm": "past", "otherForm": 236, "words": [
+      {"id": "en265", "text": "lost (something)", "rank": 259, "accepted": ["lost"]}
+    ]},
+    {"id": 238, "pos": "verb", "verbForm": "infinitive", "otherForm": 239, "words": [
+      {"id": "en266", "text": "to lose (a game)", "rank": 259, "accepted": ["to lose", "lose"]}
+    ]},
+    {"id": 239, "pos": "verb", "verbForm": "past", "otherForm": 238, "words": [
+      {"id": "en267", "text": "lost (a game)", "rank": 259, "accepted": ["lost"]}
+    ]},
+    {"id": 240, "pos": "verb", "verbForm": "infinitive", "otherForm": 241, "words": [
+      {"id": "en268", "text": "to pay", "rank": 262, "accepted": ["to pay", "pay"]}
+    ]},
+    {"id": 241, "pos": "verb", "verbForm": "past", "otherForm": 240, "words": [
+      {"id": "en269", "text": "paid", "rank": 262, "accepted": ["paid"]}
+    ]},
+    {"id": 242, "pos": "verb", "verbForm": "infinitive", "otherForm": 243, "words": [
+      {"id": "en270", "text": "to meet", "rank": 264, "accepted": ["to meet", "meet"]}
+    ]},
+    {"id": 243, "pos": "verb", "verbForm": "past", "otherForm": 242, "words": [
+      {"id": "en271", "text": "met", "rank": 264, "accepted": ["met"]}
+    ]},
+    {"id": 244, "pos": "noun", "words": [
+      {"id": "en272", "text": "car", "rank": 265, "accepted": ["car"]}
+    ]},
+    {"id": 245, "pos": "noun", "words": [
+      {"id": "en273", "text": "city", "rank": 266, "accepted": ["city"]}
+    ]},
+    {"id": 246, "pos": "adverb", "words": [
+      {"id": "en274", "text": "almost", "rank": 267, "accepted": ["almost"]}
+    ]},
+    {"id": 247, "pos": "verb", "verbForm": "infinitive", "otherForm": 248, "words": [
+      {"id": "en275", "text": "to continue", "rank": 269, "accepted": ["to continue", "continue"]}
+    ]},
+    {"id": 248, "pos": "verb", "verbForm": "past", "otherForm": 247, "words": [
+      {"id": "en276", "text": "continued", "rank": 269, "accepted": ["continued"]}
+    ]},
+    {"id": 249, "pos": "adverb", "words": [
+      {"id": "en277", "text": "later", "rank": 271, "accepted": ["later"]}
+    ]},
+    {"id": 250, "pos": "noun", "words": [
+      {"id": "en278", "text": "name", "rank": 273, "accepted": ["name"]}
+    ]},
+    {"id": 251, "pos": "number", "words": [
+      {"id": "en279", "text": "five", "rank": 274, "accepted": ["five"]}
+    ]},
+    {"id": 252, "pos": "adjective", "words": [
+      {"id": "en280", "text": "white", "rank": 276, "accepted": ["white"]}
+    ]},
+    {"id": 253, "pos": "verb", "verbForm": "infinitive", "otherForm": 254, "words": [
+      {"id": "en281", "text": "to change", "rank": 281, "accepted": ["to change", "change"]}
+    ]},
+    {"id": 254, "pos": "verb", "verbForm": "past", "otherForm": 253, "words": [
+      {"id": "en282", "text": "changed", "rank": 281, "accepted": ["changed"]}
+    ]},
+    {"id": 255, "pos": "noun", "words": [
+      {"id": "en283", "text": "minute", "rank": 283, "accepted": ["minute"]}
+    ]},
+    {"id": 256, "pos": "noun", "words": [
+      {"id": "en284", "text": "idea", "rank": 286, "accepted": ["idea"]}
+    ]},
+    {"id": 257, "pos": "noun", "words": [
+      {"id": "en285", "text": "body", "rank": 288, "accepted": ["body"]}
+    ]},
+    {"id": 258, "pos": "pronoun", "words": [
+      {"id": "en286", "text": "nothing", "rank": 290, "accepted": ["nothing"]}
+    ]},
+    {"id": 259, "pos": "verb", "verbForm": "infinitive", "otherForm": 260, "words": [
+      {"id": "en287", "text": "to understand", "rank": 294, "accepted": ["to understand", "understand"]}
+    ]},
+    {"id": 260, "pos": "verb", "verbForm": "past", "otherForm": 259, "words": [
+      {"id": "en288", "text": "understood", "rank": 294, "accepted": ["understood"]}
+    ]},
+    {"id": 261, "pos": "verb", "verbForm": "infinitive", "otherForm": 262, "words": [
+      {"id": "en289", "text": "to watch", "rank": 296, "accepted": ["to watch", "watch"]}
+    ]},
+    {"id": 262, "pos": "verb", "verbForm": "past", "otherForm": 261, "words": [
+      {"id": "en290", "text": "watched", "rank": 296, "accepted": ["watched"]}
+    ]},
+    {"id": 263, "pos": "adverb", "words": [
+      {"id": "en291", "text": "together", "rank": 297, "accepted": ["together"]}
+    ]},
+    {"id": 264, "pos": "verb", "verbForm": "infinitive", "otherForm": 265, "words": [
+      {"id": "en292", "text": "to stop", "rank": 300, "accepted": ["to stop", "stop"]}
+    ]},
+    {"id": 265, "pos": "verb", "verbForm": "past", "otherForm": 264, "words": [
+      {"id": "en293", "text": "stopped", "rank": 300, "accepted": ["stopped"]}
+    ]},
+    {"id": 266, "pos": "noun", "words": [
+      {"id": "en294", "text": "face", "rank": 301, "accepted": ["face"]}
+    ]},
+    {"id": 267, "pos": "adverb", "words": [
+      {"id": "en295", "text": "already", "rank": 305, "accepted": ["already"]}
+    ]},
+    {"id": 268, "pos": "verb", "verbForm": "infinitive", "otherForm": 269, "words": [
+      {"id": "en296", "text": "to read", "rank": 308, "accepted": ["to read", "read"]}
+    ]},
+    {"id": 269, "pos": "verb", "verbForm": "past", "otherForm": 268, "words": [
+      {"id": "en297", "text": "read (past tense)", "rank": 308, "accepted": ["read"], "sayAs": "red (past tense)"}
+    ]},
+    {"id": 270, "pos": "noun", "words": [
+      {"id": "en298", "text": "door", "rank": 314, "accepted": ["door"]}
+    ]},
+    {"id": 271, "pos": "verb", "verbForm": "infinitive", "otherForm": 272, "words": [
+      {"id": "en299", "text": "to open", "rank": 325, "accepted": ["to open", "open"]}
+    ]},
+    {"id": 272, "pos": "verb", "verbForm": "past", "otherForm": 271, "words": [
+      {"id": "en300", "text": "opened", "rank": 325, "accepted": ["opened"]}
+    ]},
+    {"id": 273, "pos": "noun", "words": [
+      {"id": "en301", "text": "morning", "rank": 326, "accepted": ["morning"]}
+    ]},
+    {"id": 274, "pos": "verb", "verbForm": "infinitive", "otherForm": 275, "words": [
+      {"id": "en302", "text": "to win", "rank": 330, "accepted": ["to win", "win"]}
+    ]},
+    {"id": 275, "pos": "verb", "verbForm": "past", "otherForm": 274, "words": [
+      {"id": "en303", "text": "won", "rank": 330, "accepted": ["won"]}
+    ]},
+    {"id": 276, "pos": "noun", "words": [
+      {"id": "en304", "text": "girl", "rank": 332, "accepted": ["girl"]}
+    ]},
+    {"id": 277, "pos": "adjective", "words": [
+      {"id": "en305", "text": "early", "rank": 334, "accepted": ["early"]}
+    ]},
+    {"id": 278, "pos": "noun", "words": [
+      {"id": "en306", "text": "food", "rank": 335, "accepted": ["food"]}
+    ]},
+    {"id": 279, "pos": "noun", "words": [
+      {"id": "en307", "text": "teacher", "rank": 339, "accepted": ["teacher"]}
+    ]},
+    {"id": 280, "pos": "adverb", "words": [
+      {"id": "en308", "text": "enough", "rank": 342, "accepted": ["enough"]}
+    ]},
+    {"id": 281, "pos": "verb", "verbForm": "infinitive", "otherForm": 282, "words": [
+      {"id": "en309", "text": "to remember", "rank": 346, "accepted": ["to remember", "remember"]}
+    ]},
+    {"id": 282, "pos": "verb", "verbForm": "past", "otherForm": 281, "words": [
+      {"id": "en310", "text": "remembered", "rank": 346, "accepted": ["remembered"]}
+    ]},
+    {"id": 283, "pos": "noun", "words": [
+      {"id": "en311", "text": "foot", "rank": 347, "accepted": ["foot"]}
+    ]},
+    {"id": 284, "pos": "adverb", "words": [
+      {"id": "en312", "text": "maybe", "rank": 350, "accepted": ["maybe"]}
+    ]},
+    {"id": 285, "pos": "pronoun", "words": [
+      {"id": "en313", "text": "everything", "rank": 355, "accepted": ["everything"]}
+    ]},
+    {"id": 286, "pos": "noun", "words": [
+      {"id": "en314", "text": "music", "rank": 358, "accepted": ["music"]}
+    ]},
+    {"id": 287, "pos": "verb", "verbForm": "infinitive", "otherForm": 288, "words": [
+      {"id": "en315", "text": "to buy", "rank": 363, "accepted": ["to buy", "buy"]}
+    ]},
+    {"id": 288, "pos": "verb", "verbForm": "past", "otherForm": 287, "words": [
+      {"id": "en316", "text": "bought", "rank": 363, "accepted": ["bought"]}
+    ]},
+    {"id": 289, "pos": "adverb", "words": [
+      {"id": "en317", "text": "probably", "rank": 364, "accepted": ["probably"]}
+    ]},
+    {"id": 290, "pos": "verb", "verbForm": "infinitive", "otherForm": 291, "words": [
+      {"id": "en318", "text": "to wait", "rank": 366, "accepted": ["to wait", "wait"]}
+    ]},
+    {"id": 291, "pos": "verb", "verbForm": "past", "otherForm": 290, "words": [
+      {"id": "en319", "text": "waited", "rank": 366, "accepted": ["waited"]}
+    ]},
+    {"id": 292, "pos": "verb", "verbForm": "infinitive", "otherForm": 293, "words": [
+      {"id": "en320", "text": "to die", "rank": 369, "accepted": ["to die", "die"]}
+    ]},
+    {"id": 293, "pos": "verb", "verbForm": "past", "otherForm": 292, "words": [
+      {"id": "en321", "text": "died", "rank": 369, "accepted": ["died"]}
+    ]},
+    {"id": 294, "pos": "verb", "verbForm": "infinitive", "otherForm": 295, "words": [
+      {"id": "en322", "text": "to send", "rank": 370, "accepted": ["to send", "send"]}
+    ]},
+    {"id": 295, "pos": "verb", "verbForm": "past", "otherForm": 294, "words": [
+      {"id": "en323", "text": "sent", "rank": 370, "accepted": ["sent"]}
+    ]},
+    {"id": 296, "pos": "verb", "verbForm": "infinitive", "otherForm": 297, "words": [
+      {"id": "en324", "text": "to stay", "rank": 374, "accepted": ["to stay", "stay"]}
+    ]},
+    {"id": 297, "pos": "verb", "verbForm": "past", "otherForm": 296, "words": [
+      {"id": "en325", "text": "stayed", "rank": 374, "accepted": ["stayed"]}
+    ]},
+    {"id": 298, "pos": "verb", "verbForm": "infinitive", "otherForm": 299, "words": [
+      {"id": "en326", "text": "to fall", "rank": 375, "accepted": ["to fall", "fall"]}
+    ]},
+    {"id": 299, "pos": "verb", "verbForm": "past", "otherForm": 298, "words": [
+      {"id": "en327", "text": "fell", "rank": 375, "accepted": ["fell"]}
+    ]},
+    {"id": 300, "pos": "pronoun", "words": [
+      {"id": "en328", "text": "someone", "rank": 384, "accepted": ["someone"]}
+    ]},
+    {"id": 301, "pos": "preposition", "words": [
+      {"id": "en329", "text": "behind", "rank": 386, "accepted": ["behind"]}
+    ]},
+    {"id": 302, "pos": "number", "words": [
+      {"id": "en330", "text": "six", "rank": 390, "accepted": ["six"]}
+    ]},
+    {"id": 303, "pos": "noun", "words": [
+      {"id": "en331", "text": "class", "rank": 395, "accepted": ["class"]}
+    ]},
+    {"id": 304, "pos": "adjective", "words": [
+      {"id": "en332", "text": "late", "rank": 400, "accepted": ["late"]}
+    ]},
+    {"id": 305, "pos": "adjective", "words": [
+      {"id": "en333", "text": "hard", "rank": 401, "accepted": ["hard"]}
+    ]},
+    {"id": 306, "pos": "verb", "verbForm": "infinitive", "otherForm": 307, "words": [
+      {"id": "en334", "text": "to sell", "rank": 406, "accepted": ["to sell", "sell"]}
+    ]},
+    {"id": 307, "pos": "verb", "verbForm": "past", "otherForm": 306, "words": [
+      {"id": "en335", "text": "sold", "rank": 406, "accepted": ["sold"]}
+    ]},
+    {"id": 308, "pos": "adverb", "words": [
+      {"id": "en336", "text": "sometimes", "rank": 408, "accepted": ["sometimes"]}
+    ]},
+    {"id": 309, "pos": "verb", "verbForm": "infinitive", "otherForm": 310, "words": [
+      {"id": "en337", "text": "to decide", "rank": 418, "accepted": ["to decide", "decide"]}
+    ]},
+    {"id": 310, "pos": "verb", "verbForm": "past", "otherForm": 309, "words": [
+      {"id": "en338", "text": "decided", "rank": 418, "accepted": ["decided"]}
+    ]},
+    {"id": 311, "pos": "adjective", "words": [
+      {"id": "en339", "text": "strong", "rank": 420, "accepted": ["strong"]}
+    ]},
+    {"id": 312, "pos": "adjective", "words": [
+      {"id": "en340", "text": "possible", "rank": 421, "accepted": ["possible"]}
+    ]},
+    {"id": 313, "pos": "noun", "words": [
+      {"id": "en341", "text": "heart", "rank": 422, "accepted": ["heart"]}
+    ]},
+    {"id": 314, "pos": "noun", "words": [
+      {"id": "en342", "text": "voice", "rank": 426, "accepted": ["voice"]}
+    ]},
+    {"id": 315, "pos": "noun", "words": [
+      {"id": "en343", "text": "police", "rank": 428, "accepted": ["police"]}
+    ]},
+    {"id": 316, "pos": "adverb", "words": [
+      {"id": "en344", "text": "finally", "rank": 430, "accepted": ["finally"]}
+    ]},
+    {"id": 317, "pos": "verb", "verbForm": "infinitive", "otherForm": 318, "words": [
+      {"id": "en345", "text": "to return", "rank": 432, "accepted": ["to return", "return"]}
+    ]},
+    {"id": 318, "pos": "verb", "verbForm": "past", "otherForm": 317, "words": [
+      {"id": "en346", "text": "returned", "rank": 432, "accepted": ["returned"]}
+    ]},
+    {"id": 319, "pos": "noun", "words": [
+      {"id": "en347", "text": "price", "rank": 435, "accepted": ["price"]}
+    ]},
+    {"id": 320, "pos": "verb", "verbForm": "infinitive", "otherForm": 321, "words": [
+      {"id": "en348", "text": "to explain", "rank": 439, "accepted": ["to explain", "explain"]}
+    ]},
+    {"id": 321, "pos": "verb", "verbForm": "past", "otherForm": 320, "words": [
+      {"id": "en349", "text": "explained", "rank": 439, "accepted": ["explained"]}
+    ]},
+    {"id": 322, "pos": "noun", "words": [
+      {"id": "en350", "text": "son", "rank": 440, "accepted": ["son"]}
+    ]},
+    {"id": 323, "pos": "verb", "verbForm": "infinitive", "otherForm": 324, "words": [
+      {"id": "en351", "text": "to hope", "rank": 441, "accepted": ["to hope", "hope"]}
+    ]},
+    {"id": 324, "pos": "verb", "verbForm": "past", "otherForm": 323, "words": [
+      {"id": "en352", "text": "hoped", "rank": 441, "accepted": ["hoped"]}
+    ]},
+    {"id": 325, "pos": "noun", "words": [
+      {"id": "en353", "text": "road", "rank": 447, "accepted": ["road"]}
+    ]},
+    {"id": 326, "pos": "verb", "verbForm": "infinitive", "otherForm": 327, "words": [
+      {"id": "en354", "text": "to drive", "rank": 448, "accepted": ["to drive", "drive"]}
+    ]},
+    {"id": 327, "pos": "verb", "verbForm": "past", "otherForm": 326, "words": [
+      {"id": "en355", "text": "drove", "rank": 448, "accepted": ["drove"]}
+    ]},
+    {"id": 328, "pos": "noun", "words": [
+      {"id": "en356", "text": "arm", "rank": 449, "accepted": ["arm"]}
+    ]},
+    {"id": 329, "pos": "noun", "words": [
+      {"id": "en357", "text": "group", "rank": 150, "accepted": ["group"]},
+      {"id": "en358", "text": "team", "rank": 282, "accepted": ["team"]}
+    ]},
+    {"id": 330, "pos": "preposition", "words": [
+      {"id": "en359", "text": "against", "rank": 166, "accepted": ["against"]}
+    ]},
+    {"id": 331, "pos": "noun", "words": [
+      {"id": "en360", "text": "company", "rank": 173, "accepted": ["company"]}
+    ]},
+    {"id": 332, "pos": "noun", "words": [
+      {"id": "en361", "text": "system", "rank": 174, "accepted": ["system"]}
+    ]},
+    {"id": 333, "pos": "noun", "words": [
+      {"id": "en362", "text": "program", "rank": 178, "accepted": ["program"]}
+    ]},
+    {"id": 334, "pos": "preposition", "words": [
+      {"id": "en363", "text": "during", "rank": 181, "accepted": ["during"]}
+    ]},
+    {"id": 335, "pos": "noun", "words": [
+      {"id": "en364", "text": "government", "rank": 183, "accepted": ["government"]}
+    ]},
+    {"id": 336, "pos": "number", "words": [
+      {"id": "en365", "text": "million", "rank": 202, "accepted": ["million"]}
+    ]},
+    {"id": 337, "pos": "noun", "words": [
+      {"id": "en366", "text": "area", "rank": 210, "accepted": ["area"]}
+    ]},
+    {"id": 338, "pos": "noun", "words": [
+      {"id": "en367", "text": "fact", "rank": 215, "accepted": ["fact"]}
+    ]},
+    {"id": 339, "pos": "noun", "words": [
+      {"id": "en368", "text": "business", "rank": 225, "accepted": ["business"]}
+    ]},
+    {"id": 340, "pos": "noun", "words": [
+      {"id": "en369", "text": "side", "rank": 227, "accepted": ["side"]}
+    ]},
+    {"id": 341, "pos": "noun", "words": [
+      {"id": "en370", "text": "service", "rank": 239, "accepted": ["service"]}
+    ]},
+    {"id": 342, "pos": "adverb", "words": [
+      {"id": "en371", "text": "around", "rank": 240, "accepted": ["around"]}
+    ]},
+    {"id": 343, "pos": "noun", "words": [
+      {"id": "en372", "text": "power", "rank": 247, "accepted": ["power"]}
+    ]},
+    {"id": 344, "pos": "noun", "words": [
+      {"id": "en373", "text": "line", "rank": 252, "accepted": ["line"]}
+    ]},
+    {"id": 345, "pos": "noun", "words": [
+      {"id": "en374", "text": "end", "rank": 254, "accepted": ["end"]}
+    ]},
+    {"id": 346, "pos": "noun", "words": [
+      {"id": "en375", "text": "law", "rank": 263, "accepted": ["law"]}
+    ]},
+    {"id": 347, "pos": "noun", "words": [
+      {"id": "en376", "text": "community", "rank": 272, "accepted": ["community"]}
+    ]},
+    {"id": 348, "pos": "noun", "words": [
+      {"id": "en377", "text": "president", "rank": 278, "accepted": ["president"]}
+    ]},
+    {"id": 349, "pos": "noun", "words": [
+      {"id": "en378", "text": "information", "rank": 289, "accepted": ["information"]}
+    ]},
+    {"id": 350, "pos": "noun", "words": [
+      {"id": "en379", "text": "parent", "rank": 299, "accepted": ["parent"]}
+    ]},
+    {"id": 351, "pos": "noun", "words": [
+      {"id": "en380", "text": "level", "rank": 309, "accepted": ["level"]}
+    ]},
+    {"id": 352, "pos": "noun", "words": [
+      {"id": "en381", "text": "office", "rank": 312, "accepted": ["office"]}
+    ]},
+    {"id": 353, "pos": "noun", "words": [
+      {"id": "en382", "text": "health", "rank": 315, "accepted": ["health"]}
+    ]},
+    {"id": 354, "pos": "noun", "words": [
+      {"id": "en383", "text": "art", "rank": 317, "accepted": ["art"]}
+    ]},
+    {"id": 355, "pos": "noun", "words": [
+      {"id": "en384", "text": "war", "rank": 319, "accepted": ["war"]}
+    ]},
+    {"id": 356, "pos": "noun", "words": [
+      {"id": "en385", "text": "history", "rank": 320, "accepted": ["history"]}
+    ]},
+    {"id": 357, "pos": "noun", "words": [
+      {"id": "en386", "text": "party (celebration)", "rank": 321, "accepted": ["party"]}
+    ]},
+    {"id": 358, "pos": "noun", "words": [
+      {"id": "en387", "text": "party (political)", "rank": 321, "accepted": ["party"]}
+    ]},
+    {"id": 359, "pos": "noun", "words": [
+      {"id": "en388", "text": "reason", "rank": 328, "accepted": ["reason"]}
+    ]},
+    {"id": 360, "pos": "adjective", "words": [
+      {"id": "en389", "text": "low", "rank": 329, "accepted": ["low"]}
+    ]},
+    {"id": 361, "pos": "noun", "words": [
+      {"id": "en390", "text": "research", "rank": 331, "accepted": ["research"]}
+    ]},
+    {"id": 362, "pos": "noun", "words": [
+      {"id": "en391", "text": "moment", "rank": 336, "accepted": ["moment"]}
+    ]},
+    {"id": 363, "pos": "noun", "words": [
+      {"id": "en392", "text": "air", "rank": 338, "accepted": ["air"]}
+    ]},
+    {"id": 364, "pos": "noun", "words": [
+      {"id": "en393", "text": "education", "rank": 343, "accepted": ["education"]}
+    ]},
+    {"id": 365, "pos": "noun", "words": [
+      {"id": "en394", "text": "age", "rank": 353, "accepted": ["age"]}
+    ]}
+  ]
+}
