@@ -7,7 +7,14 @@ The user talks with an AI tutor and drills words and sentences out loud.
 
 `index.html` is Demo v2: a single-page prototype of the Chat screen
 (tap to talk, tutor replies with English, Hebrew and word breakdown, Phonon English voice,
-subtitle toggles, tap-to-flag, "How do I say it?").
+subtitle toggles, tap-to-flag, "How do I say it?"). Its code is split into a few plain files:
+
+| File | What it does |
+| --- | --- |
+| `app.js` | The Chat screen: buttons, messages, My words, Settings |
+| `services.js` | The swappable services: AI model (Groq or Gemini), speaking (Phonon or the browser voice), listening (browser speech recognition) |
+| `tutor.js` | Builds the tutor's instructions and checks its replies; tested by `tutor.test.mjs` |
+| `packs/en-he/pack.js` | The English-for-Hebrew-speakers language pack: languages, voices, tutor instructions, Drills files |
 
 `drills.js` is the Drills logic (spec sections 3.3, 6 and 8) as plain code, not yet connected
 to the page. Its automated tests are in `drills.test.mjs`; run them with `node --test`.
@@ -36,7 +43,17 @@ to the page. Its automated tests are in `drills.test.mjs`; run them with `node -
 - A checker tests every rule: `node tools/validate-drills.js`, or open
   `tools/validate-drills.html` in a browser.
 
-## Next step (build order step 2)
+## Done: build order step 2 (without the backend)
 
-Backend and real tutor: the services behind generic interfaces, a proper tutor prompt and a basic
-English language pack.
+- The services sit behind generic, swappable parts (`services.js`).
+- A proper tutor prompt (spec 5.11), built from the language pack and the learner profile: it
+  matches the learner's level, steers toward words in My words, recasts mistakes, reads through
+  speech-recognition errors, and marks words the learner struggled with (added to My words).
+- A basic English language pack (`packs/en-he/pack.js`).
+- "Start a conversation" lets the tutor open the session (spec 5.3).
+- **Not done yet: the backend.** API keys are still typed into Settings by each user. A small free
+  backend that holds the key is planned (spec 3.2); adding it means one more provider in `services.js`.
+
+## Next step (build order step 3)
+
+Chat mode completed: transcription, subtitles, replay and slower controls, corrections setting.
