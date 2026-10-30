@@ -12,7 +12,10 @@
    A tutor reply comes back as data (spec 3.2, Structured model replies). The JSON keys are the
    pack's language codes, so for English-for-Hebrew-speakers a sentence is {"en", "he", "words"}.
    parseReply turns it into the same shape for every pack:
-     { sentences: [ { target, native, words: [ { w, m } ] } ], struggled: [ { w, m } ] } */
+     { sentences: [ { target, native, words: [ { w, d, m } ] } ], struggled: [ { w, d, m } ] }
+   w is the word or phrase as written ("gave up"), d its dictionary form ("gave up"; "to run" for
+   "runs") and m its meaning in that same form. The app links d and m to a dictionary entry in
+   code (spec 3.2, Linking chat words to the dictionary; see dictionary.js). */
 
 /* How many flagged words the tutor is told about; the newest ones are kept. */
 export const MAX_PROFILE_WORDS = 20;
@@ -35,10 +38,12 @@ export function tutorPrompt(pack, profile = {}, settings = {}) {
 function replyFormat(pack) {
   const t = pack.target, n = pack.native;
   return `Reply ONLY with JSON, no other text:
-{"sentences":[{"${t.code}":"one sentence in ${t.name}","${n.code}":"its natural ${n.name} translation","words":[{"w":"word exactly as written in the sentence","m":"its ${n.name} meaning in this sentence"}]}],"struggled":[{"w":"${t.name} word","m":"${n.name} meaning"}]}
+{"sentences":[{"${t.code}":"one sentence in ${t.name}","${n.code}":"its natural ${n.name} translation","words":[{"w":"word or phrase exactly as written in the sentence","d":"its dictionary form","m":"its ${n.name} meaning in this sentence, in dictionary form"}]}],"struggled":[{"w":"${t.name} word or phrase","d":"its dictionary form","m":"${n.name} meaning, in dictionary form"}]}
 - One item in "sentences" per sentence you say.
 - In "words", list every content word of the sentence (skip words like a, the, is, and, to). Write ${n.name} meanings with nikkud if the language uses it.
-- In "struggled", list ${t.name} words the learner just tried to say but got wrong, avoided, or asked about. Usually empty.`;
+- A phrase whose meaning is more than its words (such as a phrasal verb or an idiom) is ONE item, not one item per word. A phrase whose meaning is just its words is split into its words.
+- Dictionary form: ${pack.tutor.dictionaryForm}
+- In "struggled", list ${t.name} words or phrases the learner just tried to say but got wrong, avoided, or asked about. Usually empty.`;
 }
 
 export function howDoISayPrompt(pack) {
@@ -55,7 +60,7 @@ export function extractJSON(text) {
 
 const str = v => typeof v === 'string' ? v.trim() : '';
 const wordList = a => (Array.isArray(a) ? a : [])
-  .map(x => ({ w: str(x && x.w), m: str(x && x.m) }))
+  .map(x => ({ w: str(x && x.w), d: str(x && x.d) || str(x && x.w), m: str(x && x.m) }))
   .filter(x => x.w);
 
 /* Checks a tutor reply and returns it in the shared shape. Throws if there is nothing to say. */
@@ -80,4 +85,24 @@ export function parsePhrase(text) {
 export function replyToHistory(pack, reply) {
   const t = pack.target.code, n = pack.native.code;
   return JSON.stringify({ sentences: reply.sentences.map(s => ({ [t]: s.target, [n]: s.native, words: s.words })), struggled: reply.struggled });
+}
+
+/* Splits a sentence into plain text and the words or phrases from its breakdown, so each can be
+   tapped: [ { text }, { text: 'gave up', word: { w, d, m } }, ... ]. Longer phrases win, and only
+   whole words match ("up" does not match inside "cup"). */
+export function markWords(text, words) {
+  const list = words.filter(x => x.w).slice().sort((a, b) => b.w.length - a.w.length);
+  const low = text.toLowerCase(), out = [];
+  const isLetter = c => !!c && /[\p{L}\p{M}'’]/u.test(c);
+  let i = 0, plain = '';
+  while (i < text.length) {
+    const hit = !isLetter(text[i - 1]) && list.find(x => low.startsWith(x.w.toLowerCase(), i) && !isLetter(text[i + x.w.length]));
+    if (hit) {
+      if (plain) out.push({ text: plain });
+      out.push({ text: text.slice(i, i + hit.w.length), word: hit });
+      plain = ''; i += hit.w.length;
+    } else plain += text[i++];
+  }
+  if (plain) out.push({ text: plain });
+  return out;
 }

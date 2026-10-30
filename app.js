@@ -1,8 +1,11 @@
 /* The Chat screen (demo). It wires the page to the language pack, the tutor and the services;
    the language pair, the tutor's instructions and the providers all live in those files. */
 import pack from './packs/en-he/pack.js';
-import { tutorPrompt, howDoISayPrompt, parseReply, parsePhrase, replyToHistory } from './tutor.js';
+import { tutorPrompt, howDoISayPrompt, parseReply, parsePhrase, replyToHistory, markWords } from './tutor.js';
 import { createAI, createSpeech, listen, canListen } from './services.js';
+import { buildIndex, findEntry } from './dictionary.js';
+import * as Words from './words.js';
+import * as store from './store.js';
 
 const $ = s => document.querySelector(s);
 const ld = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) || d; } catch (e) { return d; } };
@@ -10,7 +13,6 @@ const sv = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch
 const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 /* corrections: 'live' (as we go, the default), 'end' or 'off' (spec 5.10); its setting arrives in build step 3. */
 let S = Object.assign({ pv: 'groq', rk: '', gm: '', gk: '', model: 'gemini-3.8-flash', level: 'intermediate', en: 'on', he: 'tap', speed: '1', rateBy: 'phonon', corrections: 'live' }, ld('sp2_s', {}));
-let W = ld('sp_w', []);
 if (/2\.5/.test(S.model)) S.model = 'gemini-3.8-flash';
 const LV = { beginner: ['on', 'on'], intermediate: ['on', 'tap'], advanced: ['tap', 'tap'] };
 const setStatus = t => $('#st').textContent = t;
@@ -30,20 +32,55 @@ async function playAll(sentences) {
   for (const s of sentences) { if (id !== seq) return; await play(s.target, 'target'); }
 }
 
-/* ---------- Words ---------- */
-function flag(w, m, src) {
-  if (!W.some(x => x.w.toLowerCase() === w.toLowerCase())) { W.push({ w, m, src, t: Date.now() }); sv('sp_w', W); }
-  $('#wb').textContent = 'My words (' + W.length + ')';
+/* ---------- My words: saved on the device with scores (spec 8) ---------- */
+/* The dictionary, used to link flagged words to Drills entries. Without it, words are still saved. */
+let dict = null;
+const dictReady = Promise.all([pack.target.code, pack.native.code].map(c => fetch(pack.drills.dictionaries[c]).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })))
+  .then(([t, n]) => { dict = buildIndex(t, n); })
+  .catch(e => console.warn('Dictionary not loaded; words are saved without a link to Drills', e));
+const link = (form, meaning) => findEntry(dict, form, meaning);
+
+const W = new Map(); // id -> record
+const byNewest = () => [...W.values()].sort((a, b) => b.modified - a.modified);
+const countWords = () => { $('#wb').textContent = 'My words (' + W.size + ')'; };
+/* Loads the saved words, and carries over the first demo's list (kept in localStorage) once. */
+const wordsReady = (async () => {
+  for (const r of await store.allWords()) W.set(r.id, r);
+  const old = ld('sp_w', null);
+  if (old) {
+    await dictReady;
+    const moved = Words.fromOldList(old, link, pack.target.code).filter(r => !W.has(r.id));
+    await store.putWords(moved);
+    moved.forEach(r => W.set(r.id, r));
+    try { localStorage.removeItem('sp_w'); } catch (e) {}
+  }
+  if (!(await store.available())) toast('This browser is not saving data (private window?). My words will be lost when you close it.');
+  countWords();
+})().catch(e => { console.error(e); toast('Could not load My words: ' + e.message); });
+
+/* info = { text, form, meaning, example, source }; form is the dictionary form used for the link. */
+async function flag(info) {
+  await wordsReady;
+  const entry = link(info.form || info.text, info.meaning);
+  const id = Words.wordId(info.text, entry);
+  const r = Words.flag(W.get(id), Object.assign({ entry, lang: pack.target.code }, info), Date.now());
+  W.set(id, r); countWords();
+  try { await store.putWord(r); } catch (e) { toast('Could not save the word: ' + e.message); }
+  return r;
 }
-function openWord(w, m) {
-  flag(w, m, 'tapped');
-  $('#wd').innerHTML = `<h3>${esc(w)}</h3><p dir="rtl" style="font-size:18px;margin:4px 0 12px">${esc(m)}</p><button class="pill" id="wp">▶ Hear it</button><p class="note" style="margin-top:12px">Flagged for practice.</p><button class="close" onclick="this.closest('dialog').close()">Close</button>`;
-  $('#wp').onclick = () => { stopAudio(); play(w, 'target'); };
+function openWord(info) {
+  const entry = link(info.form || info.text, info.meaning), text = entry ? entry.text : info.text;
+  $('#wd').innerHTML = `<h3>${esc(text)}</h3><p dir="rtl" style="font-size:18px;margin:4px 0 12px">${esc(info.meaning)}</p><button class="pill" id="wp">▶ Hear it</button><p class="note" style="margin-top:12px">Flagged for practice.</p><button class="close" onclick="this.closest('dialog').close()">Close</button>`;
+  $('#wp').onclick = () => { stopAudio(); play(text, 'target'); };
   $('#wd').showModal();
+  flag(Object.assign({ source: 'tapped' }, info));
 }
-$('#wb').onclick = () => {
-  $('#wl').innerHTML = '<h3>My words</h3>' + (W.length ? W.map((x, i) => `<div class="row"><span><b>${esc(x.w)}</b><br><small dir="auto">${esc(x.m)}</small></span><button class="ic" data-i="${i}" aria-label="Hear ${esc(x.w)}">▶</button></div>`).join('') : '<p class="note">Nothing yet. Tap a highlighted word in the tutor\'s sentences, or use How do I say it?</p>') + '<button class="close" onclick="this.closest(\'dialog\').close()">Close</button>';
-  $('#wl').querySelectorAll('.ic').forEach(b => b.onclick = () => { stopAudio(); play(W[b.dataset.i].w, 'target'); });
+const dots = rec => { const n = Words.score(rec); return '●'.repeat(n) + '○'.repeat(Words.MAX_SCORE - n); };
+$('#wb').onclick = async () => {
+  await wordsReady;
+  const list = byNewest();
+  $('#wl').innerHTML = '<h3>My words</h3>' + (list.length ? '<p class="note">Scores: ● fills up as you get a word right in Drills (coming in a later step). Every word starts empty.</p>' + list.map(x => `<div class="row"><span><b>${esc(x.text)}</b><br><small dir="auto">${esc(x.meaning)}</small><br><small class="sc">Understands <span aria-label="${Words.score(x.understand)} of ${Words.MAX_SCORE}">${dots(x.understand)}</span> · Can say <span aria-label="${Words.score(x.say)} of ${Words.MAX_SCORE}">${dots(x.say)}</span></small>${x.entry ? '' : '<br><small class="sc">Not in the Drills dictionary</small>'}</span><button class="ic" data-id="${esc(x.id)}" aria-label="Hear ${esc(x.text)}">▶</button></div>`).join('') : '<p class="note">Nothing yet. Tap a highlighted word in the tutor\'s sentences, or use How do I say it?</p>') + '<button class="close" onclick="this.closest(\'dialog\').close()">Close</button>';
+  $('#wl').querySelectorAll('.ic').forEach(b => b.onclick = () => { stopAudio(); play(W.get(b.dataset.id).text, 'target'); });
   $('#wl').showModal();
 };
 
@@ -51,10 +88,9 @@ $('#wb').onclick = () => {
 function add(el) { const e = $('#empty'); if (e) e.remove(); $('#chat').appendChild(el); $('#chat').scrollTop = 1e9; return el; }
 function addUser(t, live) { const d = document.createElement('div'); d.className = 'msg user' + (live ? ' live' : ''); d.textContent = t; return add(d); }
 function wrap(text, words) {
-  return text.split(/([A-Za-z']+)/).map(p => {
-    const f = /^[A-Za-z']+$/.test(p) && words.find(x => x.w.toLowerCase() === p.toLowerCase());
-    return f ? `<span class="w" data-w="${esc(p)}" data-m="${esc(f.m)}">${esc(p)}</span>` : esc(p);
-  }).join('');
+  return markWords(text, words).map(p => p.word
+    ? `<span class="w" data-w="${esc(p.text)}" data-d="${esc(p.word.d)}" data-m="${esc(p.word.m)}">${esc(p.text)}</span>`
+    : esc(p.text)).join('');
 }
 function addTutor(reply) {
   const box = document.createElement('div'); box.className = 'msg tutor';
@@ -73,12 +109,12 @@ $('#chat').addEventListener('click', e => {
   if (!l) return;
   if (l.classList.contains('tap') && !l.classList.contains('shown')) { l.classList.add('shown'); return; }
   const w = e.target.closest('.w');
-  if (w) openWord(w.dataset.w, w.dataset.m);
+  if (w) openWord({ text: w.dataset.d, form: w.dataset.d, meaning: w.dataset.m, example: w.closest('.sent').dataset.target });
 });
 
 /* ---------- Talking with the tutor ---------- */
 let msgs = [], busy = false, rec = null, liveEl = null;
-const profile = () => ({ level: S.level, words: W });
+const profile = () => ({ level: S.level, words: byNewest().reverse().map(r => ({ w: r.text, m: r.meaning })) });
 function ui() {
   const m = rec && rec.mode;
   $('#mic').className = m === 'talk' ? 'rec' : '';
@@ -101,7 +137,7 @@ async function askTutor() {
   const reply = parseReply(pack, await ai.complete(tutorPrompt(pack, profile(), S), msgs));
   setStatus(ai.label() + ' replied in ' + ((Date.now() - t0) / 1000).toFixed(1) + 's');
   msgs.push({ role: 'assistant', content: replyToHistory(pack, reply) });
-  reply.struggled.forEach(x => flag(x.w, x.m, 'model-detected'));
+  reply.struggled.forEach(x => flag({ text: x.d, form: x.d, meaning: x.m, source: 'model-detected' }));
   addTutor(reply); playAll(reply.sentences);
 }
 function toggle(mode) {
@@ -140,7 +176,7 @@ async function sayFlow(he) {
   let en;
   try { en = parsePhrase(await ai.complete(howDoISayPrompt(pack), [{ role: 'user', content: he }])); }
   catch (e) { c.remove(); throw e; }
-  flag(en, he, 'how-do-I-say-it');
+  flag({ text: en, meaning: he, source: 'how-do-I-say-it' });
   c.innerHTML = `<p class="he-live" dir="rtl" lang="he">${esc(he)}</p><div class="sent" data-target="${esc(en)}"><div class="line en"><span class="t big">${esc(en)}</span><button class="ic" data-a="target" aria-label="Play phrase">▶</button></div></div><p class="note">Saved to My words. Now say it in the conversation.</p>`;
   $('#chat').scrollTop = 1e9; play(en, 'target');
 }
@@ -165,5 +201,5 @@ $('#save').onclick = () => {
   sv('sp2_s', S); $('#set').close(); speech.load();
 };
 $('#sp').onchange = e => { S.speed = e.target.value; sv('sp2_s', S); speech.load(); };
-fill(); $('#wb').textContent = 'My words (' + W.length + ')';
+fill();
 if (!ai.hasKey()) setTimeout(() => $('#set').showModal(), 300);

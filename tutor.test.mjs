@@ -39,11 +39,11 @@ test('the tutor is told about the newest flagged words and weak spots', () => {
 });
 
 test('a reply is read into the shared shape', () => {
-  const text = 'Sure! ```json\n{"sentences":[{"en":"Do you like ships?","he":"אתה אוהב ספינות?","words":[{"w":"like","m":"אוהב"},{"w":"ships","m":"ספינות"}]}],"struggled":[{"w":"ship","m":"ספינה"}]}\n```';
+  const text = 'Sure! ```json\n{"sentences":[{"en":"Do you like ships?","he":"אתה אוהב ספינות?","words":[{"w":"like","d":"to like","m":"לֶאֱהוֹב"},{"w":"ships","d":"ship","m":"סְפִינָה"}]}],"struggled":[{"w":"ship","m":"ספינה"}]}\n```';
   const r = T.parseReply(pack, text);
   assert.deepEqual(r, {
-    sentences: [{ target: 'Do you like ships?', native: 'אתה אוהב ספינות?', words: [{ w: 'like', m: 'אוהב' }, { w: 'ships', m: 'ספינות' }] }],
-    struggled: [{ w: 'ship', m: 'ספינה' }],
+    sentences: [{ target: 'Do you like ships?', native: 'אתה אוהב ספינות?', words: [{ w: 'like', d: 'to like', m: 'לֶאֱהוֹב' }, { w: 'ships', d: 'ship', m: 'סְפִינָה' }] }],
+    struggled: [{ w: 'ship', d: 'ship', m: 'ספינה' }], // a missing dictionary form falls back to the word as written
   });
 });
 
@@ -60,7 +60,7 @@ test('replies with nothing to say are refused', () => {
 });
 
 test('a reply survives the round trip into the conversation history', () => {
-  const r = T.parseReply(pack, '{"sentences":[{"en":"Hi.","he":"היי.","words":[{"w":"Hi","m":"היי"}]}]}');
+  const r = T.parseReply(pack, '{"sentences":[{"en":"Hi.","he":"היי.","words":[{"w":"Hi","d":"hi","m":"היי"}]}]}');
   assert.deepEqual(T.parseReply(pack, T.replyToHistory(pack, r)), r);
 });
 
@@ -68,4 +68,20 @@ test('How do I say it: prompt and reply', () => {
   assert.ok(T.howDoISayPrompt(pack).includes('"phrase"'));
   assert.equal(T.parsePhrase('{"phrase":" I would like a coffee "}'), 'I would like a coffee');
   assert.throws(() => T.parsePhrase('{"phrase":""}'), /empty/);
+});
+
+test('the reply format asks for dictionary forms and phrases', () => {
+  const p = T.tutorPrompt(pack);
+  assert.ok(p.includes('"d":"its dictionary form"'));
+  assert.ok(p.includes(pack.tutor.dictionaryForm));
+  assert.ok(p.includes('phrasal verb'));
+});
+
+test('words and phrases are marked in the sentence', () => {
+  const words = [{ w: 'up', d: 'up', m: '' }, { w: 'gave up', d: 'gave up', m: 'וִיתֵּר' }, { w: 'cigarettes', d: 'cigarette', m: 'סִיגַרְיָה' }];
+  const parts = T.markWords('I gave up cigarettes. Cup up!', words);
+  assert.deepEqual(parts.map(p => p.word ? '[' + p.text + ']' : p.text).join(''), 'I [gave up] [cigarettes]. Cup [up]!');
+  assert.equal(parts[1].word.d, 'gave up');
+  assert.deepEqual(T.markWords('Gave Up.', words).map(p => p.text), ['Gave Up', '.']); // any letter case
+  assert.deepEqual(T.markWords('No words here.', []), [{ text: 'No words here.' }]);
 });

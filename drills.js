@@ -151,16 +151,21 @@ export function review(record, correct, now) {
 /* Flags a word from Chat or Guide (spec 6.4, 8). source: 'tapped' or 'model-detected'
    point at understanding; 'how-do-I-say-it' at speaking.
    DEFAULT: those sources pick the direction; any other source flags both. */
+export const flagDirections = source =>
+  source === 'how-do-I-say-it' ? ['say'] : /^(tapped|model-detected)$/.test(source) ? ['understand'] : ['understand', 'say'];
+
+/* Marks one direction's record as weak and due now. */
+export function markFlagged(record, source, now) {
+  record.weak = true;
+  record.streak = 0;
+  record.due = now;
+  record.flags.push({ source, time: now });
+  record.modified = now;
+  return record;
+}
+
 export function flagWord(profile, ref, source, now) {
-  const dirs = source === 'how-do-I-say-it' ? ['say'] : /^(tapped|model-detected)$/.test(source) ? ['understand'] : ['understand', 'say'];
-  for (const dir of dirs) {
-    const r = ensureRecord(profile, ref, dir, now);
-    r.weak = true;
-    r.streak = 0;
-    r.due = now;
-    r.flags.push({ source, time: now });
-    r.modified = now;
-  }
+  for (const dir of flagDirections(source)) markFlagged(ensureRecord(profile, ref, dir, now), source, now);
 }
 
 /* ---------- Word states ---------- */
