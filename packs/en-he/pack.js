@@ -48,6 +48,10 @@ export default {
       end: 'Do not point out mistakes during the conversation; just use the correct form naturally in your reply. Mistakes are reviewed at the end of the session.',
       off: 'Do not point out mistakes. Only use the correct form naturally in your reply.',
     },
+    /* How words are written in the "d" field of a reply, so the app can find them in the
+       dictionary (spec 3.3: Dictionary forms, Phrases, Verbs). */
+    dictionaryForm: 'nouns singular ("cigarette"); adjectives and adverbs plain ("last"); a verb in the simple past stays in the simple past ("gave", "gave up"); every other verb form becomes "to" + the base form ("runs", "running" and "run" all become "to run"; "giving up" becomes "to give up"). ' +
+      'The Hebrew meaning follows the same rule: a noun in the singular without ה or other attached letters, a past verb in the masculine singular past (וִיתֵּר), any other verb as an infinitive (לְוַתֵּר).',
     /* The opening line when the learner starts a session without saying anything yet. */
     opener: 'Start the conversation: greet the learner briefly and ask one easy, open question, picked to suit their level and weak spots.',
   },

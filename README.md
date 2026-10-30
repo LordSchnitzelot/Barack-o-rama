@@ -14,6 +14,9 @@ subtitle toggles, tap-to-flag, "How do I say it?"). Its code is split into a few
 | `app.js` | The Chat screen: buttons, messages, My words, Settings |
 | `services.js` | The swappable services: AI model (Groq or Gemini), speaking (Phonon or the browser voice), listening (browser speech recognition) |
 | `tutor.js` | Builds the tutor's instructions and checks its replies; tested by `tutor.test.mjs` |
+| `words.js` | My words: each saved word with its two scores; tested by `words.test.mjs` |
+| `dictionary.js` | Links words from the tutor's replies to dictionary entries; tested by `dictionary.test.mjs` |
+| `store.js` | Saves My words on the device (IndexedDB) |
 | `packs/en-he/pack.js` | The English-for-Hebrew-speakers language pack: languages, voices, tutor instructions, Drills files |
 
 `drills.js` is the Drills logic (spec sections 3.3, 6 and 8) as plain code, not yet connected
@@ -23,7 +26,7 @@ to the page. Its automated tests are in `drills.test.mjs`; run them with `node -
 
 - **Never put API keys in this repository.** The demo asks each user to type their own key
   in Settings, and it is stored only in that user's browser.
-- The full project spec is [SPEC.md](SPEC.md) (v3.6). It is the source of truth.
+- The full project spec is [SPEC.md](SPEC.md) (v3.7). It is the source of truth.
 - Rules for working on the project are in [CLAUDE.md](CLAUDE.md).
 
 ## Done: build order step 1
@@ -54,6 +57,17 @@ to the page. Its automated tests are in `drills.test.mjs`; run them with `node -
 - **Not done yet: the backend.** API keys are still typed into Settings by each user. A small free
   backend that holds the key is planned (spec 3.2); adding it means one more provider in `services.js`.
 
+## Done: build order step 4 (profile storage on the device)
+
+- My words is saved in IndexedDB, the browser's built-in database. The old list from the first
+  demo is carried over automatically.
+- Each word has two scores, "understands" and "can say", plus its next review time (spec 8).
+  Tapping a word flags "understands"; "How do I say it?" flags "can say". Scores rise in Drills
+  (build step 7).
+- Each word or phrase in a tutor reply carries its dictionary form, and the app links it to the
+  Drills dictionary in code (spec 3.2). Phrases like "gave up" are one tappable unit.
+
 ## Next step (build order step 3)
 
 Chat mode completed: transcription, subtitles, replay and slower controls, corrections setting.
+(Step 4 was built before step 3, at the owner's request.)

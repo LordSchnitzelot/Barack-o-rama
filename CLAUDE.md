@@ -27,10 +27,12 @@
 ## Project notes
 - `index.html` is the demo page (plain HTML and CSS). Its code: `app.js` (the screen), `services.js`
   (AI model, speaking and listening behind swappable providers), `tutor.js` (tutor instructions and
-  reply checking, tested by `tutor.test.mjs`) and `packs/en-he/pack.js` (the language pack).
+  reply checking, tested by `tutor.test.mjs`), `words.js` (My words records and scores),
+  `dictionary.js` (links chat words to dictionary entries), `store.js` (IndexedDB) and
+  `packs/en-he/pack.js` (the language pack).
   These are ES modules, so the page must be opened over http(s), not as a local file.
 - `drills.js` is the Drills logic (no screen yet); `drills.test.mjs` tests it. Run `node --test`
-  after any change to it or to `tutor.js`. Choices for the spec's open questions are marked `DEFAULT (open question)`.
+  after any change to it or to any other file with a `.test.mjs` partner. Choices for the spec's open questions are marked `DEFAULT (open question)`.
 - English voice: Phonon (`phonon-tts`, pinned to an exact version) running in the browser.
   Hebrew voice and speech recognition: the browser's own.
 - Phonon's speaking rate (`duration_delta`) is fixed when the model loads, so changing speed
