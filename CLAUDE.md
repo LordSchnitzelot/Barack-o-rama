@@ -25,7 +25,9 @@
 - The app must keep working as plain static files (no build step) unless the spec says otherwise.
 
 ## Project notes
-- `index.html` is the demo page (plain HTML and CSS). Its code: `app.js` (the screen), `services.js`
+- `index.html` is the page (plain HTML and CSS): a home screen with Chat, Guide and Drills. Its code:
+  `app.js` (home, Settings, My words), `shell.js` (what all screens share), `talk.js` (the Chat and
+  Guide screen, with the session summary), `drill-screen.js` (the Drills screen), `services.js`
   (AI model, speaking and listening behind swappable providers), `tutor.js` (tutor instructions and
   reply checking, tested by `tutor.test.mjs`), `words.js` (My words records and scores),
   `dictionary.js` (links chat words to dictionary entries), `store.js` (IndexedDB) and

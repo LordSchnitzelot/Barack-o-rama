@@ -20,13 +20,19 @@
 /* How many flagged words the tutor is told about; the newest ones are kept. */
 export const MAX_PROFILE_WORDS = 20;
 
-export function tutorPrompt(pack, profile = {}, settings = {}) {
+/* mode: 'chat' (free conversation) or 'guide' (teacher-style lesson with exercises, spec 5.1). */
+export function tutorPrompt(pack, profile = {}, settings = {}, mode = 'chat') {
   const T = pack.tutor, t = pack.target;
   const level = T.levels[profile.level] || T.levels.intermediate;
   const corrections = T.corrections[settings.corrections] || T.corrections.live;
   const words = (profile.words || []).slice(-MAX_PROFILE_WORDS);
   const spots = profile.weakSpots || [];
-  const lines = [T.role, '', 'How to teach:', ...T.rules.map(r => '- ' + r), '- ' + corrections, '', 'The learner:', '- ' + level];
+  const lines = [T.role, '', 'How to teach:', ...T.rules.map(r => '- ' + r), '- ' + corrections];
+  if (mode === 'guide') {
+    const G = pack.guide;
+    lines.push('', G.role, 'Exercise types:', ...G.exercises.map(x => `- ${x.name}: ${x.how}`), ...G.rules.map(r => '- ' + r));
+  }
+  lines.push('', 'The learner:', '- ' + level);
   if (words.length) lines.push(`- Words they are practicing (${t.name}, with meaning). Bring a few of them into the conversation: ` +
     words.map(x => x.m ? `${x.w} (${x.m})` : x.w).join(', ') + '.');
   if (spots.length) lines.push('- Weak spots to work on: ' + spots.join('; ') + '.');
@@ -145,4 +151,39 @@ export function joinSplitPhrases(text, words, particles = []) {
     }
   });
   return joined.length ? words.filter(x => !used.has(x)).concat(joined) : words;
+}
+
+/* ---------- End of session (spec 5.13) ---------- */
+
+/* The conversation as plain text, for the summary. Tutor turns are stored as JSON. */
+export function transcriptText(pack, msgs) {
+  return msgs.map(m => {
+    if (m.role === 'user') return /^\(The learner has just opened/.test(m.content) ? null : 'Learner: ' + m.content;
+    try { return 'Tutor: ' + JSON.parse(m.content).sentences.map(s => s[pack.target.code]).join(' '); }
+    catch (e) { return 'Tutor: ' + m.content; }
+  }).filter(Boolean).join('\n');
+}
+
+/* settings.corrections: with 'end' the summary lists the learner's mistakes; with 'off' it does not
+   (spec 5.10). */
+export function summaryPrompt(pack, settings = {}) {
+  const t = pack.target, n = pack.native;
+  const fix = settings.corrections === 'off' ? 'Leave "corrections" empty.'
+    : 'In "corrections", list up to 5 of the learner\'s mistakes that matter most, each with what they said and a better way to say it.';
+  return `You are an ${t.name} tutor. Below is a spoken conversation with a ${n.name}-speaking learner. Write a short end-of-session summary for the learner.
+Reply ONLY with JSON: {"summary":"one or two encouraging sentences in ${t.name}, simple words","corrections":[{"said":"what the learner said","better":"a better way to say it"}],"weakSpots":[{"note":"a short note for the tutor's next session, such as a grammar pattern, a missing word or a topic to avoid","kind":"understanding or speaking"}],"words":[{"w":"${t.name} word or phrase","d":"its dictionary form","m":"its ${n.name} meaning, in dictionary form"}]}
+- ${fix}
+- "weakSpots": 0 to 3 notes about real, repeated problems. "kind" is "understanding" when the learner did not understand the tutor, and "speaking" when they could not say something.
+- "words": up to 5 ${t.name} words or phrases the learner needed and did not know. Dictionary form: ${pack.tutor.dictionaryForm}`;
+}
+
+export function parseSummary(text) {
+  const d = extractJSON(text);
+  const arr = a => Array.isArray(a) ? a : [];
+  return {
+    summary: str(d.summary),
+    corrections: arr(d.corrections).map(c => ({ said: str(c && c.said), better: str(c && c.better) })).filter(c => c.said && c.better),
+    weakSpots: arr(d.weakSpots).map(w => ({ note: str(w && w.note), kind: str(w && w.kind) === 'understanding' ? 'understanding' : 'speaking' })).filter(w => w.note),
+    words: wordList(d.words),
+  };
 }

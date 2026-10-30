@@ -123,3 +123,27 @@ test('asking the AI which entry is meant', () => {
   assert.equal(T.parseChoice('{"choice": 0}', 2), -1);
   assert.equal(T.parseChoice('{"choice": 7}', 2), -1);
 });
+
+test('Guide mode adds the teacher instructions and exercise types', () => {
+  const chat = T.tutorPrompt(pack), guide = T.tutorPrompt(pack, {}, {}, 'guide');
+  assert.ok(!chat.includes(pack.guide.role));
+  assert.ok(guide.includes(pack.guide.role));
+  for (const x of pack.guide.exercises) assert.ok(guide.includes(x.name));
+});
+
+test('the end-of-session summary: transcript, prompt and reply', () => {
+  const msgs = [
+    { role: 'user', content: '(The learner has just opened the app and is waiting for you.) Start.' },
+    { role: 'assistant', content: '{"sentences":[{"en":"Hi!","he":"היי!"},{"en":"How are you?"}]}' },
+    { role: 'user', content: 'I am fine' },
+  ];
+  assert.equal(T.transcriptText(pack, msgs), 'Tutor: Hi! How are you?\nLearner: I am fine');
+  assert.ok(T.summaryPrompt(pack, { corrections: 'end' }).includes('"corrections"'));
+  assert.ok(T.summaryPrompt(pack, { corrections: 'off' }).includes('Leave "corrections" empty'));
+  const s = T.parseSummary('{"summary":"Good!","corrections":[{"said":"I go","better":"I went"},{"said":""}],"weakSpots":[{"note":"past tense","kind":"speaking"},{"note":"idioms","kind":"other"},{"kind":"speaking"}],"words":[{"w":"went","d":"went","m":"הָלַךְ"}]}');
+  assert.deepEqual(s, {
+    summary: 'Good!', corrections: [{ said: 'I go', better: 'I went' }],
+    weakSpots: [{ note: 'past tense', kind: 'speaking' }, { note: 'idioms', kind: 'speaking' }],
+    words: [{ w: 'went', d: 'went', m: 'הָלַךְ' }],
+  });
+});

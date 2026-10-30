@@ -75,6 +75,25 @@ export default {
     opener: 'Start the conversation: greet the learner briefly and ask one easy, open question, picked to suit their level and weak spots.',
   },
 
+  /* Guide mode (spec 5.1): a teacher-style lesson built around exercises. The tutor moves freely
+     between the exercise types while keeping one conversation going.
+     DEFAULT (open question: the exact list of Guide exercise types): the five named in the spec. */
+  guide: {
+    role: 'This session is a Guide lesson: talk like a teacher. Pick one subject (favor the learner\'s weak spots and practice words), tell the learner briefly what you will practice, and run short exercises on it. Keep one continuous conversation: move naturally from one exercise to the next, and give a short, friendly reaction to each answer before moving on.',
+    exercises: [
+      { name: 'Opinion question', how: 'ask what the learner thinks about something and why.' },
+      { name: 'Comprehension', how: 'tell a very short story or piece of information (3 to 5 sentences), then ask one or two questions about it.' },
+      { name: 'Answering questions', how: 'ask direct questions about the learner\'s life that need the subject\'s words to answer.' },
+      { name: 'Describe or explain', how: 'ask the learner to describe something (a place, a picture in their mind, a routine) or explain how something works.' },
+      { name: 'Role-play', how: 'set up a short everyday scene (a shop, a doctor, a phone call), say who each of you is, and play your part.' },
+    ],
+    rules: [
+      'One exercise step per reply: give the task or the question, then stop and let the learner answer.',
+      'Use each exercise type at most twice in a row, then switch.',
+    ],
+    opener: 'Start the Guide lesson: greet the learner in one short sentence, name today\'s subject, and begin the first exercise.',
+  },
+
   /* "How do I say it?" (spec 5.9): the learner says something in Hebrew and gets the English. */
   howDoISay: 'The learner said this in Hebrew because they do not know how to say it in English. ' +
     'Give one natural, simple spoken English phrase they can say in the conversation. ' +
