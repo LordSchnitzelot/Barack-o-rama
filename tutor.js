@@ -41,13 +41,28 @@ function replyFormat(pack) {
 {"sentences":[{"${t.code}":"one sentence in ${t.name}","${n.code}":"its natural ${n.name} translation","words":[{"w":"word or phrase exactly as written in the sentence","d":"its dictionary form","m":"its ${n.name} meaning in this sentence, in dictionary form"}]}],"struggled":[{"w":"${t.name} word or phrase","d":"its dictionary form","m":"${n.name} meaning, in dictionary form"}]}
 - One item in "sentences" per sentence you say.
 - In "words", list every content word of the sentence (skip words like a, the, is, and, to). Write ${n.name} meanings with nikkud if the language uses it.
-- A phrase whose meaning is more than its words (such as a phrasal verb or an idiom) is ONE item, not one item per word. A phrase whose meaning is just its words is split into its words.
+- A phrase whose meaning is more than its words (such as a phrasal verb or an idiom) is ONE item: never list its parts ("gave", "up") as separate items. If other words sit inside the phrase ("give it up"), "w" is the whole stretch exactly as written. A phrase whose meaning is just its words ("last year") is split into its words.
 - Dictionary form: ${pack.tutor.dictionaryForm}
+- Example of one sentence: ${JSON.stringify(pack.tutor.example)}
 - In "struggled", list ${t.name} words or phrases the learner just tried to say but got wrong, avoided, or asked about. Usually empty.`;
 }
 
 export function howDoISayPrompt(pack) {
   return pack.howDoISay + `\nReply ONLY with JSON: {"phrase":"the ${pack.target.name} phrase"}`;
+}
+
+/* When a tapped word has several dictionary entries and the code cannot tell which one is meant
+   (spec 3.2), the AI is asked once, for that word only. options: [ { text, meaning } ]. */
+export function choosePrompt(pack) {
+  return `The learner tapped a word in a ${pack.target.name} sentence. Pick the dictionary entry that matches its meaning in this sentence. ` +
+    'Reply ONLY with JSON: {"choice": the number of the entry, or 0 if none fits}';
+}
+export const chooseMessage = (sentence, word, options) =>
+  `Sentence: "${sentence}"\nWord: "${word}"\nEntries:\n` + options.map((o, i) => `${i + 1}. ${o.text} = ${o.meaning}`).join('\n');
+/* Returns the chosen option's index, or -1 when none fits. */
+export function parseChoice(text, count) {
+  const n = Number(extractJSON(text).choice);
+  return Number.isInteger(n) && n >= 1 && n <= count ? n - 1 : -1;
 }
 
 /* Finds the JSON object in the model's text (some models wrap it in prose or ``` fences). */
@@ -70,7 +85,8 @@ export function parseReply(pack, text) {
   const raw = Array.isArray(d && d.sentences) ? d.sentences : [];
   const sentences = raw
     .map(s => ({ target: str(s && s[t]), native: str(s && s[n]), words: wordList(s && s.words) }))
-    .filter(s => s.target);
+    .filter(s => s.target)
+    .map(s => Object.assign(s, { words: joinSplitPhrases(s.target, s.words, pack.target.particles) }));
   if (!sentences.length) throw new Error('The AI sent an empty reply. Try again.');
   return { sentences, struggled: wordList(d.struggled) };
 }
@@ -105,4 +121,28 @@ export function markWords(text, words) {
   }
   if (plain) out.push({ text: plain });
   return out;
+}
+
+/* A safety net for when the AI lists a phrasal verb as two items ("gave" and "up") despite the
+   instructions. A particle ("up") that has the same meaning as a word up to 3 words before it is
+   joined with that word into one phrase: "gave up", or "give it up" with "to give" -> "to give up".
+   A particle with its own meaning ("up" = לְמַעְלָה) is left alone. */
+export function joinSplitPhrases(text, words, particles = []) {
+  const P = new Set(particles), low = s => s.toLowerCase();
+  const tokens = [...text.matchAll(/[\p{L}\p{M}'’]+/gu)];
+  const single = new Map(words.filter(x => !/\s/.test(x.w)).map(x => [low(x.w), x]));
+  const joined = [], used = new Set();
+  tokens.forEach((tk, k) => {
+    const part = single.get(low(tk[0]));
+    if (!part || !P.has(low(part.w)) || !part.m) return;
+    for (let j = k - 1; j >= Math.max(0, k - 3); j--) {
+      const head = single.get(low(tokens[j][0]));
+      if (!head || head === part || P.has(low(head.w)) || head.m !== part.m) continue;
+      const w = text.slice(tokens[j].index, tk.index + tk[0].length);
+      if (!joined.some(x => x.w === w)) joined.push({ w, d: head.d + ' ' + low(part.w), m: head.m });
+      used.add(part);
+      break;
+    }
+  });
+  return joined.length ? words.filter(x => !used.has(x)).concat(joined) : words;
 }

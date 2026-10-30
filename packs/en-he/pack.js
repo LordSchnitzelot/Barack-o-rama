@@ -10,6 +10,9 @@ export default {
   target: {
     code: 'en', name: 'English', speech: 'en-US', dir: 'ltr',
     voice: 'phonon', // the high-quality on-device voice (spec 3.1)
+    /* The small words that finish a phrasal verb ("give up", "find out"). Used to join a phrase
+       the AI split in two by mistake (see joinSplitPhrases in tutor.js). */
+    particles: ['up', 'down', 'out', 'off', 'on', 'in', 'away', 'back', 'over', 'through', 'along', 'around', 'about', 'by', 'for', 'with', 'into', 'after', 'across', 'apart', 'ahead', 'forward', 'together'],
   },
   native: {
     code: 'he', name: 'Hebrew', speech: 'he-IL', dir: 'rtl',
@@ -52,6 +55,22 @@ export default {
        dictionary (spec 3.3: Dictionary forms, Phrases, Verbs). */
     dictionaryForm: 'nouns singular ("cigarette"); adjectives and adverbs plain ("last"); a verb in the simple past stays in the simple past ("gave", "gave up"); every other verb form becomes "to" + the base form ("runs", "running" and "run" all become "to run"; "giving up" becomes "to give up"). ' +
       'The Hebrew meaning follows the same rule: a noun in the singular without ה or other attached letters, a past verb in the masculine singular past (וִיתֵּר), any other verb as an infinitive (לְוַתֵּר).',
+    /* A worked example of one sentence in a reply. Models follow an example more reliably than a
+       rule: phrases stay one item, even when split by another word ("give it up"). */
+    example: {
+      en: 'My friend gave up smoking last year, but now she wants to give it up again.',
+      he: 'חברה שלי הפסיקה לעשן בשנה שעברה, אבל עכשיו היא רוצה לוותר על זה שוב.',
+      words: [
+        { w: 'friend', d: 'friend', m: 'חָבֵר' },
+        { w: 'gave up', d: 'gave up', m: 'וִיתֵּר' },
+        { w: 'smoking', d: 'to smoke', m: 'לְעַשֵּׁן' },
+        { w: 'last', d: 'last', m: 'שֶׁעָבַר' },
+        { w: 'year', d: 'year', m: 'שָׁנָה' },
+        { w: 'wants', d: 'to want', m: 'לִרְצוֹת' },
+        { w: 'give it up', d: 'to give up', m: 'לְוַתֵּר' },
+        { w: 'again', d: 'again', m: 'שׁוּב' },
+      ],
+    },
     /* The opening line when the learner starts a session without saying anything yet. */
     opener: 'Start the conversation: greet the learner briefly and ask one easy, open question, picked to suit their level and weak spots.',
   },

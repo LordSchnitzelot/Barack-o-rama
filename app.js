@@ -1,9 +1,9 @@
 /* The Chat screen (demo). It wires the page to the language pack, the tutor and the services;
    the language pair, the tutor's instructions and the providers all live in those files. */
 import pack from './packs/en-he/pack.js';
-import { tutorPrompt, howDoISayPrompt, parseReply, parsePhrase, replyToHistory, markWords } from './tutor.js';
+import { tutorPrompt, howDoISayPrompt, parseReply, parsePhrase, replyToHistory, markWords, choosePrompt, chooseMessage, parseChoice } from './tutor.js';
 import { createAI, createSpeech, listen, canListen } from './services.js';
-import { buildIndex, findEntry } from './dictionary.js';
+import { buildIndex, lookup, meaningOf, phrasesInText, wordsInPhrase } from './dictionary.js';
 import * as Words from './words.js';
 import * as store from './store.js';
 
@@ -33,19 +33,23 @@ async function playAll(sentences) {
 }
 
 /* ---------- My words: saved on the device with scores (spec 8) ---------- */
-/* The dictionary, used to link flagged words to Drills entries. Without it, words are still saved. */
+/* Only words found in the dictionary are saved (spec 3.2); anything else is shown in the chat only. */
 let dict = null;
 const dictReady = Promise.all([pack.target.code, pack.native.code].map(c => fetch(pack.drills.dictionaries[c]).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })))
   .then(([t, n]) => { dict = buildIndex(t, n); })
-  .catch(e => console.warn('Dictionary not loaded; words are saved without a link to Drills', e));
-const link = (form, meaning) => findEntry(dict, form, meaning);
+  .catch(e => { console.warn('Dictionary not loaded', e); toast('Could not load the dictionary, so words cannot be saved right now.'); });
+const link = (form, meaning) => lookup(dict, form, meaning).entry;
 
 const W = new Map(); // id -> record
 const byNewest = () => [...W.values()].sort((a, b) => b.modified - a.modified);
 const countWords = () => { $('#wb').textContent = 'My words (' + W.size + ')'; };
-/* Loads the saved words, and carries over the first demo's list (kept in localStorage) once. */
+/* Loads the saved words, and carries over the first demo's list (kept in localStorage) once.
+   Words saved before only dictionary words were kept are removed. */
 const wordsReady = (async () => {
-  for (const r of await store.allWords()) W.set(r.id, r);
+  const all = await store.allWords();
+  all.filter(r => r.entry).forEach(r => W.set(r.id, r));
+  const gone = all.filter(r => !r.entry).map(r => r.id);
+  if (gone.length) await store.deleteWords(gone);
   const old = ld('sp_w', null);
   if (old) {
     await dictReady;
@@ -58,28 +62,43 @@ const wordsReady = (async () => {
   countWords();
 })().catch(e => { console.error(e); toast('Could not load My words: ' + e.message); });
 
-/* info = { text, form, meaning, example, source }; form is the dictionary form used for the link. */
-async function flag(info) {
+/* Saves a dictionary entry to My words. info = { meaning, example, source }. */
+async function flag(entry, info) {
   await wordsReady;
-  const entry = link(info.form || info.text, info.meaning);
-  const id = Words.wordId(info.text, entry);
-  const r = Words.flag(W.get(id), Object.assign({ entry, lang: pack.target.code }, info), Date.now());
+  const id = Words.wordId(entry.text, entry);
+  const r = Words.flag(W.get(id), Object.assign({ text: entry.text, entry, lang: pack.target.code }, info), Date.now());
   W.set(id, r); countWords();
   try { await store.putWord(r); } catch (e) { toast('Could not save the word: ' + e.message); }
   return r;
 }
-function openWord(info) {
-  const entry = link(info.form || info.text, info.meaning), text = entry ? entry.text : info.text;
-  $('#wd').innerHTML = `<h3>${esc(text)}</h3><p dir="rtl" style="font-size:18px;margin:4px 0 12px">${esc(info.meaning)}</p><button class="pill" id="wp">▶ Hear it</button><p class="note" style="margin-top:12px">Flagged for practice.</p><button class="close" onclick="this.closest('dialog').close()">Close</button>`;
-  $('#wp').onclick = () => { stopAudio(); play(text, 'target'); };
-  $('#wd').showModal();
-  flag(Object.assign({ source: 'tapped' }, info));
+/* Tapping a word (spec 5.8): the code finds its entry; only if several entries fit and the code
+   cannot tell which is meant, the AI is asked, for this word only. A word that is not in the
+   dictionary shows its translation and is not saved. */
+async function openWord(info) {
+  const found = lookup(dict, info.form, info.meaning);
+  const box = $('#wd');
+  const show = (title, note) => {
+    box.innerHTML = `<h3>${esc(title)}</h3><p dir="rtl" style="font-size:18px;margin:4px 0 12px">${esc(info.meaning)}</p><button class="pill" id="wp">▶ Hear it</button><p class="note" id="wn" style="margin-top:12px">${esc(note)}</p><button class="close" onclick="this.closest('dialog').close()">Close</button>`;
+    $('#wp').onclick = () => { stopAudio(); play(title, 'target'); };
+  };
+  const save = entry => { show(entry.text, 'Saved to My words for practice.'); flag(entry, { meaning: meaningOf(dict, entry), example: info.example, source: 'tapped' }); };
+  if (found.entry) save(found.entry);
+  else show(info.text, found.candidates.length ? 'Checking which meaning this is…' : 'Not in the dictionary, so it is not saved.');
+  box.showModal();
+  if (found.entry || !found.candidates.length) return;
+  try {
+    const opts = found.candidates.map(e => ({ text: e.text, meaning: meaningOf(dict, e) }));
+    const i = parseChoice(await ai.complete(choosePrompt(pack), [{ role: 'user', content: chooseMessage(info.example, info.text, opts) }]), opts.length);
+    if (!box.open) return;
+    if (i >= 0) save(found.candidates[i]);
+    else $('#wn').textContent = 'This meaning is not in the dictionary, so it is not saved.';
+  } catch (e) { if (box.open) $('#wn').textContent = 'Could not check the meaning (' + e.message + '). Not saved.'; }
 }
 const dots = rec => { const n = Words.score(rec); return '●'.repeat(n) + '○'.repeat(Words.MAX_SCORE - n); };
 $('#wb').onclick = async () => {
   await wordsReady;
   const list = byNewest();
-  $('#wl').innerHTML = '<h3>My words</h3>' + (list.length ? '<p class="note">Scores: ● fills up as you get a word right in Drills (coming in a later step). Every word starts empty.</p>' + list.map(x => `<div class="row"><span><b>${esc(x.text)}</b><br><small dir="auto">${esc(x.meaning)}</small><br><small class="sc">Understands <span aria-label="${Words.score(x.understand)} of ${Words.MAX_SCORE}">${dots(x.understand)}</span> · Can say <span aria-label="${Words.score(x.say)} of ${Words.MAX_SCORE}">${dots(x.say)}</span></small>${x.entry ? '' : '<br><small class="sc">Not in the Drills dictionary</small>'}</span><button class="ic" data-id="${esc(x.id)}" aria-label="Hear ${esc(x.text)}">▶</button></div>`).join('') : '<p class="note">Nothing yet. Tap a highlighted word in the tutor\'s sentences, or use How do I say it?</p>') + '<button class="close" onclick="this.closest(\'dialog\').close()">Close</button>';
+  $('#wl').innerHTML = '<h3>My words</h3>' + (list.length ? '<p class="note">Scores: ● fills up as you get a word right in Drills (coming in a later step). Every word starts empty.</p>' + list.map(x => `<div class="row"><span><b>${esc(x.text)}</b><br><small dir="auto">${esc(x.meaning)}</small><br><small class="sc">Understands <span aria-label="${Words.score(x.understand)} of ${Words.MAX_SCORE}">${dots(x.understand)}</span> · Can say <span aria-label="${Words.score(x.say)} of ${Words.MAX_SCORE}">${dots(x.say)}</span></small></span><button class="ic" data-id="${esc(x.id)}" aria-label="Hear ${esc(x.text)}">▶</button></div>`).join('') : '<p class="note">Nothing yet. Tap a highlighted word in the tutor\'s sentences, or use How do I say it? Only words in the dictionary are saved.</p>') + '<button class="close" onclick="this.closest(\'dialog\').close()">Close</button>';
   $('#wl').querySelectorAll('.ic').forEach(b => b.onclick = () => { stopAudio(); play(W.get(b.dataset.id).text, 'target'); });
   $('#wl').showModal();
 };
@@ -137,7 +156,10 @@ async function askTutor() {
   const reply = parseReply(pack, await ai.complete(tutorPrompt(pack, profile(), S), msgs));
   setStatus(ai.label() + ' replied in ' + ((Date.now() - t0) / 1000).toFixed(1) + 's');
   msgs.push({ role: 'assistant', content: replyToHistory(pack, reply) });
-  reply.struggled.forEach(x => flag({ text: x.d, form: x.d, meaning: x.m, source: 'model-detected' }));
+  /* Words the tutor saw the learner struggle with are saved only when the code finds them. */
+  reply.struggled.forEach(x => { const e = link(x.d, x.m); if (e) flag(e, { meaning: meaningOf(dict, e), source: 'model-detected' }); });
+  /* Dictionary phrases ("give up", "take care") are one tappable unit, whatever the AI listed. */
+  reply.sentences.forEach(s => { s.words = s.words.concat(phrasesInText(dict, s.target, s.words)); });
   addTutor(reply); playAll(reply.sentences);
 }
 function toggle(mode) {
@@ -176,8 +198,11 @@ async function sayFlow(he) {
   let en;
   try { en = parsePhrase(await ai.complete(howDoISayPrompt(pack), [{ role: 'user', content: he }])); }
   catch (e) { c.remove(); throw e; }
-  flag({ text: en, meaning: he, source: 'how-do-I-say-it' });
-  c.innerHTML = `<p class="he-live" dir="rtl" lang="he">${esc(he)}</p><div class="sent" data-target="${esc(en)}"><div class="line en"><span class="t big">${esc(en)}</span><button class="ic" data-a="target" aria-label="Play phrase">▶</button></div></div><p class="note">Saved to My words. Now say it in the conversation.</p>`;
+  /* The dictionary words inside the answer are saved as "can't say yet" (spec 5.9). */
+  const found = wordsInPhrase(dict, en, he);
+  found.forEach(e => flag(e, { meaning: meaningOf(dict, e), example: en, source: 'how-do-I-say-it' }));
+  const note = found.length ? 'Saved to My words: ' + found.map(e => e.text).join(', ') + '.' : 'None of its words are in the dictionary, so nothing was saved.';
+  c.innerHTML = `<p class="he-live" dir="rtl" lang="he">${esc(he)}</p><div class="sent" data-target="${esc(en)}"><div class="line en"><span class="t big">${esc(en)}</span><button class="ic" data-a="target" aria-label="Play phrase">▶</button></div></div><p class="note">${esc(note)} Now say it in the conversation.</p>`;
   $('#chat').scrollTop = 1e9; play(en, 'target');
 }
 /* Starting a session (spec 5.3): the tutor opens, using the learner profile. */

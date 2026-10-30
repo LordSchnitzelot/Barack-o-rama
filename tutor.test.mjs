@@ -85,3 +85,41 @@ test('words and phrases are marked in the sentence', () => {
   assert.deepEqual(T.markWords('Gave Up.', words).map(p => p.text), ['Gave Up', '.']); // any letter case
   assert.deepEqual(T.markWords('No words here.', []), [{ text: 'No words here.' }]);
 });
+
+test('the reply format shows a worked example, and the example follows its own rules', () => {
+  assert.ok(T.tutorPrompt(pack).includes(JSON.stringify(pack.tutor.example)));
+  const r = T.parseReply(pack, JSON.stringify({ sentences: [pack.tutor.example] }));
+  const marked = T.markWords(r.sentences[0].target, r.sentences[0].words).filter(p => p.word).map(p => p.text);
+  assert.deepEqual(marked, pack.tutor.example.words.map(x => x.w)); // every word is found in the sentence, in order
+});
+
+test('a phrasal verb the AI split in two is joined back into one phrase', () => {
+  const P = pack.target.particles;
+  const r = T.parseReply(pack, JSON.stringify({ sentences: [{ en: 'You gave up coffee, so why not give it up again?', he: '', words: [
+    { w: 'gave', d: 'gave', m: 'וִיתַּרְתָּ' }, { w: 'up', d: 'up', m: 'וִיתַּרְתָּ' }, { w: 'coffee', d: 'coffee', m: 'קָפֶה' }, { w: 'give', d: 'to give', m: 'לְוַתֵּר' }] }] }));
+  const words = r.sentences[0].words;
+  assert.deepEqual(words.map(x => x.w), ['gave', 'coffee', 'give', 'gave up']); // "up" with the meaning of "gave" is gone
+  assert.deepEqual(words[3], { w: 'gave up', d: 'gave up', m: 'וִיתַּרְתָּ' });
+  const marked = T.markWords(r.sentences[0].target, words).filter(p => p.word).map(p => p.text);
+  assert.deepEqual(marked, ['gave up', 'coffee', 'give']);
+
+  const split = T.joinSplitPhrases('Give it up!', [{ w: 'Give', d: 'to give', m: 'לְוַתֵּר' }, { w: 'up', d: 'up', m: 'לְוַתֵּר' }], P);
+  assert.deepEqual(split, [{ w: 'Give', d: 'to give', m: 'לְוַתֵּר' }, { w: 'Give it up', d: 'to give up', m: 'לְוַתֵּר' }]);
+  assert.deepEqual(T.markWords('Give it up!', split).filter(p => p.word).map(p => p.text), ['Give it up']);
+});
+
+test('a particle with its own meaning is left alone', () => {
+  const words = [{ w: 'looked', d: 'looked', m: 'הִסְתַּכֵּל' }, { w: 'up', d: 'up', m: 'לְמַעְלָה' }];
+  assert.deepEqual(T.joinSplitPhrases('She looked up at the sky.', words, pack.target.particles), words);
+  const far = [{ w: 'gave', d: 'gave', m: 'נָתַן' }, { w: 'up', d: 'up', m: 'נָתַן' }];
+  assert.deepEqual(T.joinSplitPhrases('I gave my old red bike up.', far, pack.target.particles), far); // more than 3 words apart
+});
+
+test('asking the AI which entry is meant', () => {
+  assert.ok(T.choosePrompt(pack).includes('"choice"'));
+  const m = T.chooseMessage('She runs a shop.', 'to run', [{ text: 'to run', meaning: 'לָרוּץ' }, { text: 'to run (a business)', meaning: 'לְנַהֵל' }]);
+  assert.ok(m.includes('1. to run = לָרוּץ') && m.includes('2. to run (a business) = לְנַהֵל'));
+  assert.equal(T.parseChoice('{"choice": 2}', 2), 1);
+  assert.equal(T.parseChoice('{"choice": 0}', 2), -1);
+  assert.equal(T.parseChoice('{"choice": 7}', 2), -1);
+});
