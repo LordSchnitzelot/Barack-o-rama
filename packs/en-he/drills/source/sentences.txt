@@ -1,0 +1,140 @@
+# Drills sentences (spec 3.3): stored as text, without translations. First chunk.
+# tools/build-sentences.py tags every word with its exact dictionary entry and rates difficulty.
+#
+#   language | tenses | clauses | sentence
+#
+# - tenses: present, past, future, imperative (several with commas).
+# - When a word has several entries, write the label in curly brackets after it:
+#   "I know{a person} him." The brackets are removed from the stored sentence.
+
+# ---------- English ----------
+en | present | 1 | I want to go home.
+en | present | 1 | I want water.
+en | present | 1 | She is my friend.
+en | present | 1 | He is my brother.
+en | present | 1 | This is my house.
+en | present | 1 | We are happy.
+en | present | 1 | The dog is big.
+en | present | 1 | The car is new.
+en | present | 1 | My mother is a teacher.
+en | present | 1 | I like{to like} coffee.
+en | present | 1 | I love{to love} my family.
+en | present | 1 | Where is the bathroom?
+en | present | 1 | What is your{one person} name?
+en | present | 1 | How old{not young} are you{one person}?
+en | present | 1 | I need help{help (noun)}.
+en | present | 1 | I do not know{a fact}.
+en | present | 1 | I know{a person} him.
+en | present | 1 | Do you{one person} speak English?
+en | present | 1 | I speak Hebrew.
+en | present | 1 | The food is good.
+en | present | 1 | This book{book (noun)} is very good.
+en | present | 1 | I am tired.
+en | present | 1 | I am hungry.
+en | present | 1 | Are you{one person} ready?
+en | present | 1 | It is very cold{cold (adjective)} today.
+en | present | 1 | It is hot outside.
+en | present | 1 | The children play in the park.
+en | present | 1 | My father works{to work} in an office.
+en | present | 1 | I live{have a home} in a small apartment.
+en | present | 1 | We eat dinner together.
+en | present | 1 | She drinks tea every morning.
+en | present | 1 | He reads the newspaper.
+en | present | 1 | I see a bird.
+en | present | 1 | I hear music.
+en | imperative | 1 | Open{to open} the door, please.
+en | imperative | 1 | Close{to close} the window.
+en | imperative | 1 | Wait for me.
+en | imperative | 1 | Come here.
+en | imperative | 1 | Look at this picture.
+en | imperative | 1 | Give me the key.
+en | present | 1 | That is a good idea.
+en | present | 1 | Thank you very much.
+en | present | 1 | I am sorry.
+en | present | 1 | Everything is fine.
+en | present | 1 | Nobody knows{a fact} the answer{answer (noun)}.
+en | present | 1 | I want a new phone.
+en | present | 1 | How much is this shirt?
+en | present | 1 | The store is closed{closed (adjective)}.
+en | present | 1 | The city is beautiful at night.
+en | past | 1 | I went to school.
+en | past | 1 | She went home early{early (adverb)}.
+en | past | 1 | We ate pizza yesterday.
+en | past | 1 | He was very angry.
+en | past | 1 | I saw a good movie.
+en | past | 1 | They bought a new car.
+en | past | 1 | I lost my wallet.
+en | past | 1 | She found the key.
+en | past | 1 | He called{phone} me last{most recent} night.
+en | past | 1 | I gave up smoking last{most recent} year.
+en | past | 1 | We met at a party.
+en | past | 1 | I forgot his name.
+en | past | 1 | The movie started late{late (adverb)}.
+en | past | 1 | My brother came back from the army.
+en | past | 1 | I slept very well.
+en | past | 1 | She told me a story.
+en | past | 1 | He wrote a letter{a message}.
+en | past | 1 | The children laughed.
+en | past | 1 | I knew{a fact} it.
+en | past | 1 | We went to the beach.
+en | future | 1 | I will call{phone} you{one person} tomorrow.
+en | future | 1 | We will travel{to travel} next week.
+en | future | 1 | She will be here soon.
+en | future | 1 | It will rain tomorrow.
+en | future | 1 | I will help{to help} you{one person}.
+en | present | 2 | I think that you{one person} are right{correct, of a person}.
+en | present | 2 | I hope{to hope} that everything is fine.
+en | present | 2 | I know{a fact} where he lives{have a home}.
+en | past | 2 | When I was a child, I lived{have a home} in a village.
+en | past | 2 | I was tired, so{therefore} I went to sleep.
+en | present | 1 | Take care.
+en | present | 1 | How are you?
+en | present | 1 | Good morning.
+en | present | 1 | Good night.
+en | present | 1 | See you tomorrow.
+en | present | 1 | I look up to my father.
+en | past | 1 | I looked up the word.
+en | present | 1 | Never mind.
+en | present | 1 | Of course.
+
+# ---------- Hebrew ----------
+he | present | 1 | אני רוצה מים.
+he | present | 1 | היא חברה{חֲבֵרָה} שלי.
+he | present | 1 | הוא אח שלי.
+he | present | 1 | זה הבית שלי.
+he | present | 1 | אנחנו שמחים.
+he | present | 1 | הכלב גדול.
+he | present | 1 | אמא שלי מורה.
+he | present | 1 | אני אוהב קפה.
+he | present | 1 | איפה השירותים{שֵׁרוּתִים}?
+he | present | 1 | מה השם{שֵׁם} שלך?
+he | present | 1 | אני צריך עזרה{עֶזְרָה}.
+he | present | 1 | אני לא{not} יודע.
+he | present | 1 | אני מכיר אותו{him}.
+he | present | 1 | האוכל{אֹכֶל} טוב{good}.
+he | present | 1 | אני עייף.
+he | present | 1 | אני רעב.
+he | present | 1 | היום קר מאוד.
+he | present | 1 | הילדים משחקים{לְשַׂחֵק} בפארק.
+he | present | 1 | אבא שלי עובד{לַעֲבֹד} במשרד.
+he | present | 1 | אני גר{לָגוּר} בדירה קטנה.
+he | present | 1 | היא שותה תה כל בוקר.
+he | imperative | 1 | תפתח{open} את הדלת, בבקשה{בְּבַקָּשָׁה}.
+he | imperative | 1 | בוא לכאן.
+he | present | 1 | תודה{תּוֹדָה} על העזרה{עֶזְרָה}.
+he | present | 1 | הכל{הַכֹּל} בסדר.
+he | present | 1 | החנות סגורה.
+he | past | 1 | הלכתי לבית ספר.
+he | past | 1 | אכלנו פיצה אתמול.
+he | past | 1 | הוא היה כועס מאוד.
+he | past | 1 | ראיתי סרט טוב{good}.
+he | past | 1 | איבדתי את הארנק שלי.
+he | past | 1 | היא מצאה את המפתח{מַפְתֵּחַ}.
+he | past | 1 | שכחתי את השם{שֵׁם} שלו.
+he | past | 1 | ישנתי טוב{in a good way} מאוד.
+he | past | 1 | הילדים צחקו{laugh}.
+he | future | 1 | אני אתקשר מחר.
+he | future | 1 | היא תהיה כאן בקרוב.
+he | present | 2 | אני חושב שאתה צודק.
+he | past | 2 | הייתי עייף, אז{therefore} הלכתי לישון.
+he | present | 1 | מה שלומך?
