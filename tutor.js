@@ -71,7 +71,8 @@ export function parseReply(pack, text) {
   const raw = Array.isArray(d && d.sentences) ? d.sentences : [];
   const sentences = raw
     .map(s => ({ target: str(s && s[t]), native: str(s && s[n]), words: wordList(s && s.words) }))
-    .filter(s => s.target);
+    .filter(s => s.target)
+    .map(s => Object.assign(s, { words: joinSplitPhrases(s.target, s.words, pack.target.particles) }));
   if (!sentences.length) throw new Error('The AI sent an empty reply. Try again.');
   return { sentences, struggled: wordList(d.struggled) };
 }
@@ -106,4 +107,28 @@ export function markWords(text, words) {
   }
   if (plain) out.push({ text: plain });
   return out;
+}
+
+/* A safety net for when the AI lists a phrasal verb as two items ("gave" and "up") despite the
+   instructions. A particle ("up") that has the same meaning as a word up to 3 words before it is
+   joined with that word into one phrase: "gave up", or "give it up" with "to give" -> "to give up".
+   A particle with its own meaning ("up" = לְמַעְלָה) is left alone. */
+export function joinSplitPhrases(text, words, particles = []) {
+  const P = new Set(particles), low = s => s.toLowerCase();
+  const tokens = [...text.matchAll(/[\p{L}\p{M}'’]+/gu)];
+  const single = new Map(words.filter(x => !/\s/.test(x.w)).map(x => [low(x.w), x]));
+  const joined = [], used = new Set();
+  tokens.forEach((tk, k) => {
+    const part = single.get(low(tk[0]));
+    if (!part || !P.has(low(part.w)) || !part.m) return;
+    for (let j = k - 1; j >= Math.max(0, k - 3); j--) {
+      const head = single.get(low(tokens[j][0]));
+      if (!head || head === part || P.has(low(head.w)) || head.m !== part.m) continue;
+      const w = text.slice(tokens[j].index, tk.index + tk[0].length);
+      if (!joined.some(x => x.w === w)) joined.push({ w, d: head.d + ' ' + low(part.w), m: head.m });
+      used.add(part);
+      break;
+    }
+  });
+  return joined.length ? words.filter(x => !used.has(x)).concat(joined) : words;
 }

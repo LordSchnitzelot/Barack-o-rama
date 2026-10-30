@@ -92,3 +92,25 @@ test('the reply format shows a worked example, and the example follows its own r
   const marked = T.markWords(r.sentences[0].target, r.sentences[0].words).filter(p => p.word).map(p => p.text);
   assert.deepEqual(marked, pack.tutor.example.words.map(x => x.w)); // every word is found in the sentence, in order
 });
+
+test('a phrasal verb the AI split in two is joined back into one phrase', () => {
+  const P = pack.target.particles;
+  const r = T.parseReply(pack, JSON.stringify({ sentences: [{ en: 'You gave up coffee, so why not give it up again?', he: '', words: [
+    { w: 'gave', d: 'gave', m: 'וִיתַּרְתָּ' }, { w: 'up', d: 'up', m: 'וִיתַּרְתָּ' }, { w: 'coffee', d: 'coffee', m: 'קָפֶה' }, { w: 'give', d: 'to give', m: 'לְוַתֵּר' }] }] }));
+  const words = r.sentences[0].words;
+  assert.deepEqual(words.map(x => x.w), ['gave', 'coffee', 'give', 'gave up']); // "up" with the meaning of "gave" is gone
+  assert.deepEqual(words[3], { w: 'gave up', d: 'gave up', m: 'וִיתַּרְתָּ' });
+  const marked = T.markWords(r.sentences[0].target, words).filter(p => p.word).map(p => p.text);
+  assert.deepEqual(marked, ['gave up', 'coffee', 'give']);
+
+  const split = T.joinSplitPhrases('Give it up!', [{ w: 'Give', d: 'to give', m: 'לְוַתֵּר' }, { w: 'up', d: 'up', m: 'לְוַתֵּר' }], P);
+  assert.deepEqual(split, [{ w: 'Give', d: 'to give', m: 'לְוַתֵּר' }, { w: 'Give it up', d: 'to give up', m: 'לְוַתֵּר' }]);
+  assert.deepEqual(T.markWords('Give it up!', split).filter(p => p.word).map(p => p.text), ['Give it up']);
+});
+
+test('a particle with its own meaning is left alone', () => {
+  const words = [{ w: 'looked', d: 'looked', m: 'הִסְתַּכֵּל' }, { w: 'up', d: 'up', m: 'לְמַעְלָה' }];
+  assert.deepEqual(T.joinSplitPhrases('She looked up at the sky.', words, pack.target.particles), words);
+  const far = [{ w: 'gave', d: 'gave', m: 'נָתַן' }, { w: 'up', d: 'up', m: 'נָתַן' }];
+  assert.deepEqual(T.joinSplitPhrases('I gave my old red bike up.', far, pack.target.particles), far); // more than 3 words apart
+});

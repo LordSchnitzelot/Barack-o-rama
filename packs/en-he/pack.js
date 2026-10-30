@@ -10,6 +10,9 @@ export default {
   target: {
     code: 'en', name: 'English', speech: 'en-US', dir: 'ltr',
     voice: 'phonon', // the high-quality on-device voice (spec 3.1)
+    /* The small words that finish a phrasal verb ("give up", "find out"). Used to join a phrase
+       the AI split in two by mistake (see joinSplitPhrases in tutor.js). */
+    particles: ['up', 'down', 'out', 'off', 'on', 'in', 'away', 'back', 'over', 'through', 'along', 'around', 'about', 'by', 'for', 'with', 'into', 'after', 'across', 'apart', 'ahead', 'forward', 'together'],
   },
   native: {
     code: 'he', name: 'Hebrew', speech: 'he-IL', dir: 'rtl',
