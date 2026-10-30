@@ -85,3 +85,10 @@ test('words and phrases are marked in the sentence', () => {
   assert.deepEqual(T.markWords('Gave Up.', words).map(p => p.text), ['Gave Up', '.']); // any letter case
   assert.deepEqual(T.markWords('No words here.', []), [{ text: 'No words here.' }]);
 });
+
+test('the reply format shows a worked example, and the example follows its own rules', () => {
+  assert.ok(T.tutorPrompt(pack).includes(JSON.stringify(pack.tutor.example)));
+  const r = T.parseReply(pack, JSON.stringify({ sentences: [pack.tutor.example] }));
+  const marked = T.markWords(r.sentences[0].target, r.sentences[0].words).filter(p => p.word).map(p => p.text);
+  assert.deepEqual(marked, pack.tutor.example.words.map(x => x.w)); // every word is found in the sentence, in order
+});

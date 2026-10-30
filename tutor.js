@@ -41,8 +41,9 @@ function replyFormat(pack) {
 {"sentences":[{"${t.code}":"one sentence in ${t.name}","${n.code}":"its natural ${n.name} translation","words":[{"w":"word or phrase exactly as written in the sentence","d":"its dictionary form","m":"its ${n.name} meaning in this sentence, in dictionary form"}]}],"struggled":[{"w":"${t.name} word or phrase","d":"its dictionary form","m":"${n.name} meaning, in dictionary form"}]}
 - One item in "sentences" per sentence you say.
 - In "words", list every content word of the sentence (skip words like a, the, is, and, to). Write ${n.name} meanings with nikkud if the language uses it.
-- A phrase whose meaning is more than its words (such as a phrasal verb or an idiom) is ONE item, not one item per word. A phrase whose meaning is just its words is split into its words.
+- A phrase whose meaning is more than its words (such as a phrasal verb or an idiom) is ONE item: never list its parts ("gave", "up") as separate items. If other words sit inside the phrase ("give it up"), "w" is the whole stretch exactly as written. A phrase whose meaning is just its words ("last year") is split into its words.
 - Dictionary form: ${pack.tutor.dictionaryForm}
+- Example of one sentence: ${JSON.stringify(pack.tutor.example)}
 - In "struggled", list ${t.name} words or phrases the learner just tried to say but got wrong, avoided, or asked about. Usually empty.`;
 }
 
