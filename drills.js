@@ -6,19 +6,20 @@
    Where the spec leaves a question open, the simple choice made here is marked
    "DEFAULT (open question)" so it is easy to find and change.
 
-   Data shapes (illustrative; real dictionaries follow spec 3.3):
+   Data shapes (illustrative; real dictionaries follow spec 3.3). Group IDs are only labels:
+   any text or number works, as long as paired English and Hebrew groups share one.
      data = {
        target: 'en', native: 'he',
        dicts: {                       // one dictionary per language, groups by shared ID
-         en: { '201': [ { text: 'big', rank: 30, forms: [] }, { text: 'large', rank: 300 } ] },
-         he: { '201': [ { text: 'גָּדוֹל', rank: 25, forms: ['גְּדוֹלָה', 'גְּדוֹלִים', 'גְּדוֹלוֹת'] } ] },
+         en: { '2': [ { text: 'big', rank: 30, forms: [] }, { text: 'large', rank: 300 } ] },
+         he: { '2': [ { text: 'גָּדוֹל', rank: 25, forms: ['גְּדוֹלָה', 'גְּדוֹלִים', 'גְּדוֹלוֹת'] } ] },
        },
        sentences: [ { id: 's1', lang: 'en', text: 'The dog is big.', difficulty: 1,
-                      tags: [ { group: '101', word: 0 }, { group: '201', word: 0 } ] } ],
+                      tags: [ { group: '1', word: 0 }, { group: '2', word: 0 } ] } ],
      }
    A word is referred to as { group, word }: the group ID and the word's index inside it.
    Progress is stored per target-language word, per direction:
-     profile = { progress: { '201:0': { understand: Record, say: Record } } }
+     profile = { progress: { '2:0': { understand: Record, say: Record } } }
    "understand" is hearing the target language and answering in the native one;
    "say" is hearing the native language and answering in the target one. */
 

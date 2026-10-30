@@ -20,32 +20,32 @@ const sample = () => ({
   target: 'en', native: 'he',
   dicts: {
     en: {
-      101: [{ text: 'dog', rank: 2 }],
-      201: [{ text: 'big', rank: 5 }, { text: 'large', rank: 50 }],
-      301: [{ text: 'bat (animal)', rank: 40 }],
-      302: [{ text: 'bat (sports)', rank: 41 }],
-      401: [{ text: 'went', rank: 10 }],
-      402: [{ text: 'to go', rank: 12 }],
-      501: [{ text: 'book', rank: 8 }],
-      601: [{ text: 'these', rank: 3 }, { text: 'those', rank: 20 }],
-      701: [{ text: 'read (past tense)', rank: 30, sayAs: 'red' }],
+      1: [{ text: 'dog', rank: 2 }],
+      2: [{ text: 'big', rank: 5 }, { text: 'large', rank: 50 }],
+      3: [{ text: 'bat (animal)', rank: 40 }],
+      4: [{ text: 'bat (sports)', rank: 41 }],
+      5: [{ text: 'went', rank: 10 }],
+      6: [{ text: 'to go', rank: 12 }],
+      7: [{ text: 'book', rank: 8 }],
+      8: [{ text: 'these', rank: 3 }, { text: 'those', rank: 20 }],
+      9: [{ text: 'read (past tense)', rank: 30, sayAs: 'red' }],
     },
     he: {
-      101: [{ text: 'כֶּלֶב', rank: 2 }],
-      201: [{ text: 'גָּדוֹל', rank: 5, forms: ['גְּדוֹלָה', 'גְּדוֹלִים', 'גְּדוֹלוֹת'] }],
-      301: [{ text: 'עֲטַלֵּף', rank: 40 }],
-      302: [{ text: 'אַלָּה', rank: 41 }],
-      401: [{ text: 'הָלַךְ', rank: 10, forms: ['הָלְכָה', 'הָלַכְתִּי', 'הָלַכְתָּ', 'הָלְכוּ'] }],
-      402: [{ text: 'לָלֶכֶת', rank: 12 }],
-      501: [{ text: 'סֵפֶר', rank: 8 }],
-      601: [{ text: 'אֵלֶּה', rank: 3 }],
-      701: [{ text: 'קָרָא', rank: 30 }],
+      1: [{ text: 'כֶּלֶב', rank: 2 }],
+      2: [{ text: 'גָּדוֹל', rank: 5, forms: ['גְּדוֹלָה', 'גְּדוֹלִים', 'גְּדוֹלוֹת'] }],
+      3: [{ text: 'עֲטַלֵּף', rank: 40 }],
+      4: [{ text: 'אַלָּה', rank: 41 }],
+      5: [{ text: 'הָלַךְ', rank: 10, forms: ['הָלְכָה', 'הָלַכְתִּי', 'הָלַכְתָּ', 'הָלְכוּ'] }],
+      6: [{ text: 'לָלֶכֶת', rank: 12 }],
+      7: [{ text: 'סֵפֶר', rank: 8 }],
+      8: [{ text: 'אֵלֶּה', rank: 3 }],
+      9: [{ text: 'קָרָא', rank: 30 }],
     },
   },
   sentences: [
-    { id: 'en1', lang: 'en', text: 'The dog is big.', difficulty: 1, tags: [{ group: '101', word: 0 }, { group: '201', word: 0 }] },
-    { id: 'he1', lang: 'he', text: 'הַכֶּלֶב גָּדוֹל.', difficulty: 1, tags: [{ group: '101', word: 0 }, { group: '201', word: 0 }] },
-    { id: 'en2', lang: 'en', text: 'These dogs went.', difficulty: 2, tags: [{ group: '601', word: 0 }, { group: '101', word: 0 }, { group: '401', word: 0 }] },
+    { id: 'en1', lang: 'en', text: 'The dog is big.', difficulty: 1, tags: [{ group: '1', word: 0 }, { group: '2', word: 0 }] },
+    { id: 'he1', lang: 'he', text: 'הַכֶּלֶב גָּדוֹל.', difficulty: 1, tags: [{ group: '1', word: 0 }, { group: '2', word: 0 }] },
+    { id: 'en2', lang: 'en', text: 'These dogs went.', difficulty: 2, tags: [{ group: '8', word: 0 }, { group: '1', word: 0 }, { group: '5', word: 0 }] },
   ],
 });
 const fresh = () => ({ progress: {} });
@@ -78,36 +78,36 @@ test('word answers: labels, synonyms, accepted forms', () => {
   const d = sample();
   const en = (g, w = 0) => ({ lang: 'en', group: String(g), word: w });
   const he = (g, w = 0) => ({ lang: 'he', group: String(g), word: w });
-  assert.equal(D.checkWordAnswer(d, en(302), 'אלה').result, 'right');
-  assert.equal(D.checkWordAnswer(d, en(302), 'עטלף').result, 'wrong'); // the other "bat"
-  assert.equal(D.checkWordAnswer(d, en(301), 'עֲטַלֵּף').result, 'right');
-  assert.equal(D.checkWordAnswer(d, he(302), 'bat').result, 'right'); // label not needed
-  assert.deepEqual(D.checkWordAnswer(d, he(201), 'Large.').matched, ref(201, 1));
-  assert.equal(D.checkWordAnswer(d, en(201, 1), 'גדולות').result, 'right'); // any gender and number
-  assert.equal(D.checkWordAnswer(d, en(401), 'הלכתי').result, 'right'); // any person
+  assert.equal(D.checkWordAnswer(d, en(4), 'אלה').result, 'right');
+  assert.equal(D.checkWordAnswer(d, en(4), 'עטלף').result, 'wrong'); // the other "bat"
+  assert.equal(D.checkWordAnswer(d, en(3), 'עֲטַלֵּף').result, 'right');
+  assert.equal(D.checkWordAnswer(d, he(4), 'bat').result, 'right'); // label not needed
+  assert.deepEqual(D.checkWordAnswer(d, he(2), 'Large.').matched, ref(2, 1));
+  assert.equal(D.checkWordAnswer(d, en(2, 1), 'גדולות').result, 'right'); // any gender and number
+  assert.equal(D.checkWordAnswer(d, en(5), 'הלכתי').result, 'right'); // any person
 });
 
 test('word answers: the two verb forms are separate', () => {
   const d = sample();
   const he = g => ({ lang: 'he', group: String(g), word: 0 });
-  assert.equal(D.checkWordAnswer(d, he(401), 'went').result, 'right');
-  assert.equal(D.checkWordAnswer(d, he(401), 'go').result, 'wrong');
-  assert.equal(D.checkWordAnswer(d, he(401), 'to go').result, 'wrong');
-  assert.equal(D.checkWordAnswer(d, he(402), 'to go').result, 'right');
-  assert.equal(D.checkWordAnswer(d, he(402), 'go').result, 'right');
+  assert.equal(D.checkWordAnswer(d, he(5), 'went').result, 'right');
+  assert.equal(D.checkWordAnswer(d, he(5), 'go').result, 'wrong');
+  assert.equal(D.checkWordAnswer(d, he(5), 'to go').result, 'wrong');
+  assert.equal(D.checkWordAnswer(d, he(6), 'to go').result, 'right');
+  assert.equal(D.checkWordAnswer(d, he(6), 'go').result, 'right');
 });
 
 test('word answers: articles (default choice) and near misses', () => {
   const d = sample();
   const he = g => ({ lang: 'he', group: String(g), word: 0 });
-  assert.equal(D.checkWordAnswer(d, he(501), 'the book').result, 'right');
-  assert.equal(D.checkWordAnswer(d, he(501), 'a book').result, 'right');
-  assert.equal(D.checkWordAnswer(d, { lang: 'en', group: '501', word: 0 }, 'הספר').result, 'maybe'); // ה not removed: one letter off
-  const near = D.checkWordAnswer(d, he(101), 'dag');
+  assert.equal(D.checkWordAnswer(d, he(7), 'the book').result, 'right');
+  assert.equal(D.checkWordAnswer(d, he(7), 'a book').result, 'right');
+  assert.equal(D.checkWordAnswer(d, { lang: 'en', group: '7', word: 0 }, 'הספר').result, 'maybe'); // ה not removed: one letter off
+  const near = D.checkWordAnswer(d, he(1), 'dag');
   assert.equal(near.result, 'maybe');
   assert.equal(near.closest, 'dog');
-  assert.equal(D.checkWordAnswer(d, he(101), 'elephant').result, 'wrong');
-  assert.equal(D.checkWordAnswer(d, he(101), '').result, 'wrong');
+  assert.equal(D.checkWordAnswer(d, he(1), 'elephant').result, 'wrong');
+  assert.equal(D.checkWordAnswer(d, he(1), '').result, 'wrong');
 });
 
 /* ---------- Spaced repetition ---------- */
@@ -145,17 +145,17 @@ test('progress is kept per word and per direction', () => {
   D.recordAnswer(s, dr, { correct: false });
   assert.equal(D.getRecord(p, dr.item, 'understand').weak, true);
   assert.equal(D.getRecord(p, dr.item, 'say'), null);
-  assert.equal(D.getRecord(p, ref(201, 1), 'understand'), null); // "large" untouched when "big" is missed
+  assert.equal(D.getRecord(p, ref(2, 1), 'understand'), null); // "large" untouched when "big" is missed
 });
 
 test('flagWord: source picks the direction', () => {
   const p = fresh();
-  D.flagWord(p, ref(501), 'tapped', 5);
-  D.flagWord(p, ref(101), 'how-do-I-say-it', 5);
-  assert.equal(D.getRecord(p, ref(501), 'understand').weak, true);
-  assert.equal(D.getRecord(p, ref(501), 'say'), null);
-  assert.equal(D.getRecord(p, ref(101), 'say').weak, true);
-  assert.equal(D.getRecord(p, ref(101), 'say').flags[0].source, 'how-do-I-say-it');
+  D.flagWord(p, ref(7), 'tapped', 5);
+  D.flagWord(p, ref(1), 'how-do-I-say-it', 5);
+  assert.equal(D.getRecord(p, ref(7), 'understand').weak, true);
+  assert.equal(D.getRecord(p, ref(7), 'say'), null);
+  assert.equal(D.getRecord(p, ref(1), 'say').weak, true);
+  assert.equal(D.getRecord(p, ref(1), 'say').flags[0].source, 'how-do-I-say-it');
 });
 
 /* ---------- Item selection mix ---------- */
@@ -164,8 +164,8 @@ test('flagWord: source picks the direction', () => {
 function bigSetup() {
   const d = { target: 'en', native: 'he', dicts: { en: {}, he: {} }, sentences: [] };
   for (let i = 0; i < 30; i++) {
-    d.dicts.en[1000 + i] = [{ text: 'word' + i, rank: i }];
-    d.dicts.he[1000 + i] = [{ text: 'מילה' + i, rank: i }];
+    d.dicts.en[i + 1] = [{ text: 'word' + i, rank: i }];
+    d.dicts.he[i + 1] = [{ text: 'מילה' + i, rank: i }];
   }
   const p = fresh(), now = clock();
   for (let i = 0; i < 20; i++)
@@ -173,7 +173,7 @@ function bigSetup() {
       const r = D.newRecord(0);
       D.review(r, true, 0);
       if (i < 10) D.review(r, false, 0); // weak
-      p.progress[1000 + i + ':0'] = { ...(p.progress[1000 + i + ':0'] || {}), [dir]: r };
+      p.progress[i + 1 + ':0'] = { ...(p.progress[i + 1 + ':0'] || {}), [dir]: r };
     }
   now.t = 2 * D.DAY; // the known words are due
   return { d, p, now };
@@ -268,9 +268,9 @@ test('the session ends after its size', () => {
 test('speaking prompt uses the "say as" text only for the voice', () => {
   const d = sample(), p = fresh();
   const later = () => ({ understand: { ...D.newRecord(0), due: 9e15 } }); // seen, not due
-  for (const g of ['101', '201', '601', '401', '402', '501', '301', '302']) p.progress[g + ':0'] = later();
-  p.progress['201:1'] = later();
-  p.progress['601:1'] = later();
+  for (const g of ['1', '2', '8', '5', '6', '7', '3', '4']) p.progress[g + ':0'] = later();
+  p.progress['2:1'] = later();
+  p.progress['8:1'] = later();
   const s = D.startSession(d, p, { mode: 'comprehension', rng: always(0.9), now: clock() });
   const dr = D.nextDrill(s);
   assert.equal(dr.prompt.text, 'read (past tense)');
@@ -289,12 +289,12 @@ test('progression: a new word is tested alone first', () => {
 
 test('progression: sentences once every word in them is ready', () => {
   const d = sample(), p = fresh(), now = clock();
-  const dog = ref(101), big = ref(201);
+  const dog = ref(1), big = ref(2);
   const r = D.review(D.newRecord(0), true, 0);
-  p.progress['101:0'] = { understand: { ...r } };
+  p.progress['1:0'] = { understand: { ...r } };
   let s = D.startSession(d, p, { mode: 'sentences', rng: seeded(1), now });
   assert.equal(D.sentencesFor(s, dog, 'understand').length, 0); // "big" not ready yet
-  p.progress['201:0'] = { understand: { ...r } };
+  p.progress['2:0'] = { understand: { ...r } };
   s = D.startSession(d, p, { mode: 'sentences', rng: seeded(1), now });
   assert.deepEqual(D.sentencesFor(s, dog, 'understand').map(x => x.id), ['en1']);
   assert.deepEqual(D.sentencesFor(s, big, 'say').map(x => x.id), ['he1']); // ready in either direction counts
@@ -302,7 +302,7 @@ test('progression: sentences once every word in them is ready', () => {
 
 test('progression: a right sentence credits every word in it; a hint does not', () => {
   const d = sample(), p = fresh(), now = clock(2 * D.DAY);
-  for (const k of ['101:0', '201:0', '601:0', '401:0']) p.progress[k] = { understand: D.review(D.newRecord(0), true, 0) };
+  for (const k of ['1:0', '2:0', '8:0', '5:0']) p.progress[k] = { understand: D.review(D.newRecord(0), true, 0) };
   const s = D.startSession(d, p, { mode: 'sentences', size: 1, rng: always(0.1), now }); // 0.1: comprehension
   const dr = D.nextDrill(s);
   assert.equal(dr.type, 'sentence');
@@ -318,12 +318,12 @@ test('progression: a right sentence credits every word in it; a hint does not', 
 
 test('progression: a wrong sentence only counts against the drilled word', () => {
   const d = sample(), p = fresh(), now = clock(2 * D.DAY);
-  for (const k of ['101:0', '201:0']) p.progress[k] = { understand: D.review(D.newRecord(0), true, 0) };
+  for (const k of ['1:0', '2:0']) p.progress[k] = { understand: D.review(D.newRecord(0), true, 0) };
   const s = D.startSession(d, p, { mode: 'sentences', size: 1, rng: always(0.1), now });
   const dr = D.nextDrill(s);
   assert.equal(dr.sentence.id, 'en1');
   D.recordAnswer(s, dr, { correct: false });
-  const other = dr.item.group === '101' ? '201:0' : '101:0';
+  const other = dr.item.group === '1' ? '2:0' : '1:0';
   assert.equal(D.getRecord(p, dr.item, 'understand').weak, true);
   assert.equal(p.progress[other].understand.weak, false);
   assert.equal(p.progress[other].understand.level, 1);
@@ -331,25 +331,25 @@ test('progression: a wrong sentence only counts against the drilled word', () =>
 
 test('progression: a Hebrew sentence credits the English words already started', () => {
   const d = sample(), p = fresh(), now = clock(2 * D.DAY);
-  p.progress['101:0'] = { say: D.review(D.newRecord(0), true, 0) };
-  p.progress['201:0'] = { say: D.review(D.newRecord(0), true, 0) }; // "big" started, "large" not
+  p.progress['1:0'] = { say: D.review(D.newRecord(0), true, 0) };
+  p.progress['2:0'] = { say: D.review(D.newRecord(0), true, 0) }; // "big" started, "large" not
   const s = D.startSession(d, p, { mode: 'sentences', size: 1, rng: always(0.9), now });
   const dr = D.nextDrill(s);
   assert.equal(dr.sentence.id, 'he1');
   assert.equal(dr.prompt.lang, 'he');
   D.recordAnswer(s, dr, { correct: true });
-  assert.equal(p.progress['101:0'].say.level, 2);
-  assert.equal(p.progress['201:0'].say.level, 2);
-  assert.equal(p.progress['201:1'], undefined);
+  assert.equal(p.progress['1:0'].say.level, 2);
+  assert.equal(p.progress['2:0'].say.level, 2);
+  assert.equal(p.progress['2:1'], undefined);
 });
 
 test('word drill: saying a synonym also credits the synonym', () => {
   const d = sample(), p = fresh(), now = clock();
-  p.progress['201:0'] = { say: { ...D.newRecord(0), right: 1, level: 1 } };
+  p.progress['2:0'] = { say: { ...D.newRecord(0), right: 1, level: 1 } };
   const s = D.startSession(d, p, { mode: 'speaking', size: 1, rng: always(0.9), now });
-  const dr = { type: 'word', dir: 'say', bucket: 'known', item: ref(201, 0), prompt: { lang: 'he', group: '201', word: 0 } };
+  const dr = { type: 'word', dir: 'say', bucket: 'known', item: ref(2, 0), prompt: { lang: 'he', group: '2', word: 0 } };
   const c = D.checkWordAnswer(d, dr.prompt, 'large');
   D.recordAnswer(s, dr, { correct: c.result === 'right', matched: c.matched });
-  assert.equal(p.progress['201:0'].say.level, 2);
-  assert.equal(p.progress['201:1'].say.level, 1);
+  assert.equal(p.progress['2:0'].say.level, 2);
+  assert.equal(p.progress['2:1'].say.level, 1);
 });
