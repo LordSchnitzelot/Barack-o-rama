@@ -114,3 +114,12 @@ test('a particle with its own meaning is left alone', () => {
   const far = [{ w: 'gave', d: 'gave', m: 'נָתַן' }, { w: 'up', d: 'up', m: 'נָתַן' }];
   assert.deepEqual(T.joinSplitPhrases('I gave my old red bike up.', far, pack.target.particles), far); // more than 3 words apart
 });
+
+test('asking the AI which entry is meant', () => {
+  assert.ok(T.choosePrompt(pack).includes('"choice"'));
+  const m = T.chooseMessage('She runs a shop.', 'to run', [{ text: 'to run', meaning: 'לָרוּץ' }, { text: 'to run (a business)', meaning: 'לְנַהֵל' }]);
+  assert.ok(m.includes('1. to run = לָרוּץ') && m.includes('2. to run (a business) = לְנַהֵל'));
+  assert.equal(T.parseChoice('{"choice": 2}', 2), 1);
+  assert.equal(T.parseChoice('{"choice": 0}', 2), -1);
+  assert.equal(T.parseChoice('{"choice": 7}', 2), -1);
+});

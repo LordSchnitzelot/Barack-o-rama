@@ -26,7 +26,7 @@ to the page. Its automated tests are in `drills.test.mjs`; run them with `node -
 
 - **Never put API keys in this repository.** The demo asks each user to type their own key
   in Settings, and it is stored only in that user's browser.
-- The full project spec is [SPEC.md](SPEC.md) (v3.7). It is the source of truth.
+- The full project spec is [SPEC.md](SPEC.md) (v3.8). It is the source of truth.
 - Rules for working on the project are in [CLAUDE.md](CLAUDE.md).
 
 ## Done: build order step 1
@@ -65,7 +65,10 @@ to the page. Its automated tests are in `drills.test.mjs`; run them with `node -
   Tapping a word flags "understands"; "How do I say it?" flags "can say". Scores rise in Drills
   (build step 7).
 - Each word or phrase in a tutor reply carries its dictionary form, and the app links it to the
-  Drills dictionary in code (spec 3.2). Phrases like "gave up" are one tappable unit.
+  dictionary in code (spec 3.2). The AI is asked only when a tapped word has several entries and
+  the code cannot tell which is meant. Only dictionary words are saved; others are shown in the
+  chat only. Dictionary phrases ("give up", "take care") are one tappable unit.
+- "How do I say it?" saves the dictionary words inside the English answer as "can't say yet".
 
 ## Next step (build order step 3)
 

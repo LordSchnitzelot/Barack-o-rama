@@ -51,6 +51,20 @@ export function howDoISayPrompt(pack) {
   return pack.howDoISay + `\nReply ONLY with JSON: {"phrase":"the ${pack.target.name} phrase"}`;
 }
 
+/* When a tapped word has several dictionary entries and the code cannot tell which one is meant
+   (spec 3.2), the AI is asked once, for that word only. options: [ { text, meaning } ]. */
+export function choosePrompt(pack) {
+  return `The learner tapped a word in a ${pack.target.name} sentence. Pick the dictionary entry that matches its meaning in this sentence. ` +
+    'Reply ONLY with JSON: {"choice": the number of the entry, or 0 if none fits}';
+}
+export const chooseMessage = (sentence, word, options) =>
+  `Sentence: "${sentence}"\nWord: "${word}"\nEntries:\n` + options.map((o, i) => `${i + 1}. ${o.text} = ${o.meaning}`).join('\n');
+/* Returns the chosen option's index, or -1 when none fits. */
+export function parseChoice(text, count) {
+  const n = Number(extractJSON(text).choice);
+  return Number.isInteger(n) && n >= 1 && n <= count ? n - 1 : -1;
+}
+
 /* Finds the JSON object in the model's text (some models wrap it in prose or ``` fences). */
 export function extractJSON(text) {
   const m = String(text).match(/\{[\s\S]*\}/);

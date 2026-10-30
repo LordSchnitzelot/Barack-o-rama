@@ -6,8 +6,8 @@
        sources: [ { source, time } ],              // tapped, how-do-I-say-it, model-detected...
        understand: Record | null, say: Record | null, // spaced-repetition records from drills.js
        created, modified }
-   A word linked to the dictionary uses the entry's id, so Drills (build step 7) can pick it up;
-   any other word or phrase uses its normalized text. */
+   A saved word is always a dictionary entry and uses the entry's id, so Drills (build step 7)
+   can pick it up. (wordId still accepts plain text, for records saved before that rule.) */
 import { normalize, newRecord, flagDirections, markFlagged, INTERVALS } from './drills.js';
 
 export const wordId = (text, entry) => entry ? entry.id : 't:' + normalize(text);
@@ -42,6 +42,7 @@ export function fromOldList(list, link, lang) {
   for (const x of list || []) {
     if (!x || !x.w) continue;
     const entry = link(x.w, x.m);
+    if (!entry) continue; // only dictionary words are saved (spec 3.2)
     const id = wordId(x.w, entry);
     out.set(id, flag(out.get(id), { text: x.w, meaning: x.m, source: x.src || 'tapped', entry, lang }, x.t || Date.now()));
   }

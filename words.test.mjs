@@ -39,8 +39,8 @@ test('flagging again keeps one record and adds the source', () => {
 });
 
 test('the first demo\'s word list is carried over', () => {
-  const link = w => w === 'run' ? entry : null;
-  const out = W.fromOldList([{ w: 'run', m: 'לנהל', src: 'tapped', t: 7 }, { w: 'Ship', m: 'ספינה', t: 8 }, { w: 'ship', m: 'ספינה', t: 9 }, null], link, 'en');
-  assert.deepEqual(out.map(r => r.id), ['en2', 't:ship']);
-  assert.equal(out[1].sources.length, 2);
+  const link = w => /^run/.test(w) ? (w === 'run' ? entry : null) : null;
+  const out = W.fromOldList([{ w: 'run', m: 'לנהל', src: 'tapped', t: 7 }, { w: 'Ship', m: 'ספינה', t: 8 }, { w: 'running', m: 'לנהל', t: 9 }, null], link, 'en');
+  assert.deepEqual(out.map(r => r.id), ['en2']); // "Ship" is not in the dictionary, so it is dropped
+  assert.equal(out[0].sources.length, 1);
 });
