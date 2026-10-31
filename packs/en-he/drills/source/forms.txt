@@ -6,8 +6,8 @@
 # - A form in brackets is its spelling without nikkud, when it differs from just removing the
 #   nikkud: מְזֻיֶּפֶת (מזויפת). A form with no brackets counts as itself without nikkud.
 # - A word with no nikkud is an extra accepted spelling: טיפש.
-# - Feminine, feminine plural and the extra spellings are the owner's. The masculine plurals
-#   marked "# Claude" were added by Claude and need a check.
+# - Most feminine, feminine plural and extra spellings are the owner's; the masculine plurals, and
+#   lines marked "# Claude", were written by Claude and are listed for a check.
 
 עָבֶה | עָבָה, עָבוֹת, עָבִים
 יְמָנִי | יְמָנִית, יְמָנִיּוֹת, יְמָנִיִּים
@@ -21,6 +21,7 @@
 לָחוּץ | לְחוּצָה, לְחוּצוֹת, לְחוּצִים
 רוֹעֵשׁ | רוֹעֶשֶׁת, רוֹעֲשׁוֹת, רוֹעֲשִׁים
 חוֹלֶה | חוֹלָה, חוֹלוֹת, חוֹלִים
+טִפְּשִׁי | טִפְּשִׁית (טיפשית), טִפְּשִׁיּוֹת (טיפשיות), טִפְּשִׁיִּים (טיפשיים)  # Claude
 טִפֵּשׁ | טִפְּשָׁה (טיפשה), טִפְּשׁוֹת (טיפשות), טיפש, טיפשים
 עַצְלָן | עַצְלָנִית, עַצְלָנִיּוֹת, עַצְלָנִים
 אַמִּיץ | אַמִּיצָה, אַמִּיצוֹת, אַמִּיצִים

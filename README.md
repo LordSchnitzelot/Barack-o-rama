@@ -7,7 +7,7 @@ The user talks with an AI tutor and drills words and sentences out loud.
 
 - **Never put API keys in this repository.** The app asks each user to type their own key
   in Settings, and it is stored only in that user's browser.
-- The full project spec is [SPEC.md](SPEC.md) (v3.8). It is the source of truth.
+- The full project spec is [SPEC.md](SPEC.md) (v3.9). It is the source of truth.
 - Rules for working on the project are in [CLAUDE.md](CLAUDE.md).
 
 ## Current state

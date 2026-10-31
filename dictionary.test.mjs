@@ -91,3 +91,14 @@ test('How do I say it saves the dictionary words inside the answer', () => {
   assert.deepEqual(wordsInPhrase(index, 'I run a shop', 'אני מנהל חנות').map(e => e.text), []);
   assert.deepEqual(wordsInPhrase(index, 'I want to run', 'אני רוצה לנהל').map(e => e.text), ['to want', 'to run (a business)']);
 });
+
+test('future and command forms ("seenAs") point at the infinitive, but are not answers', () => {
+  const ix = buildIndex(
+    { groups: [{ id: 1, pos: 'verb', verbForm: 'infinitive', words: [{ id: 'en1', text: 'to go', accepted: ['to go', 'go'] }] }] },
+    { groups: [{ id: 1, pos: 'verb', verbForm: 'infinitive', words: [{ id: 'he1', text: 'לָלֶכֶת', accepted: ['ללכת', 'הולך'], seenAs: ['אלך', 'לך'] }] }] });
+  const he = buildIndex(
+    { groups: [{ id: 1, words: [{ id: 'he1', text: 'לָלֶכֶת', accepted: ['ללכת'], seenAs: ['אלך'] }] }] },
+    { groups: [{ id: 1, words: [{ id: 'en1', text: 'to go', accepted: ['to go'] }] }] });
+  assert.deepEqual(findInText(he, 'אני אלך מחר').map(h => h.candidates[0].id), ['he1']);
+  assert.equal(findEntry(ix, 'to go', 'אלך').id, 'en1'); // the meaning may be given in the future form
+});

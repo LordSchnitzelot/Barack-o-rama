@@ -8,6 +8,7 @@
 #   modal, intj (interjection or set phrase).
 # - Hebrew is written without nikkud; the build script finds the nikkud in Wiktionary.
 #   Verbs: past / infinitive ("הלך / ללכת"). Extra accepted forms after commas ("אתה, את").
+#   A verb with no Hebrew infinitive: "past / -" ("deserve | v | הגיע לו / -").
 #   Hebrew synonyms in one meaning group with "+" ("כועס + עצבני"). Adjective forms that Wiktionary
 #   lacks go in forms.txt.
 # - Label: only when the English word has more than one meaning in this file, or to clarify.
@@ -388,7 +389,7 @@ owe | v | היה חייב / להיות חייב
 joke | v | צחק / לצחוק (joke)
 smile | v | חייך / לחייך
 destroy | v | הרס / להרוס
-# deserve: waiting for the owner's decision (Hebrew says מגיע לי, which has no infinitive).
+deserve | v | הגיע לו / -, הגיע, הגיע ל, הגיע לה, הגיע להם, הגיע להן, הגיע לי, הגיע לנו, הגיע לך, הגיע לכם, הגיע לכן
 quit | v | עזב / לעזוב | stop doing a job
 steal | v | גנב / לגנוב
 kick | v | בעט / לבעוט

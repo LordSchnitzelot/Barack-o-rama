@@ -34,7 +34,7 @@ def load_dict(lang):
         for w in g['words']:
             rank[w['id']] = w['rank']
             w['verbForm'] = g.get('verbForm')
-            for a in w['accepted']: by_form.setdefault(a, []).append(w)
+            for a in w['accepted'] + w.get('seenAs', []): by_form.setdefault(a, []).append(w)
     return by_form, rank
 
 def tag(lang, text, hints, by_form, tenses):
@@ -44,6 +44,8 @@ def tag(lang, text, hints, by_form, tenses):
     tags, i = [], 0
     while i < len(toks):
         hit = None
+        # The Hebrew object marker את stays untagged, even though את is also "you".
+        if lang == 'he' and toks[i] in UNTAGGED[lang]: i += 1; continue
         for n in range(min(MAX_WORDS, len(toks) - i), 0, -1):
             forms = [' '.join(toks[i:i + n])]
             if lang == 'he': forms += [p_strip for p in PREFIXES if forms[0].startswith(p) for p_strip in [forms[0][len(p):]] if p_strip]

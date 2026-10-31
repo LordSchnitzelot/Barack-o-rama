@@ -113,7 +113,8 @@ async function reveal(info, onFlag) {
     $('#wp').onclick = () => { stopAudio(); play(title, 'target'); };
   };
   const save = entry => {
-    show(entry.text, info.meaning || meaningOf(dict, entry), 'Saved to My words for practice.');
+    /* The dictionary's translations: every word of the partner group ("ללכת" for "will go"). */
+    show(entry.text, meaningOf(dict, entry) || info.meaning, 'Saved to My words for practice.');
     flag(entry, { meaning: meaningOf(dict, entry), example: info.example, source: 'tapped' });
     if (onFlag) onFlag(entry);
   };

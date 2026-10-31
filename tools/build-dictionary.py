@@ -82,7 +82,7 @@ def plene(pointed):
                 res += 'ו'
             # A consonant yod inside a word is written twice when it is doubled (dagesh) or carries a
             # vowel other than hiriq: מְסַיֵּם -> מסיים, טִיֵּל -> טייל; but בַּיִת, חַיִּים stay as they are.
-            if letter == 'י' and 0 < i < last and HIRIQ not in marks and (DAGESH in marks or any(v in marks for v in FULL_VOWELS)):
+            if letter == 'י' and 0 < i < last and HIRIQ not in marks and nxt[0] not in 'וי' and (DAGESH in marks or any(v in marks for v in FULL_VOWELS)):
                 res += 'י'
             # Holam and qubutz get a vav: לִכְתֹּב -> לכתוב, סֻכָּר -> סוכר.
             if HOLAM in marks and letter not in 'וא' and not (nxt and nxt[0] == 'ו'):
@@ -219,7 +219,8 @@ def skeleton(t):
 FORMS = {}  # adjective -> accepted spellings of its other forms, from forms.txt
 def load_forms():
     """forms.txt: "masculine | form (spelling), form, spelling". A form without brackets counts as
-    itself without nikkud; a word with no nikkud is an extra accepted spelling."""
+    itself without nikkud (and in its everyday full spelling); a word with no nikkud is an extra
+    accepted spelling."""
     for raw in open(FORMS_FILE, encoding='utf-8'):
         raw = raw.split('#')[0].strip()
         if not raw: continue
@@ -227,7 +228,8 @@ def load_forms():
         acc = []
         for item in (x.strip() for x in rest.split(',') if x.strip()):
             m = re.match(r'^(.*?)\s*\(([^)]*)\)$', item)
-            acc.append(normalize(m.group(2) if m else item))
+            # The everyday full spelling is accepted too (טִפְּשִׁית -> טיפשית).
+            acc += [normalize(m.group(2))] if m else ([normalize(item), plene(item)] if has_nikkud(item) else [normalize(item)])
         FORMS[skeleton(main)] = acc
         add_hand(main, first=True)
         for a in acc: HAND[a] = nfc(main) if a not in HAND else HAND[a]
@@ -285,11 +287,16 @@ def he_verb(he, to_inf, past_text, inf_text, english, line):
     # The infinitive also accepts the present tense (spec 3.3: other verb forms count as the
     # infinitive; the owner chose present only, so a past form like צחקו never matches an imperative).
     other = he_forms(e, lambda t: 'present' in t and 'participle' not in t)
+    # Future and command forms are not answers, but they point at the infinitive when they appear
+    # in a sentence or in the chat ("אלך" -> לָלֶכֶת). Stored as "seenAs".
+    seen = he_forms(e, lambda t: bool(t & {'future', 'imperative'}) and 'negative' not in t)
     acc = lambda forms, extra: sorted(set().union(*[spellings(f + tail) for f in forms]) | {normalize(extra)})
     past_acc = acc([e['canon']] + past, past_text)
     if len(past_acc) < 7: return None
+    inf_acc = acc(inf + other, inf_text)
+    seen_as = sorted(set().union(*[spellings(f + tail) for f in seen]) - set(inf_acc)) if seen else []
     return {'past': nfc(e['canon'] + tail), 'past_acc': past_acc,
-            'inf': nfc(inf[0] + tail), 'inf_acc': acc(inf + other, inf_text), 'entry': e}
+            'inf': nfc(inf[0] + tail), 'inf_acc': inf_acc, 'seen_as': seen_as, 'entry': e}
 
 def he_word(he, text, extras, pos, english, line):
     pointed = point_phrase(he, text, pos, english, line)
@@ -332,7 +339,18 @@ def build(data):
         if he_label and not L['label']: L['label'] = he_label   # "(call out)" labels the English too
         main, extras = items[0], items[1:]
         word = L['en']
-        if L['pos'] == 'verb':
+        if L['pos'] == 'verb' and main.partition('/')[2].strip() == '-':
+            # A verb with no Hebrew infinitive ("deserved" = הִגִּיעַ לוֹ): only its past entry,
+            # accepting the spellings listed after it.
+            past_he = main.partition('/')[0].strip()
+            pointed = point_phrase(he, past_he, 'verb', word, L['line'])
+            f = en_forms(en, word, 'verb')
+            if not pointed or not f.get('past'):
+                review['missing'].append('line %d: %s = %s — no nikkud or English past form, so it was left out' % (L['line'], word, past_he)); continue
+            entries.append(dict(en_text=f['past'][0], en_acc=sorted({normalize(x) for x in f['past']}), label=L['label'], pos='verb', verbForm='past',
+                                he_text=nfc(pointed), he_acc=sorted({normalize(past_he)} | {normalize(x) for x in extras}), he_label=he_label,
+                                line=L['line'], pair=None, base=word, verb=(pointed, None)))
+        elif L['pos'] == 'verb':
             past_he, _, inf_he = (x.strip() for x in main.partition('/'))
             v = he_verb(he, to_inf, past_he, inf_he, word, L['line'])
             if not v:
@@ -346,7 +364,7 @@ def build(data):
             if not confirmed(en, v['entry'], word, v['past']): review['unconfirmed'].append('line %d: %s = %s' % (L['line'], word, v['past']))
             pair = len(entries)
             verb = (v['past'], v['inf'])
-            entries.append(dict(en_text='to ' + word, en_acc=inf_acc, label=L['label'], pos='verb', verbForm='infinitive', he_text=v['inf'], he_acc=v['inf_acc'], he_label=he_label, line=L['line'], pair=pair + 1, base=word, verb=verb))
+            entries.append(dict(en_text='to ' + word, en_acc=inf_acc, label=L['label'], pos='verb', verbForm='infinitive', he_text=v['inf'], he_acc=v['inf_acc'], he_seen=v['seen_as'], he_label=he_label, line=L['line'], pair=pair + 1, base=word, verb=verb))
             entries.append(dict(en_text=f['past'][0], en_acc=past_acc, label=L['label'], pos='verb', verbForm='past', he_text=v['past'], he_acc=v['past_acc'], he_label=he_label, line=L['line'], pair=pair, base=word, verb=verb))
         else:
             # Hebrew synonyms in one group: "כועס + עצבני" (spec 3.3, Groups).
@@ -465,8 +483,8 @@ def build(data):
         idx = groups[k]; first = entries[idx[0]]
         g = {'id': gnum[k], 'pos': first['pos']}
         if first['verbForm']:
-            other = gid_of[first['pair']]
-            g['verbForm'] = first['verbForm']; g['otherForm'] = gnum[other]
+            g['verbForm'] = first['verbForm']
+            if first['pair'] is not None: g['otherForm'] = gnum[gid_of[first['pair']]]
         en_words = []
         for i in sorted(idx, key=lambda i: order['en'][i]):
             x = entries[i]
@@ -479,6 +497,8 @@ def build(data):
         hacc = sorted(set().union(*[set(entries[i]['he_acc']) for i in idx]))
         hrank = min(order['he'][i] for i in idx)
         he_words = [{'id': word_id('he', htext), 'text': htext, 'rank': hrank, 'accepted': hacc}]
+        seen = sorted(set().union(*[set(entries[i].get('he_seen') or []) for i in idx]) - set(hacc))
+        if seen: he_words[0]['seenAs'] = seen
         # Hebrew synonyms share the group's rank (DEFAULT: they are not ranked on their own).
         for syn in {x['text']: x for i in idx for x in entries[i].get('he_more') or []}.values():
             if syn['text'] != he_text[k]:

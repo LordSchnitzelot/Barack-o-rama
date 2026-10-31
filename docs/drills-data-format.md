@@ -52,6 +52,7 @@ same number**. That is how a group "points at" its partner: group 151 in the Eng
 | `rank` | The frequency rank: 1 is the most common. New words are taught from rank 1 down. |
 | `accepted` | Every answer that counts as correct for this word, already **normalized** (lowercase, no punctuation, no nikkud), because that is how spoken answers are compared. |
 | `sayAs` | Optional. Only for words spelled alike but pronounced differently. The app speaks this instead of `text`. Example: `read (past tense)` has `"sayAs": "red (past tense)"`. |
+| `seenAs` | Optional, Hebrew infinitives. Spellings that point at this entry when they appear in a sentence or in the chat, but are not accepted answers: the future and command forms (אֵלֵךְ and לֵךְ point at לָלֶכֶת). Stored normalized. |
 
 ### How a drill uses this
 
@@ -69,6 +70,10 @@ Every verb has two group pairs, tested separately: the infinitive and the past.
 | --- | --- | --- |
 | infinitive | "to go" (accepts "to go" and "go") | לָלֶכֶת |
 | past | "went" | הָלַךְ (accepts הלך, הלכה, הלכתי, הלכת, הלכנו, הלכתם, הלכתן, הלכו) |
+
+The infinitive also accepts the present tense (הולך, הולכת, הולכים, הולכות); the future and command
+forms are listed in `seenAs` instead. A verb with no Hebrew infinitive has only a past group with no
+`otherForm`: "deserved" = הִגִּיעַ לוֹ.
 
 The two groups point at each other with `otherForm`. A past group's partner is always a past group,
 so saying "go" for הָלַךְ is wrong.
@@ -166,6 +171,7 @@ need a person's judgment live in plain text files that anyone can read and corre
 | File | What it holds |
 | --- | --- |
 | `packs/en-he/drills/source/words.txt` | One meaning per line: the English word, its part of speech, the Hebrew word, and a label when needed. Verbs give the Hebrew past and infinitive ("הלך / ללכת"). |
+| `packs/en-he/drills/source/forms.txt` | Feminine and plural forms of adjectives that Wiktionary has none for. A spelling without nikkud in brackets follows a form when it differs: `מְזֻיֶּפֶת (מזויפת)`. |
 | `packs/en-he/drills/source/nikkud.txt` | Nikkud for the few words Wiktionary has none for (written by Claude; each needs a person's check). |
 | `packs/en-he/drills/source/sentences.txt` | The sentences, with their tenses and clauses. A word with several meanings carries its label in curly brackets: `know{a person}`. |
 
@@ -200,7 +206,8 @@ The first command downloads the sources once (it reads about 3.5 GB and keeps ab
 Some choices made by the build (not decided by the spec):
 
 - English nouns also accept their plural ("books"), and Hebrew nouns theirs.
-- Every other verb form counts as the infinitive (spec 3.3): "runs", "running" and "given" for
-  "to run"/"to give"; Hebrew present, future and imperative forms for the Hebrew infinitive.
+- Every other English verb form counts as the infinitive (spec 3.3): "runs", "running" and "given"
+  for "to run"/"to give". The Hebrew infinitive accepts the present tense; future and command forms
+  are in `seenAs`.
 - A phrase's frequency is that of its rarest word.
 - Hebrew is accepted in both spellings: with and without the vowel letters ו and י (דיבר and דבר).
