@@ -23,7 +23,9 @@ body{font-family:'Avenir Next','Segoe UI',system-ui,sans-serif;background:var(--
    in the Hebrew interface. */
 header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:14px 16px 4px}
 h1{font-size:22px;margin:0;flex:1}
-header .pill{margin-inline-start:4px}
+header .pill{margin-inline-start:4px;white-space:nowrap}
+/* Small phones (iPhone SE): the header buttons stay on one line. */
+@media (max-width:360px){header{padding-inline:12px;gap:6px}header .pill{padding:6px 10px;font-size:13px;margin-inline-start:0}h1{font-size:19px}}
 #back{display:none}
 body:not([data-view="home"]) #back{display:inline-block}
 #st{padding:0 16px 8px;font-size:12px;color:var(--soft);min-height:22px}
