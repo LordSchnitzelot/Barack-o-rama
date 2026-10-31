@@ -22,7 +22,7 @@ Wiktionary does not list this pair. Most are fine (Wiktionary is incomplete); ch
 - line 42: yours = שֶׁלְּךָ
 - line 44: yourself = עַצְמְךָ
 - line 45: himself = עַצְמוֹ
-- line 46: herself = עׇצְמָה
+- line 46: herself = עַצְמָהּ
 - line 47: ourselves = עַצְמֵנוּ
 - line 48: themselves = עַצְמָם
 - line 51: these = אֵלֶּה
@@ -268,7 +268,7 @@ Feminine and plural forms given by the owner; the masculine plurals there were a
 - line 1781: desperate = נוֹאָשׁ — forms from forms.txt
 - line 1798: precious = יְקַר עֵרֶךְ — forms from forms.txt
 
-## Nikkud written by hand (nikkud.txt) (380)
+## Nikkud written by hand (nikkud.txt) (382)
 
 Wiktionary had no nikkud for these, so Claude wrote it. Check each one.
 
@@ -278,6 +278,7 @@ Wiktionary had no nikkud for these, so Claude wrote it. Check each one.
 - line 42: yours = שֶׁלְּךָ (written with nikkud in words.txt)
 - line 44: yourself = עַצְמְךָ
 - line 45: himself = עַצְמוֹ
+- line 46: herself = עַצְמָהּ (written with nikkud in words.txt)
 - line 47: ourselves = עַצְמֵנוּ
 - line 48: themselves = עַצְמָם
 - line 52: those = הָהֵם
@@ -286,6 +287,7 @@ Wiktionary had no nikkud for these, so Claude wrote it. Check each one.
 - line 69: each = כׇּל אֶחָד (written with nikkud in words.txt)
 - line 74: both = שְׁנֵיהֶם
 - line 95: from = מִן (written with nikkud in words.txt)
+- line 114: across = מֵעֵבֶר (written with nikkud in words.txt)
 - line 115: toward = לְכִוּוּן
 - line 162: away = מִשָּׁם
 - line 163: back = בַּחֲזָרָה
@@ -689,6 +691,29 @@ The build picked one; check it is the right word.
 - line 1554: gate = שער — chose שַׁעַר from several spellings (שֵׂעָר, שֵׂעָר)
 - line 1554: gate = שער — chose שַׁעַר from several spellings (שֵׂעָר, שֵׂעָר)
 - line 1617: ruin = הרס — chose הָרַס from several spellings (הֵרֵס)
+
+## Nikkud from another part of speech (18)
+
+Wiktionary has these letters only as another part of speech, so the nikkud comes from there. Usually the same word (שֶׁלִּי is filed as a preposition); check it is not a different word with the same letters. To fix one, write the Hebrew with nikkud in words.txt.
+
+- line 29: me = אוֹתִי — Wiktionary has it as a prep: "form of אֵת (et) including first-person singular personal pronoun as o"
+- line 32: us = אוֹתָנוּ — Wiktionary has it as a prep: "form of את (et) including first-person plural personal pronoun as obje"
+- line 33: them = אוֹתָם — Wiktionary has it as a prep: "form of את (et) including third-person masculine plural personal prono"
+- line 34: my = שֶׁלִּי — Wiktionary has it as a prep: "form of שֶׁל (shel) including first-person singular personal pronoun a"
+- line 37: his = שֶׁלּוֹ — Wiktionary has it as a prep: "form of שֶׁל (shel) including third-person masculine singular personal"
+- line 38: her = שֶׁלָּהּ — Wiktionary has it as a prep: "form of שֶׁל (shel) including third-person feminine singular personal "
+- line 39: our = שֶׁלָּנוּ — Wiktionary has it as a prep: "form of שֶׁל (shel) including first-person plural personal pronoun as "
+- line 41: mine = שֶׁלִּי — Wiktionary has it as a prep: "form of שֶׁל (shel) including first-person singular personal pronoun a"
+- line 43: myself = עַצְמִי — Wiktionary has it as a adj: "self-"
+- line 67: all = כֹּל — Wiktionary has it as a noun: "all, whole, entirety, everything; found almost exclusively in singular"
+- line 68: every = כֹּל — Wiktionary has it as a noun: "all, whole, entirety, everything; found almost exclusively in singular"
+- line 78: most = רֹב — Wiktionary has it as a noun: "majority"
+- line 224: by the way = אַגַּב — Wiktionary has it as a conj: "by the way"
+- line 227: for example = לְמָשָׁל — Wiktionary has it as a prep_phrase: "for example: used to introduce or otherwise mark an example."
+- line 362: notice = לֵב — Wiktionary has it as a noun: "heart (a muscular organ that pumps blood through the body, traditional"
+- line 572: pay attention = לֵב — Wiktionary has it as a noun: "heart (a muscular organ that pumps blood through the body, traditional"
+- line 1587: pretend = פָּנִים — Wiktionary has it as a noun: "face interior"
+- line 1710: eventually = בְּסוֹפוֹ שֶׁל דָּבָר — Wiktionary has it as a prep_phrase: "in the end, ultimately"
 
 ## Labels to improve (0)
 

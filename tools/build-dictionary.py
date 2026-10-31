@@ -185,8 +185,10 @@ def en_forms(en, word, pos):
 # ---------- Hebrew: finding the pointed word and its forms ----------
 review = collections.defaultdict(list)
 
-def find_he(he, word, pos, english, line):
-    if all(has_nikkud(w) for w in word.split(' ')): word = normalize(word)
+def find_he(he, word, pos, english, line, part=False):
+    """part: one word of a phrase put together word by word, which has its own review section."""
+    pointed = all(has_nikkud(w) for w in word.split(' '))   # written with nikkud: that nikkud is used
+    if pointed: word = normalize(word)
     """The Wiktionary entry for an unpointed Hebrew word, preferring our part of speech and an
     English gloss that mentions our English word."""
     cands = he.get(normalize(word), [])
@@ -196,6 +198,12 @@ def find_he(he, word, pos, english, line):
                                           not re.search(r'\b' + re.escape(english.split(' ')[-1].lower()) + r'\b', e['glosses'])))
     best = ranked[0]
     if best['pos'] not in wanted and pos not in ('adverb', 'interjection', 'determiner', 'pronoun', 'question', 'preposition', 'conjunction', 'modal'): return None
+    if best['pos'] not in wanted and not pointed and not part:
+        # Small words are often filed under another part of speech in Wiktionary (שֶׁלִּי as a
+        # preposition), but the same letters can also be another word: מְעֻבָּר ("pregnant") for
+        # "across" (מֵעֵבֶר), עׇצְמָה ("power") for "herself" (עַצְמָהּ). So a person checks these.
+        note = 'line %d: %s = %s — Wiktionary has it as a %s: "%s"' % (line, english, best['canon'], best['pos'], best['glosses'][:70])
+        if note not in review['otherpos']: review['otherpos'].append(note)
     same = [e for e in ranked if e['pos'] == best['pos'] and normalize(e['canon']) == normalize(best['canon']) and e['canon'] != best['canon']]
     if same and not re.search(r'\b' + re.escape(english.lower()) + r'\b', best['glosses']):
         review['choice'].append('line %d: %s = %s — chose %s from several spellings (%s)' % (line, english, word, best['canon'], ', '.join(e['canon'] for e in same)))
@@ -256,7 +264,7 @@ def point_phrase(he, text, pos, english, line):
     if ' ' not in text: return None
     parts = []
     for w in text.split(' '):
-        e = find_he(he, w, 'adverb', english, line) or find_he(he, w, 'noun', english, line)
+        e = find_he(he, w, 'adverb', english, line, True) or find_he(he, w, 'noun', english, line, True)
         if not e: return None
         parts.append(e['canon'])
     review['assembled'].append('line %d: %s = %s — nikkud put together word by word: %s' % (line, english, text, ' '.join(parts)))
@@ -270,7 +278,7 @@ def he_verb(he, to_inf, past_text, inf_text, english, line):
     of each. Multi-word verbs ("שם לב") conjugate the first word and keep the rest."""
     first, _, rest = past_text.partition(' ')
     inf_first, _, inf_rest = inf_text.partition(' ')
-    e = find_he(he, first, 'verb', english, line)
+    e = find_he(he, first, 'verb', english, line, bool(rest))
     if not e or e['pos'] != 'verb': return None
     tail = ''
     if rest:
@@ -541,6 +549,7 @@ def write_review(n):
                 ('forms', 'Adjective forms from forms.txt', 'Feminine and plural forms given by the owner; the masculine plurals there were added by Claude.'),
                 ('hand', 'Nikkud written by hand (nikkud.txt)', 'Wiktionary had no nikkud for these, so Claude wrote it. Check each one.'),
                 ('choice', 'Several Hebrew spellings to choose from', 'The build picked one; check it is the right word.'),
+                ('otherpos', 'Nikkud from another part of speech', 'Wiktionary has these letters only as another part of speech, so the nikkud comes from there. Usually the same word (שֶׁלִּי is filed as a preposition); check it is not a different word with the same letters. To fix one, write the Hebrew with nikkud in words.txt.'),
                 ('labels', 'Labels to improve', '')]
     for key, title, note in sections:
         items = review.get(key, [])

@@ -43,7 +43,7 @@ yours | pron | שֶׁלְּךָ, שלך, שלכם, שלכן | possessive
 myself | pron | עצמי
 yourself | pron | עצמך
 himself | pron | עצמו
-herself | pron | עצמה
+herself | pron | עַצְמָהּ
 ourselves | pron | עצמנו
 themselves | pron | עצמם
 this | pron | זה, זאת, זו
@@ -111,7 +111,7 @@ during | prep | במהלך, בזמן
 inside | adv | בפנים
 outside | adv | בחוץ
 around | prep | מסביב, סביב
-across | prep | מעבר
+across | prep | מֵעֵבֶר
 toward | prep | לכיוון, לעבר
 except | prep | חוץ מ
 like | prep | כמו | similar to
