@@ -166,7 +166,8 @@ def en_forms(en, word, pos):
         if e['pos'] != ('verb' if pos == 'verb' else 'noun'): continue
         for f in e['forms']:
             t = set(f['tags']); form = f['form']
-            if not form or t & BAD_TAGS: continue
+            # A form with a note in brackets is not a word: "costed (see usage note)".
+            if not form or t & BAD_TAGS or '(' in form: continue
             if form.lower() == word.lower() and not (pos == 'verb' and 'past' in t): continue
             if pos == 'verb':
                 if 'past' in t and 'participle' not in t: out['past'].append(form)
@@ -328,6 +329,13 @@ def confirmed(en, e, english, he_text):
     return bool(e) and bool(re.search(r'\b' + re.escape(english.lower()) + r'\b', e['glosses']))
 
 # ---------- Building ----------
+def shown_past(forms, freq):
+    """The past form shown on screen when Wiktionary gives several: the first listed, which is the
+    usual one, unless it never appears in the subtitles and another does ("fixt" and "blest", old
+    spellings Wiktionary lists before "fixed" and "blessed"). All of them are still accepted."""
+    seen = [f for f in forms if freq['en'].get(normalize(f).split(' ')[0], 0)]
+    return forms[0] if not seen or seen[0] == forms[0] else seen[0]
+
 def build(data):
     freq, he, to_inf, en = load(data)
     load_hand(); load_forms()
@@ -348,7 +356,7 @@ def build(data):
             f = en_forms(en, word, 'verb')
             if not pointed or not f.get('past'):
                 review['missing'].append('line %d: %s = %s — no nikkud or English past form, so it was left out' % (L['line'], word, past_he)); continue
-            entries.append(dict(en_text=f['past'][0], en_acc=sorted({normalize(x) for x in f['past']}), label=L['label'], pos='verb', verbForm='past',
+            entries.append(dict(en_text=shown_past(f['past'], freq), en_acc=sorted({normalize(x) for x in f['past']}), label=L['label'], pos='verb', verbForm='past',
                                 he_text=nfc(pointed), he_acc=sorted({normalize(past_he)} | {normalize(x) for x in extras}), he_label=he_label,
                                 line=L['line'], pair=None, base=word, verb=(pointed, None)))
         elif L['pos'] == 'verb':
@@ -366,7 +374,7 @@ def build(data):
             pair = len(entries)
             verb = (v['past'], v['inf'])
             entries.append(dict(en_text='to ' + word, en_acc=inf_acc, label=L['label'], pos='verb', verbForm='infinitive', he_text=v['inf'], he_acc=v['inf_acc'], he_seen=v['seen_as'], he_label=he_label, line=L['line'], pair=pair + 1, base=word, verb=verb))
-            entries.append(dict(en_text=f['past'][0], en_acc=past_acc, label=L['label'], pos='verb', verbForm='past', he_text=v['past'], he_acc=v['past_acc'], he_label=he_label, line=L['line'], pair=pair, base=word, verb=verb))
+            entries.append(dict(en_text=shown_past(f['past'], freq), en_acc=past_acc, label=L['label'], pos='verb', verbForm='past', he_text=v['past'], he_acc=v['past_acc'], he_label=he_label, line=L['line'], pair=pair, base=word, verb=verb))
         else:
             # Hebrew synonyms in one group: "כועס + עצבני" (spec 3.3, Groups).
             main, *more = [x.strip() for x in main.split('+')]
