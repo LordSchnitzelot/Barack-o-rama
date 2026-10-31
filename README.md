@@ -44,8 +44,8 @@ microphone and voice, and checks about 40 things (add `--shots` to save screensh
 
 ## The dictionary and sentences
 
-`packs/en-he/drills/` holds the Drills content: about 2,100 English entries in 1,855 meaning groups,
-and 128 tagged sentences. They are built from the readable files in `packs/en-he/drills/source/` by
+`packs/en-he/drills/` holds the Drills content: about 2,140 English entries in 1,863 meaning groups,
+and 288 tagged sentences (148 English, 140 Hebrew). They are built from the readable files in `packs/en-he/drills/source/` by
 `tools/build-dictionary.py` and `tools/build-sentences.py`; see
 [docs/drills-data-format.md](docs/drills-data-format.md). Entries a person should check are listed in
 [docs/dictionary-review.md](docs/dictionary-review.md).

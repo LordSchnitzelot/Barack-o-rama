@@ -176,7 +176,7 @@ need a person's judgment live in plain text files that anyone can read and corre
 | `packs/en-he/drills/source/words.txt` | One meaning per line: the English word, its part of speech, the Hebrew word, and a label when needed. Verbs give the Hebrew past and infinitive ("הלך / ללכת"). |
 | `packs/en-he/drills/source/forms.txt` | Feminine and plural forms of adjectives that Wiktionary has none for. A spelling without nikkud in brackets follows a form when it differs: `מְזֻיֶּפֶת (מזויפת)`. |
 | `packs/en-he/drills/source/nikkud.txt` | Nikkud for the few words Wiktionary has none for (written by Claude; each needs a person's check). |
-| `packs/en-he/drills/source/sentences.txt` | The sentences, with their tenses and clauses. A word with several meanings carries its label in curly brackets: `know{a person}`. |
+| `packs/en-he/drills/source/sentences.txt` | The sentences, with their tenses and clauses. A word with several meanings carries its label in curly brackets: `know{a person}`. For Hebrew, the label is the entry as written (`השם{שֵׁם}`) or its label (`לא{שלילה}`); it can also pick the reading without attached letters: `הבן{בֵּן}` is ה + בֵּן ("the son"), not the command הָבֵן. |
 
 `tools/build-dictionary.py` fills in everything else from the sources in spec 3.3: the nikkud, every
 Hebrew past form, the infinitive, present and future forms, feminine and plural forms (English
