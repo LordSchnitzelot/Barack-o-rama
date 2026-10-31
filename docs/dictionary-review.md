@@ -179,17 +179,15 @@ Wiktionary does not list this pair. Most are fine (Wiktionary is incomplete); ch
 - line 1834: reservation = הַזְמָנָה
 - line 1843: fridge = מְקָרֵר
 
-## Nikkud put together word by word (8)
+## Nikkud put together word by word (6)
 
 Phrases not in Wiktionary as a whole. Check the nikkud of each word (for example construct forms like בֵּית).
 
-- line 64: each other = זה את זה — nikkud put together word by word: זֶה אֵת זֶה
 - line 218: never mind = לא משנה — nikkud put together word by word: לֹא מִשְׁנֶה
 - line 219: no problem = אין בעיה — nikkud put together word by word: אֵין בְּעָיָה
 - line 220: of course not = ממש לא — nikkud put together word by word: מַמָּשׁ לֹא
 - line 395: deserve = הגיע לו — nikkud put together word by word: הִגִּיעַ לוֹ
 - line 924: earth = כדור הארץ — nikkud put together word by word: כַּדּוּר הָאָרֶץ
-- line 1475: while = בזמן ש — nikkud put together word by word: בַּזְמַן שָׁ
 - line 1794: someday = יום אחד — nikkud put together word by word: יוֹם אֶחָד
 
 ## Adjectives without feminine and plural forms in Wiktionary (0)
@@ -270,7 +268,7 @@ Feminine and plural forms given by the owner; the masculine plurals there were a
 - line 1781: desperate = נוֹאָשׁ — forms from forms.txt
 - line 1798: precious = יְקַר עֵרֶךְ — forms from forms.txt
 
-## Nikkud written by hand (nikkud.txt) (376)
+## Nikkud written by hand (nikkud.txt) (379)
 
 Wiktionary had no nikkud for these, so Claude wrote it. Check each one.
 
@@ -284,6 +282,7 @@ Wiktionary had no nikkud for these, so Claude wrote it. Check each one.
 - line 48: themselves = עַצְמָם
 - line 52: those = הָהֵם
 - line 62: everything = הַכֹּל
+- line 64: each other = זֶה אֶת זֶה (written with nikkud in words.txt)
 - line 69: each = כׇּל אֶחָד (written with nikkud in words.txt)
 - line 74: both = שְׁנֵיהֶם
 - line 95: from = מִן (written with nikkud in words.txt)
@@ -586,6 +585,7 @@ Wiktionary had no nikkud for these, so Claude wrote it. Check each one.
 - line 1469: best = הֲכִי טוֹב
 - line 1470: worse = גָּרוּעַ יוֹתֵר
 - line 1471: worst = הֲכִי גָּרוּעַ
+- line 1475: while = בִּזְמַן שֶׁ (written with nikkud in words.txt)
 - line 1478: control = לִשְׁלֹט
 - line 1479: act = לִפְעֹל
 - line 1480: bet = לְהִתְעָרֵב
@@ -594,6 +594,7 @@ Wiktionary had no nikkud for these, so Claude wrote it. Check each one.
 - line 1498: issue = סוּגְיָה
 - line 1521: apart = בְּנִפְרָד
 - line 1528: fan = מַעֲרִיץ
+- line 1539: asleep = יָשֵׁן (written with nikkud in words.txt)
 - line 1540: claim = לִטְעֹן
 - line 1541: remain = לְהִשָּׁאֵר
 - line 1542: discuss = לָדוּן

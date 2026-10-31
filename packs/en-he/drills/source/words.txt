@@ -61,7 +61,7 @@ something | pron | משהו
 anything | pron | משהו | any thing
 everything | pron | הכל, הכול
 nothing | pron | כלום, שום דבר
-each other | pron | זה את זה
+each other | pron | זֶה אֶת זֶה
 other | adj | אחר
 another | det | עוד | one more
 all | det | כל
@@ -1472,7 +1472,7 @@ worst | adj | הכי גרוע
 ever | adv | אי פעם
 through | prep | דרך | from one side to the other
 else | adv | אחר | other
-while | conj | בזמן ש, כש
+while | conj | בִּזְמַן שֶׁ, כש
 walk | n | הליכה
 control | n | שליטה
 control | v | שלט / לשלוט
@@ -1536,7 +1536,7 @@ ridiculous | adj | מגוחך
 simply | adv | פשוט
 challenge | n | אתגר
 tight | adj | צמוד
-asleep | adj | ישן | sleeping
+asleep | adj | יָשֵׁן | sleeping
 claim | v | טען / לטעון
 remain | v | נשאר / להישאר
 discuss | v | דן / לדון
