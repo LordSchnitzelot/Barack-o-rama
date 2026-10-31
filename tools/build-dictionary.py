@@ -186,11 +186,11 @@ def en_forms(en, word, pos):
 review = collections.defaultdict(list)
 
 def find_he(he, word, pos, english, line, part=False):
-    """part: one word of a phrase put together word by word, which has its own review section."""
+    """The Wiktionary entry for an unpointed Hebrew word, preferring our part of speech and an
+    English gloss that mentions our English word. part: one word of a phrase put together word by
+    word, which has its own review section."""
     pointed = all(has_nikkud(w) for w in word.split(' '))   # written with nikkud: that nikkud is used
     if pointed: word = normalize(word)
-    """The Wiktionary entry for an unpointed Hebrew word, preferring our part of speech and an
-    English gloss that mentions our English word."""
     cands = he.get(normalize(word), [])
     if not cands: return None
     wanted = WIKI_POS[pos]
@@ -314,6 +314,11 @@ def he_word(he, text, extras, pos, english, line):
     pointed = point_phrase(he, text, pos, english, line)
     if not pointed: return None
     e = find_he(he, text, pos, english, line)
+    if e and all(has_nikkud(w) for w in text.split(' ')) and nfc(e['canon']) != nfc(text):
+        # Written with nikkud in words.txt, and Wiktionary's word with these letters is another word
+        # (פָּנִים "face" for פְּנִים "inside"): its forms and meanings are not used.
+        review['homograph'].append('line %d: %s = %s — Wiktionary\'s %s is another word: "%s"' % (line, english, nfc(text), e['canon'], e['glosses'][:60]))
+        e = None
     forms = [pointed]
     if e and pos == 'adjective': forms += he_forms(e, lambda t: bool(t & {'feminine', 'plural'}))
     if e and pos == 'noun': forms += he_forms(e, lambda t: 'plural' in t)
@@ -550,6 +555,7 @@ def write_review(n):
                 ('forms', 'Adjective forms from forms.txt', 'Feminine and plural forms given by the owner; the masculine plurals there were added by Claude.'),
                 ('hand', 'Nikkud written by hand (nikkud.txt)', 'Wiktionary had no nikkud for these, so Claude wrote it. Check each one.'),
                 ('choice', 'Several Hebrew spellings to choose from', 'The build picked one; check it is the right word.'),
+                ('homograph', 'Another word with the same letters', 'Written with nikkud in words.txt because Wiktionary\'s word with the same letters is a different word, so none of its forms are used. Check the nikkud, and that the forms written in words.txt are complete.'),
                 ('otherpos', 'Nikkud from another part of speech', 'Wiktionary has these letters only as another part of speech, so the nikkud comes from there. Usually the same word (שֶׁלִּי is filed as a preposition); check it is not a different word with the same letters. To fix one, write the Hebrew with nikkud in words.txt.'),
                 ('labels', 'Labels to improve', '')]
     for key, title, note in sections:

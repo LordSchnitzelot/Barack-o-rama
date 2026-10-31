@@ -8,7 +8,7 @@ Difficulty is calculated as in docs/drills-data-format.md.
 
 Usage:  python3 tools/build-sentences.py      then   node tools/validate-drills.js
 """
-import json, os, re, sys, importlib.util
+import json, os, re, sys, unicodedata, importlib.util
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DRILLS = os.path.join(ROOT, 'packs', 'en-he', 'drills')
@@ -37,6 +37,10 @@ def load_dict(lang):
             for a in w['accepted'] + w.get('seenAs', []): by_form.setdefault(a, []).append(w)
     return by_form, rank
 
+def fits(entry, hint):
+    """Does a label from sentences.txt name this entry: its whole text, or its label in brackets?"""
+    return entry['text'] == hint or entry['text'].endswith('(%s)' % hint)
+
 def tag(lang, text, hints, by_form, tenses):
     """[(text as written, entry)], or raises with the problem."""
     raw = re.findall(r"[\w'’֐-׿]+", text)
@@ -51,10 +55,15 @@ def tag(lang, text, hints, by_form, tenses):
             if lang == 'he': forms += [p_strip for p in PREFIXES if forms[0].startswith(p) for p_strip in [forms[0][len(p):]] if p_strip]
             found = [c for c in (list({w['id']: w for w in by_form.get(f, [])}.values()) for f in forms) if c]
             if found:
-                # The word as written comes first; a label can choose a reading with its attached
-                # letters removed instead: הבן{בֵּן} is ה + בֵּן ("the son"), not the command הָבֵן.
+                # The word as written comes first. A label picks the entries it names, also from a
+                # reading with the attached letters removed: הבן{בֵּן} is ה + בֵּן ("the son"), not
+                # the command הָבֵן. A label that names none of them is a mistake in sentences.txt.
                 hint, chosen = hints.get(i + n - 1), found[0]
-                if hint: chosen = next((c for c in found if any(w['text'] == hint or w['text'].endswith('(%s)' % hint) for w in c)), chosen)
+                if hint:
+                    named = next((m for m in ([w for w in c if fits(w, hint)] for c in found) if m), None)
+                    if not named:
+                        raise ValueError('the label {%s} on "%s" fits none of its entries (%s)' % (hint, ' '.join(raw[i:i + n]), ', '.join(w['text'] for c in found for w in c)))
+                    chosen = named
                 hit = (n, chosen); break
         if not hit:
             if toks[i] in UNTAGGED[lang]: i += 1; continue
@@ -62,9 +71,6 @@ def tag(lang, text, hints, by_form, tenses):
         n, cands = hit
         if toks[i] in UNTAGGED[lang] and n == 1 and len(cands) > 0 and lang == 'en' and toks[i] in ('do', 'does', 'will', 'is', 'am', 'are'):
             i += 1; continue   # helper verbs stay untagged
-        hint = hints.get(i + n - 1)
-        if hint:
-            cands = [w for w in cands if w['text'] == hint or w['text'].endswith('(%s)' % hint)] or cands
         # The same spelling as a past form and as another verb form (צחקו): the sentence's tense decides.
         if len(cands) > 1 and all(w['verbForm'] for w in cands):
             want = 'past' if 'past' in tenses else 'infinitive'
@@ -89,7 +95,7 @@ def build():
         hints, clean, words_before = {}, '', 0
         for part in re.split(r'(\{[^}]*\})', sentence):
             if part.startswith('{'):
-                hints[words_before - 1] = part[1:-1]
+                hints[words_before - 1] = unicodedata.normalize('NFC', part[1:-1].strip())
             else:
                 clean += part
                 words_before = len(re.findall(r"[\w'’֐-׿]+", clean))

@@ -59,7 +59,7 @@ and 288 tagged sentences (148 English, 140 Hebrew). They are built from the read
 | 3. Chat mode | Done: Show/Hide subtitles, replay and slower buttons, corrections setting, "Show translation?" |
 | 4. Profile on the device | Done: My words with scores in IndexedDB |
 | 5. Session summary and weak spots | Done |
-| 6. Drills content | Done: real dictionary (first version) and a first chunk of sentences |
+| 6. Drills content | Done: real dictionary (first version) and two chunks of sentences (288) |
 | 7. Drills mode | Done |
 | 8. Settings, backup, PWA, Hebrew UI | Done: Hebrew interface, tutor voice choice, backup export and import, home-screen install |
 | 9. Levantine Arabic | Not yet (needs a listening test by a person first) |

@@ -10,8 +10,8 @@ import { t, langName } from './strings.js';
 import * as store from './store.js';
 
 let data = null, session = null, drill = null, rec = null, hinted = [], score = { right: 0, total: 0 }, missed = [];
-/* What to practice (spec 6.1): Mixed by default; the last choice is remembered. */
-let mode = D.MODES.includes(S.drillMode) ? S.drillMode : 'mixed';
+/* What to practice (spec 6.1): Mixed by default; the last choice is remembered (S.drillMode). */
+let mode = 'mixed';
 const box = () => $('#drills');
 const side = lang => lang === pack.target.code ? 'target' : 'native';
 const langOf = code => code === pack.target.code ? pack.target : pack.native;
@@ -19,6 +19,7 @@ const langOf = code => code === pack.target.code ? pack.target : pack.native;
 /* ---------- Start and end ---------- */
 export async function openDrills() {
   stopAudio(); session = null;
+  mode = D.MODES.includes(S.drillMode) ? S.drillMode : 'mixed';
   box().innerHTML = `<div class="card"><b>${esc(t('drills.title'))}</b><p class="note">${esc(t('drills.intro'))}</p>
     <label for="dm">${esc(t('drills.what'))}</label><select id="dm">${D.MODES.map(k => `<option value="${k}"${k === mode ? ' selected' : ''}>${esc(t('drills.' + k))}</option>`).join('')}</select>
     <div class="center"><button class="mic" id="dgo">${esc(t('drills.start'))}</button></div></div>`;

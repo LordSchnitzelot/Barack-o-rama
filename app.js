@@ -5,6 +5,7 @@ import { $, esc, attrs, S, saveSettings, speech, stopAudio, play, ai, wordsReady
 import { t } from './strings.js';
 import * as Words from './words.js';
 import * as Backup from './backup.js';
+import { MODES } from './drills.js';
 import * as store from './store.js';
 import { openTalk, endTalk, relabelTalk, MAX_NOTES } from './talk.js';
 import { openDrills, closeDrills, relabelDrills } from './drill-screen.js';
@@ -109,6 +110,7 @@ function validSettings(incoming) {
     if (el.tagName === 'SELECT' && ![...el.options].some(o => o.value === v)) continue;
     out[k] = v;
   }
+  if (MODES.includes(incoming.drillMode)) out.drillMode = incoming.drillMode; // chosen on the Drills screen
   return out;
 }
 $('#bimp').onclick = () => $('#bfile').click();

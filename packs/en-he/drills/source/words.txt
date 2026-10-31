@@ -1536,7 +1536,7 @@ ridiculous | adj | מגוחך
 simply | adv | פשוט
 challenge | n | אתגר
 tight | adj | צמוד
-asleep | adj | יָשֵׁן | sleeping
+asleep | adj | יָשֵׁן, ישנה, ישנים, ישנות | sleeping
 claim | v | טען / לטעון
 remain | v | נשאר / להישאר
 discuss | v | דן / לדון

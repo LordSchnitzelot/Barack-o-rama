@@ -195,7 +195,7 @@ Phrases not in Wiktionary as a whole. Check the nikkud of each word (for example
 Left out until their forms are added. Add them after the Hebrew in words.txt, separated by commas: "lazy | adj | עצלן, עצלנית, עצלנים, עצלניות".
 
 
-## Adjective forms written by hand (8)
+## Adjective forms written by hand (9)
 
 Check these extra forms and spellings.
 
@@ -207,6 +207,7 @@ Check these extra forms and spellings.
 - line 1359: rude = גס רוח — other forms or spellings written by hand in words.txt: גסת רוח, גסי רוח, גסות רוח
 - line 1367: pregnant = בהריון — other forms or spellings written by hand in words.txt: בהיריון, הרה
 - line 1370: innocent = חף מפשע — other forms or spellings written by hand in words.txt: חפה מפשע, חפים מפשע, חפות מפשע
+- line 1539: asleep = יָשֵׁן — other forms or spellings written by hand in words.txt: ישנה, ישנים, ישנות
 
 ## Adjective forms from forms.txt (55)
 
@@ -678,6 +679,19 @@ The build picked one; check it is the right word.
 - line 1211: website = אתר — chose אֲתָר from several spellings (אֶתֶר)
 - line 1554: gate = שער — chose שַׁעַר from several spellings (שֵׂעָר, שֵׂעָר)
 - line 1617: ruin = הרס — chose הָרַס from several spellings (הֵרֵס)
+
+## Another word with the same letters (8)
+
+Written with nikkud in words.txt because Wiktionary's word with the same letters is a different word, so none of its forms are used. Check the nikkud, and that the forms written in words.txt are complete.
+
+- line 35: your = שֶׁלְּךָ — Wiktionary's שָׁלָךְ is another word: "osprey"
+- line 42: yours = שֶׁלְּךָ — Wiktionary's שָׁלָךְ is another word: "osprey"
+- line 46: herself = עַצְמָהּ — Wiktionary's עׇצְמָה is another word: "strength, power, intensity cardinality intensity"
+- line 114: across = מֵעֵבֶר — Wiktionary's מְעֻבָּר is another word: "pregnant"
+- line 590: person = אָדָם — Wiktionary's אָדֹם is another word: "red"
+- line 917: inside = פְּנִים — Wiktionary's פָּנִים is another word: "face interior"
+- line 1024: June = יוּנִי — Wiktionary's יְוָנִי is another word: "a greek (person)"
+- line 1539: asleep = יָשֵׁן — Wiktionary's יָשָׁן is another word: "old, having existed for a long time old, veteran dated, no l"
 
 ## Nikkud from another part of speech (18)
 

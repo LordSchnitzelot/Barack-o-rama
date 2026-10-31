@@ -208,8 +208,11 @@ export function createSpeech(opts) {
       let P = null;
       /* The first time, the model (about 65 MB) is downloaded, which can take a while on a phone,
          so its progress is shown. Later loads come from the browser's cache. */
+      let shown = -1;
       const onProgress = ({ file, loaded, total, cached }) => {
-        if (!cached && total && file === 'weights') status(t('voice.downloading', { target: targetName(), pct: Math.min(99, Math.floor(loaded / total * 100)) }));
+        if (cached || !total || file !== 'weights' || phKey !== key) return; // a newer load took over
+        const pct = Math.min(99, Math.floor(loaded / total * 100));
+        if (pct !== shown) { shown = pct; status(t('voice.downloading', { target: targetName(), pct })); }
       };
       try {
         const m = await phMod();
