@@ -138,3 +138,172 @@ he | imperative | 1 | תפתח{לִפְתֹּחַ} את הדלת, בבקשה{ב�
 he | imperative | 1 | בוא לכאן.
 he | future | 1 | אני אתקשר מחר.
 he | future | 1 | היא תהיה כאן בקרוב.
+
+# ==================== Second chunk ====================
+# Written by Claude for the most common words that had no sentence yet, with more Hebrew
+# sentences, since Hebrew sentences are the speaking drills (spec 6.1: comprehension and speaking
+# weigh the same). Needs a person's check, like the first chunk.
+
+# ---------- English ----------
+en | present | 1 | Do you{several people} want to come with us?
+en | present | 1 | This is for you{one person}.
+en | present | 1 | I am just tired.
+en | present | 1 | He lives{have a home} there.
+en | present | 1 | It is like{similar to} a dream.
+en | present | 1 | I get up early{early (adverb)}.
+en | imperative | 1 | Come in, please.
+en | present | 1 | I am not hungry at all.
+en | present | 1 | Who is that man?
+en | present | 1 | Why are you{one person} sad?
+en | present | 1 | Yes, I know{a fact}.
+en | past | 1 | I was wrong.
+en | past | 1 | She said yes.
+en | present | 1 | I want to thank you{one person}.
+en | present | 1 | I need something to eat.
+en | present | 1 | I really like{to like} this place.
+en | present | 1 | I never drink coffee at night.
+en | present | 1 | People{noun} are nice here.
+en | present | 2 | I am tired because I work{to work} every day.
+en | present | 1 | Even my father knows{a fact} it.
+en | present | 1 | Life is good.
+en | present | 1 | I am sure.
+en | present | 1 | I want to try again.
+en | present | 1 | Maybe tomorrow.
+en | future | 1 | We will talk after work{noun}.
+en | past | 1 | She won the game.
+en | past | 1 | I thought about{a topic} you{one person}.
+en | imperative | 1 | Put on your{one person} coat.
+en | present | 1 | He is a great teacher.
+en | past | 1 | That was the last{final} time{occasion}.
+en | present | 1 | She is better now.
+en | present | 1 | I always forget his name.
+en | future | 1 | We will get married next year.
+en | present | 1 | It is a long story.
+en | present | 1 | I need money.
+en | imperative | 1 | Stay here.
+en | present | 1 | This bag is old{not new}.
+en | present | 1 | I believe you{one person}.
+en | imperative | 1 | Listen to me.
+en | present | 1 | Someone is at the door.
+en | present | 2 | I do not understand what you{one person} mean.
+en | present | 1 | Of course not.
+en | present | 1 | It is a small world.
+en | past | 1 | What happened?
+en | present | 1 | This is a bad idea.
+en | present | 1 | I remember this song.
+en | imperative | 1 | Wait a minute.
+en | present | 1 | I miss{feel sad without} you{one person}.
+en | present | 1 | We go to the same{the same one} school.
+en | imperative | 1 | Hold my hand.
+en | imperative | 1 | Bring me some water.
+en | present | 1 | This is the best day of my life.
+en | present | 1 | Is it real?
+en | imperative | 1 | Turn off the light{noun}.
+en | present | 1 | Our room is upstairs.
+en | present | 1 | When do you{one person} get up?
+en | present | 1 | Coffee or tea?
+en | present | 1 | He is a good person.
+en | present | 1 | Me too{also}.
+en | imperative | 1 | Never give up.
+
+# ---------- Hebrew ----------
+he | present | 1 | אתם רוצים לבוא?
+he | present | 1 | זה בשביל אמא.
+he | present | 1 | אני רק עייף.
+he | present | 1 | הוא גר שם{שָׁם}.
+he | present | 1 | זה כמו חלום.
+he | present | 1 | אני קם מוקדם{תואר הפועל}.
+he | imperative | 1 | תיכנס, בבקשה{בְּבַקָּשָׁה}.
+he | present | 1 | אני בכלל לא{שלילה} רעב.
+he | present | 1 | מי האיש הזה?
+he | present | 1 | למה אתה עצוב{עָצוּב}?
+he | present | 1 | כן{כֵּן}, אני יודע.
+he | past | 1 | טעיתי.
+he | past | 1 | היא אמרה כן{כֵּן}.
+he | present | 1 | אני רוצה להודות{תודה} לאמא שלי.
+he | present | 1 | אני צריך משהו לאכול.
+he | present | 1 | אני באמת אוהב את המקום הזה.
+he | present | 1 | אני אף פעם לא{שלילה} שותה קפה בלילה.
+he | present | 1 | האנשים{אֲנָשִׁים} כאן נחמדים.
+he | present | 2 | אני עייף כי אני עובד{לַעֲבֹד} כל יום.
+he | present | 1 | אפילו אבא שלי יודע.
+he | present | 1 | החיים{חַיִּים} יפים.
+he | present | 1 | אני בטוח{בָּטוּחַ}.
+he | present | 1 | מחר אני בעבודה.
+he | present | 1 | אני רוצה לנסות שוב.
+he | present | 1 | אולי מחר.
+he | future | 1 | נדבר אחרי העבודה.
+he | past | 1 | היא ניצחה במשחק{מִשְׂחָק}.
+he | past | 1 | חשבתי על זה.
+he | present | 1 | הוא מורה נהדר.
+he | past | 1 | זאת הייתה הפעם האחרונה.
+he | present | 1 | היא מרגישה טוב יותר עכשיו.
+he | present | 1 | אני תמיד שוכח את השם{שֵׁם} שלו.
+he | future | 1 | אנחנו נתחתן בשנה{שָׁנָה} הבאה.
+he | present | 1 | זה סיפור ארוך.
+he | present | 1 | אני צריך כסף{תשלום}.
+he | imperative | 1 | תישאר כאן.
+he | present | 1 | התיק הזה ישן{יָשָׁן}.
+he | present | 1 | אני לא{שלילה} מאמין.
+he | present | 1 | איזה אחד אתה רוצה?
+he | imperative | 1 | תקשיב טוב{תואר הפועל}.
+he | present | 1 | איזה סוג מוזיקה אתה אוהב?
+he | present | 1 | שלום{ברכה}, מה שלומך?
+he | present | 1 | מישהו בדלת.
+he | present | 2 | אני לא{שלילה} מבין מה אתה רוצה.
+he | present | 1 | אני רץ כל בוקר.
+he | present | 1 | ממש לא.
+he | present | 1 | העולם קטן.
+he | past | 1 | מה קרה{קָרָה}?
+he | past | 1 | הוא בא מאוחר{תואר הפועל}.
+he | present | 1 | זה רעיון רע{תואר}.
+he | present | 1 | אני זוכר את השיר{שִׁיר} הזה.
+he | imperative | 1 | חכה דקה.
+he | present | 1 | אני מתגעגע לאמא.
+he | present | 1 | אנחנו מתחילים עכשיו.
+he | present | 1 | אנחנו לומדים באותו{תואר} בית ספר.
+he | past | 1 | גיליתי את זה אתמול.
+he | imperative | 1 | תחזיק את היד שלי.
+he | imperative | 1 | תביא מים, בבקשה{בְּבַקָּשָׁה}.
+he | present | 1 | זה היום{יוֹם} הכי טוב בחיים{חַיִּים} שלי.
+he | present | 1 | זה אמיתי?
+he | imperative | 1 | תכבה את האור.
+he | present | 1 | הבן{בֵּן} שלי תינוק.
+he | present | 1 | החדר שלנו למעלה.
+he | present | 1 | הבית שלהם גדול.
+he | present | 1 | מתי{מָתַי} אתה קם?
+he | present | 1 | הילדים חוזרים{למקום} לבית ספר מחר.
+he | present | 1 | אני מחפש את המפתח{מַפְתֵּחַ}.
+he | present | 1 | קפה או תה?
+he | present | 1 | זה דבר{דָּבָר} טוב{תואר}.
+he | present | 1 | המשפחה שלנו גדולה.
+he | present | 1 | הוא אדם{אָדָם} טוב{תואר}.
+he | present | 1 | גם אני.
+he | present | 1 | אני רוצה עוד.
+he | present | 1 | אגב, אני רעב.
+he | present | 1 | אני לא{שלילה} מוותר.
+he | present | 1 | הבחור הזה חבר שלי.
+he | present | 1 | אני רוצה למצוא עבודה.
+he | present | 1 | אני מרגיש טוב{תואר הפועל}.
+he | present | 1 | כן{כֵּן}, אדוני.
+he | imperative | 1 | תעצור{תנועה} כאן.
+he | present | 1 | עוד פעם, בבקשה{בְּבַקָּשָׁה}.
+he | present | 1 | הילדה הזאת הבת שלי.
+he | past | 1 | הוא עזב מוקדם{תואר הפועל}.
+he | present | 1 | ההורים שלי גרים בכפר.
+he | past | 1 | שמתי את המפתח{מַפְתֵּחַ} על השולחן.
+he | present | 1 | הם לא{שלילה} כאן.
+he | present | 1 | איך אומרים את זה באנגלית?
+he | present | 1 | אני לא{שלילה} מכיר אף אחד כאן.
+he | past | 1 | הגעתי לעבודה.
+he | past | 1 | קיבלתי{משהו} מכתב.
+he | present | 1 | אנחנו יוצאים עכשיו.
+he | past | 1 | הבנתי.
+he | past | 1 | ראיתי את זה.
+he | present | 1 | זה לא נכון.
+he | present | 1 | אני צריך לחשוב.
+he | present | 1 | מה אתה עושה?
+he | present | 1 | אנחנו מדברים{לְדַבֵּר} אנגלית.
+he | past | 2 | כשהייתי ילד, גרתי בכפר.
+he | present | 1 | אתם צריכים עזרה{עֶזְרָה}?
+he | present | 1 | מישהו מכיר אותה{אוֹתָהּ}?

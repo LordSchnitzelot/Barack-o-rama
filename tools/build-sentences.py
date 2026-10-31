@@ -49,10 +49,13 @@ def tag(lang, text, hints, by_form, tenses):
         for n in range(min(MAX_WORDS, len(toks) - i), 0, -1):
             forms = [' '.join(toks[i:i + n])]
             if lang == 'he': forms += [p_strip for p in PREFIXES if forms[0].startswith(p) for p_strip in [forms[0][len(p):]] if p_strip]
-            for f in forms:
-                cands = list({w['id']: w for w in by_form.get(f, [])}.values())
-                if cands: hit = (n, cands); break
-            if hit: break
+            found = [c for c in (list({w['id']: w for w in by_form.get(f, [])}.values()) for f in forms) if c]
+            if found:
+                # The word as written comes first; a label can choose a reading with its attached
+                # letters removed instead: הבן{בֵּן} is ה + בֵּן ("the son"), not the command הָבֵן.
+                hint, chosen = hints.get(i + n - 1), found[0]
+                if hint: chosen = next((c for c in found if any(w['text'] == hint or w['text'].endswith('(%s)' % hint) for w in c)), chosen)
+                hit = (n, chosen); break
         if not hit:
             if toks[i] in UNTAGGED[lang]: i += 1; continue
             raise ValueError('"%s" is not in the dictionary' % raw[i])
