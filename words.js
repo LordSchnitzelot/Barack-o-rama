@@ -33,7 +33,7 @@ export function flag(old, info, now) {
 export const MAX_SCORE = INTERVALS.length - 1;
 export const score = rec => rec ? rec.level : 0;
 
-/* When the word is next due for practice, across both directions. */
+/* The drill number at which the word is next due, across both directions (0: at once). */
 export const nextReview = r => Math.min(...[r.understand, r.say].filter(Boolean).map(x => x.due));
 
 /* Records saved by the first demo were { w, m, src, t }. */

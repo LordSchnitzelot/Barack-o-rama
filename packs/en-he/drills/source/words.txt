@@ -386,7 +386,7 @@ owe | v | היה חייב / להיות חייב
 joke | v | צחק / לצחוק (joke)
 smile | v | חייך / לחייך
 destroy | v | הרס / להרוס
-deserve | v | הגיע / להגיע (deserve)
+# deserve: waiting for the owner's decision (Hebrew says מגיע לי, which has no infinitive).
 quit | v | עזב / לעזוב | stop doing a job
 steal | v | גנב / לגנוב
 kick | v | בעט / לבעוט

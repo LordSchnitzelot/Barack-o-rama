@@ -231,17 +231,6 @@ def point_phrase(he, text, pos, english, line):
     review['assembled'].append('line %d: %s = %s — nikkud put together word by word: %s' % (line, english, text, ' '.join(parts)))
     return ' '.join(parts)
 
-def adjective_forms(base):
-    """Feminine and plural spellings of an adjective, without nikkud, when Wiktionary has none:
-    עצלן -> עצלנה, עצלנים, עצלנות; ימני -> ימנית; עבה -> עבים. Answers are compared without nikkud,
-    so these spellings are all the app needs. A phrase changes its last word (לא נכון -> לא נכונה)."""
-    head, _, last = base.rpartition(' ')
-    pre = head + ' ' if head else ''
-    if last.endswith('י'): forms = [last + 'ת', last + 'ים', last + 'ות']
-    elif last.endswith('ה'): forms = [last, last[:-1] + 'ים', last[:-1] + 'ות']
-    else: forms = [last + 'ה', last + 'ים', last + 'ות']
-    return {pre + f for f in forms}
-
 def he_forms(entry, want):
     return [f['form'] for f in entry['forms'] if want(set(f.get('tags', [])))]
 
@@ -267,7 +256,9 @@ def he_verb(he, to_inf, past_text, inf_text, english, line):
         h = hand(inf_first, english, line)
         if h: inf = [h]
     if not inf: return None
-    other = he_forms(e, lambda t: bool(t & {'present', 'future', 'imperative'}) and 'negative' not in t)
+    # The infinitive also accepts the present tense (spec 3.3: other verb forms count as the
+    # infinitive; the owner chose present only, so a past form like צחקו never matches an imperative).
+    other = he_forms(e, lambda t: 'present' in t and 'participle' not in t)
     acc = lambda forms, extra: sorted(set().union(*[spellings(f + tail) for f in forms]) | {normalize(extra)})
     past_acc = acc([e['canon']] + past, past_text)
     if len(past_acc) < 7: return None
@@ -283,8 +274,11 @@ def he_word(he, text, extras, pos, english, line):
     if e and pos == 'noun': forms += he_forms(e, lambda t: 'plural' in t)
     if e and pos in ('modal',): forms += he_forms(e, lambda t: 'present' in t)
     acc = set().union(*[spellings(f) for f in forms]) | {normalize(x) for x in [text] + extras}
-    if pos == 'adjective' and len(acc) < 3: acc |= adjective_forms(normalize(text))
-    if pos == 'adjective' and len(acc) < 3: return None
+    if pos == 'adjective' and extras:
+        review['adjective_hand'].append('line %d: %s = %s — other forms or spellings written by hand in words.txt: %s' % (line, english, text, ', '.join(extras)))
+    if pos == 'adjective' and len(acc) < 3:
+        review['adjective'].append('line %d: %s = %s' % (line, english, pointed))
+        return 'no-forms'
     return {'text': nfc(pointed), 'acc': sorted(acc - {''}), 'entry': e}
 
 def confirmed(en, e, english, he_text):
@@ -327,6 +321,7 @@ def build(data):
             entries.append(dict(en_text=f['past'][0], en_acc=past_acc, label=L['label'], pos='verb', verbForm='past', he_text=v['past'], he_acc=v['past_acc'], he_label=he_label, line=L['line'], pair=pair, base=word, verb=verb))
         else:
             h = he_word(he, main, extras, L['pos'], word, L['line'])
+            if h == 'no-forms': continue   # listed under "Adjectives without forms"
             if not h:
                 review['missing'].append('line %d: %s = %s — Wiktionary has no nikkud (or forms) for it, so it was left out' % (L['line'], word, main)); continue
             acc = {normalize(word)}
@@ -472,6 +467,8 @@ def write_review(n):
     sections = [('missing', 'Left out: no nikkud or forms in Wiktionary', 'These lines are not in the dictionary yet. Fill in the nikkud by hand (spec: Dicta\'s nikkud model, checked by a person) or choose another Hebrew word.'),
                 ('unconfirmed', 'Translation not confirmed by Wiktionary', 'Wiktionary does not list this pair. Most are fine (Wiktionary is incomplete); check the meaning.'),
                 ('assembled', 'Nikkud put together word by word', 'Phrases not in Wiktionary as a whole. Check the nikkud of each word (for example construct forms like בֵּית).'),
+                ('adjective', 'Adjectives without feminine and plural forms in Wiktionary', 'Left out until their forms are added. Add them after the Hebrew in words.txt, separated by commas: "lazy | adj | עצלן, עצלנית, עצלנים, עצלניות".'),
+                ('adjective_hand', 'Adjective forms written by hand', 'Check these extra forms and spellings.'),
                 ('hand', 'Nikkud written by hand (nikkud.txt)', 'Wiktionary had no nikkud for these, so Claude wrote it. Check each one.'),
                 ('choice', 'Several Hebrew spellings to choose from', 'The build picked one; check it is the right word.'),
                 ('labels', 'Labels to improve', '')]

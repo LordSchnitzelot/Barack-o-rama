@@ -23,8 +23,6 @@
    "understand" is hearing the target language and answering in the native one;
    "say" is hearing the native language and answering in the target one. */
 
-export const MIN = 60 * 1000, DAY = 24 * 60 * MIN;
-
 /* ---------- Answer normalization (spec 3.3, Word answers) ---------- */
 
 /* Hebrew vowel points and cantillation marks. Leaves out the Hebrew punctuation in the same
@@ -108,17 +106,21 @@ export function checkWordAnswer(data, prompt, answer) {
 
 /* ---------- Spaced repetition (spec 8): per word and per direction ---------- */
 
-/* DEFAULT: how long to wait before the next review, by level. A wrong answer goes back to
-   level 0 (due again at once, so it comes back soon). The last step repeats forever, so a
-   word that is always right still gets a rare check and is never retired (spec 6.5). */
-export const INTERVALS = [0, 10 * MIN, DAY, 3 * DAY, 7 * DAY, 21 * DAY, 60 * DAY];
+/* How many drills to wait before the next review, by level. Time is counted in drills
+   answered, not in days (the owner's choice): profile.count is the number of drills answered
+   so far, and a word is due when profile.count reaches its "due".
+   DEFAULT: the steps. A wrong answer goes back to level 0 (due again at once, so it comes
+   back soon). The last step repeats forever, so a word that is always right still gets a
+   rare check and is never retired (spec 6.5). */
+export const INTERVALS = [0, 3, 10, 30, 100, 300, 1000];
 /* DEFAULT: a weak word stops being weak after this many right answers in a row. */
 export const WEAK_EXIT_STREAK = 2;
 
 export const wordKey = ref => ref.group + ':' + ref.word;
 
+/* now is the time (for "modified", so sync can be added later); due is a drill count. */
 export function newRecord(now) {
-  return { level: 0, due: now, streak: 0, right: 0, wrong: 0, weak: false, flags: [], modified: now };
+  return { level: 0, due: 0, streak: 0, right: 0, wrong: 0, weak: false, flags: [], modified: now };
 }
 
 export function getRecord(profile, ref, dir) {
@@ -130,8 +132,8 @@ function ensureRecord(profile, ref, dir, now) {
   return (p[dir] ||= newRecord(now));
 }
 
-/* Updates one word in one direction after an answer. */
-export function review(record, correct, now) {
+/* Updates one word in one direction after an answer. count: drills answered so far. */
+export function review(record, correct, now, count = 0) {
   if (correct) {
     record.level = Math.min(record.level + 1, INTERVALS.length - 1);
     record.streak++;
@@ -143,7 +145,7 @@ export function review(record, correct, now) {
     record.wrong++;
     record.weak = true; // "add the gap to the profile" (spec 6.7)
   }
-  record.due = now + INTERVALS[record.level];
+  record.due = count + INTERVALS[record.level];
   record.modified = now;
   return record;
 }
@@ -158,7 +160,7 @@ export const flagDirections = source =>
 export function markFlagged(record, source, now) {
   record.weak = true;
   record.streak = 0;
-  record.due = now;
+  record.due = 0;
   record.flags.push({ source, time: now });
   record.modified = now;
   return record;
@@ -199,7 +201,8 @@ export const REPEAT_GAP = 3;
 export const MODES = ['mixed', 'words', 'sentences', 'comprehension', 'speaking'];
 
 /* rng: a function returning numbers in [0, 1), like Math.random (tests pass a fixed one).
-   now: a function returning the time in milliseconds. */
+   now: a function returning the time in milliseconds (kept as "modified" on each record).
+   profile.count: the number of drills answered so far; recordAnswer adds one. */
 export function startSession(data, profile, { mode = 'mixed', size = SESSION_SIZE, rng = Math.random, now = Date.now } = {}) {
   if (!MODES.includes(mode)) throw new Error('Unknown mode: ' + mode);
   const quota = { new: Math.round(size * MIX.new), weak: Math.round(size * MIX.weak) };
@@ -215,14 +218,14 @@ function recentKeys(s) {
 
 /* Words in each bucket for one direction, best first. */
 export function candidates(s, dir) {
-  const { data, profile } = s, t = s.now(), recent = recentKeys(s);
+  const { data, profile } = s, count = profile.count || 0, recent = recentKeys(s);
   const all = targetWords(data).filter(w => !recent.has(wordKey(w)));
   const fresh = [], weak = [], known = [];
   for (const w of all) {
     const r = getRecord(profile, w, dir);
     if (!r) fresh.push(w);
     else if (r.weak) weak.push(w); // weak words come up whether due or not, until fixed
-    else if (r.due <= t) known.push(w);
+    else if (r.due <= count) known.push(w);
   }
   const lvl = w => getRecord(profile, w, dir);
   weak.sort((a, b) => lvl(a).level - lvl(b).level || lvl(a).due - lvl(b).due);
@@ -327,10 +330,11 @@ export function nextDrill(s) {
    group that the user has already started in that direction. */
 export function recordAnswer(s, drill, { correct, matched = null, hinted = [] }) {
   const { data, profile } = s, t = s.now(), dir = drill.dir;
+  const count = profile.count = (profile.count || 0) + 1;
   if (drill.type === 'word') {
-    review(ensureRecord(profile, drill.item, dir, t), !!correct, t);
+    review(ensureRecord(profile, drill.item, dir, t), !!correct, t, count);
     if (correct && matched && drill.dir === 'say' && wordKey(matched) !== wordKey(drill.item))
-      review(ensureRecord(profile, matched, dir, t), true, t);
+      review(ensureRecord(profile, matched, dir, t), true, t, count);
     return;
   }
   const hintedKeys = new Set(hinted.flatMap(tag => tagTargets(data, drill.sentence, tag).map(wordKey)));
@@ -343,7 +347,7 @@ export function recordAnswer(s, drill, { correct, matched = null, hinted = [] })
       const started = getRecord(profile, ref, dir) || k === wordKey(drill.item) || drill.sentence.lang === data.target;
       if (!started) continue;
       done.add(k);
-      review(ensureRecord(profile, ref, dir, t), !!correct && !hintedKeys.has(k), t);
+      review(ensureRecord(profile, ref, dir, t), !!correct && !hintedKeys.has(k), t, count);
     }
   }
 }

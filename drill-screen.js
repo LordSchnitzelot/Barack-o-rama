@@ -6,6 +6,7 @@ import * as DD from './drill-data.js';
 import { sentenceCheckPrompt, sentenceCheckMessage, parseCheck } from './tutor.js';
 import { listen, canListen } from './services.js';
 import { pack, $, esc, S, toast, needKey, ai, stopAudio, play, dictReady, data as files, W, wordsReady, saveWord, flag } from './shell.js';
+import * as store from './store.js';
 
 const MODES = { mixed: 'Mixed', words: 'Words only', sentences: 'Sentences only', comprehension: 'Comprehension only', speaking: 'Speaking only' };
 let data = null, session = null, drill = null, rec = null, hinted = [], score = { right: 0, total: 0 }, missed = [];
@@ -29,7 +30,7 @@ async function start() {
   await dictReady; await wordsReady;
   if (!files.target) return toast('The dictionary did not load. Check your connection and try again.');
   if (!data) data = DD.toDrillsData(files);
-  const profile = DD.progressFromWords(data, [...W.values()]);
+  const profile = DD.progressFromWords(data, [...W.values()], await store.getMeta('drills', 0));
   session = D.startSession(data, profile, { mode });
   score = { right: 0, total: 0 }; missed = [];
   next();
@@ -190,6 +191,7 @@ async function done(correct, info) {
   const keys = Object.keys(session.profile.progress).filter(k => Object.values(session.profile.progress[k]).some(r => r && r.modified >= t));
   const meaningOf = e => partner(data.where[e.id].group).map(x => x.text)[0] || '';
   for (const r of DD.wordsFromProgress(data, session.profile, W, keys, meaningOf, t)) await saveWord(r);
+  store.setMeta('drills', session.profile.count);
 
   const right = drill.type === 'word' ? answers() : [info.better].filter(Boolean);
   const answerSide = drill.prompt.lang === data.target ? 'native' : 'target';

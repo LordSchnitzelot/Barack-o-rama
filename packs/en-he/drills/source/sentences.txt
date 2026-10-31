@@ -60,7 +60,6 @@ en | present | 1 | The city is beautiful at night.
 en | past | 1 | I went to school.
 en | past | 1 | She went home early{early (adverb)}.
 en | past | 1 | We ate pizza yesterday.
-en | past | 1 | He was very angry.
 en | past | 1 | I saw a good movie.
 en | past | 1 | They bought a new car.
 en | past | 1 | I lost my wallet.
@@ -119,22 +118,28 @@ he | present | 1 | הילדים משחקים{לְשַׂחֵק} בפארק.
 he | present | 1 | אבא שלי עובד{לַעֲבֹד} במשרד.
 he | present | 1 | אני גר{לָגוּר} בדירה קטנה.
 he | present | 1 | היא שותה תה כל בוקר.
-he | imperative | 1 | תפתח{open} את הדלת, בבקשה{בְּבַקָּשָׁה}.
-he | imperative | 1 | בוא לכאן.
 he | present | 1 | תודה{תּוֹדָה} על העזרה{עֶזְרָה}.
 he | present | 1 | הכל{הַכֹּל} בסדר.
 he | present | 1 | החנות סגורה.
 he | past | 1 | הלכתי לבית ספר.
 he | past | 1 | אכלנו פיצה אתמול.
-he | past | 1 | הוא היה כועס מאוד.
 he | past | 1 | ראיתי סרט טוב{good}.
 he | past | 1 | איבדתי את הארנק שלי.
 he | past | 1 | היא מצאה את המפתח{מַפְתֵּחַ}.
 he | past | 1 | שכחתי את השם{שֵׁם} שלו.
 he | past | 1 | ישנתי טוב{in a good way} מאוד.
 he | past | 1 | הילדים צחקו{laugh}.
-he | future | 1 | אני אתקשר מחר.
-he | future | 1 | היא תהיה כאן בקרוב.
 he | present | 2 | אני חושב שאתה צודק.
 he | past | 2 | הייתי עייף, אז{therefore} הלכתי לישון.
 he | present | 1 | מה שלומך?
+
+# ---------- Set aside ----------
+# Hebrew future and command forms are not accepted by any entry (the owner's rule: an infinitive
+# accepts the infinitive and the present only), and "angry" (כּוֹעֵס) waits for its feminine and
+# plural forms. Waiting for the owner's decision:
+# en | past | 1 | He was very angry.
+# he | imperative | 1 | תפתח{open} את הדלת, בבקשה{בְּבַקָּשָׁה}.
+# he | imperative | 1 | בוא לכאן.
+# he | past | 1 | הוא היה כועס מאוד.
+# he | future | 1 | אני אתקשר מחר.
+# he | future | 1 | היא תהיה כאן בקרוב.

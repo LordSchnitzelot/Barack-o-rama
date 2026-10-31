@@ -1,10 +1,11 @@
 /* Saves the learner profile on the device, in IndexedDB (spec 8, Storage): the browser's built-in
    database, which keeps more data than localStorage and is the one the spec chose.
-   Two stores: My words, and the weak-spot notes. Every record has an id and a last-modified time,
+   Three stores: My words, the weak-spot notes, and a few single values ("meta", such as how many
+   drills have been answered). Every record has an id and a last-modified time,
    so cloud sync can be added later.
    If the browser blocks IndexedDB (some private windows), data is kept only until the page closes. */
 
-const DB = 'speaking-app', VERSION = 2, WORDS = 'words', NOTES = 'notes';
+const DB = 'speaking-app', VERSION = 3, WORDS = 'words', NOTES = 'notes', META = 'meta';
 let db = null;
 
 export async function open() {
@@ -13,7 +14,7 @@ export async function open() {
     const r = indexedDB.open(DB, VERSION);
     r.onupgradeneeded = () => {
       const d = r.result;
-      for (const name of [WORDS, NOTES]) if (!d.objectStoreNames.contains(name)) d.createObjectStore(name, { keyPath: 'id' });
+      for (const name of [WORDS, NOTES, META]) if (!d.objectStoreNames.contains(name)) d.createObjectStore(name, { keyPath: 'id' });
     };
     r.onsuccess = () => ok(r.result);
     r.onerror = () => fail(r.error);
@@ -22,7 +23,7 @@ export async function open() {
 }
 
 /* fn gets the object store, or a Map standing in for it when IndexedDB is blocked. */
-const memory = { [WORDS]: new Map(), [NOTES]: new Map() };
+const memory = { [WORDS]: new Map(), [NOTES]: new Map(), [META]: new Map() };
 function run(name, mode, fn) {
   return open().then(d => {
     if (!d) return fn(null, memory[name]);
@@ -53,3 +54,10 @@ export async function trimNotes(max) {
   const old = (await allNotes()).sort((a, b) => b.created - a.created).slice(max).map(n => n.id);
   if (old.length) await deleteAll(NOTES, old);
 }
+
+/* Single values: getMeta('drills', 0) -> the stored value, or the default. */
+export async function getMeta(id, fallback) {
+  const r = (await getAll(META)).find(x => x.id === id);
+  return r ? r.value : fallback;
+}
+export const setMeta = (id, value) => putAll(META, [{ id, value, modified: Date.now() }]);

@@ -27,18 +27,22 @@ export function toDrillsData(files) {
 /* The target-language entry at a { group, word } reference. */
 export const entryAt = (data, ref) => (data.dicts[data.target][ref.group] || [])[ref.word];
 
-/* My words records -> drills.js profile ({ progress: { 'group:word': { understand, say } } }). */
-export function progressFromWords(data, records) {
+/* Records saved before Drills counted in drills stored "due" as a time; those are due now. */
+const countBased = rec => rec.due > 1e9 ? Object.assign({}, rec, { due: 0 }) : rec;
+
+/* My words records -> drills.js profile ({ progress: { 'group:word': { understand, say } }, count }).
+   count: drills answered so far (stored separately). */
+export function progressFromWords(data, records, count = 0) {
   const progress = {};
   for (const r of records) {
     const at = r.entry && data.where[r.entry];
     if (!at || !data.dicts[data.target][at.group]) continue;
     const p = {};
-    if (r.understand) p.understand = r.understand;
-    if (r.say) p.say = r.say;
+    if (r.understand) p.understand = countBased(r.understand);
+    if (r.say) p.say = countBased(r.say);
     progress[wordKey(at)] = p;
   }
-  return { progress };
+  return { progress, count };
 }
 
 /* After a drill: the My words records to save for the words whose progress changed.

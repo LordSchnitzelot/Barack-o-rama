@@ -14,7 +14,7 @@ These lines are not in the dictionary yet. Fill in the nikkud by hand (spec: Dic
 - line 1482: doubt = פקפק / לפקפק — Wiktionary has no nikkud or past forms for it, so it was left out
 - line 1801: recover = החלים / להחלים — Wiktionary has no nikkud or past forms for it, so it was left out
 
-## Translation not confirmed by Wiktionary (158)
+## Translation not confirmed by Wiktionary (133)
 
 Wiktionary does not list this pair. Most are fine (Wiktionary is incomplete); check the meaning.
 
@@ -48,7 +48,6 @@ Wiktionary does not list this pair. Most are fine (Wiktionary is incomplete); ch
 - line 366: spend = הוֹצִיא
 - line 377: relax = נִרְגַּע
 - line 385: owe = הָיָה חַיָּב
-- line 389: deserve = הִגִּיעַ
 - line 390: quit = עָזַב
 - line 418: lift = הֵרִים
 - line 421: lay = הֵנִיחַ
@@ -109,29 +108,12 @@ Wiktionary does not list this pair. Most are fine (Wiktionary is incomplete); ch
 - line 1198: email = אִימֵיְל
 - line 1200: website = אֲתָר
 - line 1214: note = פֶּתֶק
-- line 1269: fake = מְזֻיָּף
-- line 1295: lovely = מַקְסִים
-- line 1303: angry = כּוֹעֵס
-- line 1304: mad = כּוֹעֵס
-- line 1309: nervous = לָחוּץ
-- line 1312: loud = רוֹעֵשׁ
 - line 1334: silly = טִפֵּשׁ
 - line 1342: horrible = נוֹרָא
 - line 1346: honest = יָשָׁר
-- line 1349: lazy = עַצְלָן
 - line 1368: entire = שָׁלֵם
 - line 1398: extra = נוֹסָף
 - line 1403: total = כּוֹלֵל
-- line 1404: huge = עֲנָק
-- line 1406: upset = נִסְעָר
-- line 1408: surprised = מֻפְתָּע
-- line 1412: interested = מִתְעַנְיֵן
-- line 1413: hurt = פָּגוּעַ
-- line 1414: wild = פִּרְאִי
-- line 1457: better = יוֹתֵר טוֹב
-- line 1458: best = הֲכִי טוֹב
-- line 1459: worse = יוֹתֵר גָּרוּעַ
-- line 1460: worst = הֲכִי גָּרוּעַ
 - line 1463: else = אַחֵר
 - line 1487: issue = סוּגְיָה
 - line 1489: trick = תַּרְגִּיל
@@ -141,10 +123,8 @@ Wiktionary does not list this pair. Most are fine (Wiktionary is incomplete); ch
 - line 1547: clearly = בְּבֵרוּר
 - line 1554: possibly = אוּלַי
 - line 1555: crash = הִתְרַסְּקוּת
-- line 1558: female = נִקְבִּי
 - line 1563: male = זִכְרִי
 - line 1570: effect = הַשְׁפָּעָה
-- line 1571: fantastic = פַנְטַסְטִי
 - line 1576: pretend = הֶעֱמִיד פָּנִים
 - line 1577: incredible = מַדְהִים
 - line 1581: honestly = בְּכֵנוּת
@@ -153,26 +133,21 @@ Wiktionary does not list this pair. Most are fine (Wiktionary is incomplete); ch
 - line 1595: afford = הִרְשָׁה לְעַצְמוֹ
 - line 1598: unfortunately = לְצַעֲרִי
 - line 1608: focus = הִתְרַכֵּז
-- line 1620: professional = מִקְצוֹעִי
 - line 1624: divorce = גֵּרוּשִׁים
 - line 1637: basically = בְּעֶצֶם
 - line 1651: cure = תְּרוּפָה
 - line 1658: personally = בְּאֹפֶן אִישִׁי
-- line 1659: exciting = מְרַגֵּשׁ
 - line 1666: likely = סָבִיר
 - line 1688: pleased = מְרֻצֶּה
 - line 1699: eventually = בְּסוֹפוֹ שֶׁל דָּבָר
-- line 1701: ashamed = מִתְבַּיֵּשׁ
 - line 1703: score = נִקּוּד
 - line 1718: badly = רַע
 - line 1738: shopping = קְנִיּוֹת
 - line 1755: extremely = מְאוֹד
 - line 1760: literally = מַמָּשׁ
 - line 1764: lack = מַחְסוֹר
-- line 1770: desperate = נוֹאָשׁ
 - line 1774: mostly = בְּעִקָּר
 - line 1776: directly = יְשִׁירוֹת
-- line 1798: exact = מְדֻיָּק
 - line 1818: dentist = רוֹפֵא שִׁנַּיִם
 - line 1823: reservation = הַזְמָנָה
 - line 1832: fridge = מְקָרֵר
@@ -195,7 +170,77 @@ Phrases not in Wiktionary as a whole. Check the nikkud of each word (for example
 - line 1754: grateful = אסיר תודה — nikkud put together word by word: אָסִיר תּוֹדָה
 - line 1783: someday = יום אחד — nikkud put together word by word: יוֹם אֶחָד
 
-## Nikkud written by hand (nikkud.txt) (369)
+## Adjectives without feminine and plural forms in Wiktionary (52)
+
+Left out until their forms are added. Add them after the Hebrew in words.txt, separated by commas: "lazy | adj | עצלן, עצלנית, עצלנים, עצלניות".
+
+- line 1241: thick = עָבֶה
+- line 1263: right = יְמָנִי
+- line 1269: fake = מְזֻיָּף
+- line 1279: impossible = בִּלְתִּי אֶפְשָׁרִי
+- line 1280: necessary = הֶכְרֵחִי
+- line 1295: lovely = מַקְסִים
+- line 1303: angry = כּוֹעֵס
+- line 1304: mad = כּוֹעֵס
+- line 1306: afraid = מְפֻחָד
+- line 1307: scared = מְפֻחָד
+- line 1309: nervous = לָחוּץ
+- line 1312: loud = רוֹעֵשׁ
+- line 1316: sick = חוֹלֶה
+- line 1317: ill = חוֹלֶה
+- line 1333: stupid = טִפֵּשׁ
+- line 1349: lazy = עַצְלָן
+- line 1350: brave = אַמִּיץ
+- line 1355: single = רַוָּק
+- line 1357: drunk = שִׁכּוֹר
+- line 1360: fair = הוֹגֵן
+- line 1396: available = פָּנוּי
+- line 1400: clear = בָּרוּר
+- line 1401: obvious = בָּרוּר
+- line 1404: huge = עֲנָק
+- line 1406: upset = נִסְעָר
+- line 1407: excited = נִרְגָּשׁ
+- line 1408: surprised = מֻפְתָּע
+- line 1411: jealous = מְקַנֵּא
+- line 1412: interested = מִתְעַנְיֵן
+- line 1413: hurt = פָּגוּעַ
+- line 1414: wild = פִּרְאִי
+- line 1415: evil = רָשָׁע
+- line 1457: better = יוֹתֵר טוֹב
+- line 1458: best = הֲכִי טוֹב
+- line 1459: worse = יוֹתֵר גָּרוּעַ
+- line 1460: worst = הֲכִי גָּרוּעַ
+- line 1558: female = נִקְבִּי
+- line 1571: fantastic = פַנְטַסְטִי
+- line 1579: dumb = טִפֵּשׁ
+- line 1610: brilliant = מַבְרִיק
+- line 1620: professional = מִקְצוֹעִי
+- line 1659: exciting = מְרַגֵּשׁ
+- line 1678: romantic = רוֹמַנְטִי
+- line 1701: ashamed = מִתְבַּיֵּשׁ
+- line 1720: golden = זָהֹב
+- line 1732: physical = פִיזִי
+- line 1749: illegal = בִּלְתִּי חֻקִּי
+- line 1754: grateful = אָסִיר תּוֹדָה
+- line 1758: separate = נִפְרָד
+- line 1770: desperate = נוֹאָשׁ
+- line 1787: precious = יְקַר עֵרֶךְ
+- line 1798: exact = מְדֻיָּק
+
+## Adjective forms written by hand (8)
+
+Check these extra forms and spellings.
+
+- line 1267: wrong = לא נכון — other forms or spellings written by hand in words.txt: שגוי
+- line 1282: same = אותו — other forms or spellings written by hand in words.txt: אותה, אותם, אותן
+- line 1284: normal = נורמלי — other forms or spellings written by hand in words.txt: רגיל
+- line 1344: lucky = בר מזל — other forms or spellings written by hand in words.txt: בת מזל, בני מזל, בנות מזל
+- line 1346: honest = ישר — other forms or spellings written by hand in words.txt: כן
+- line 1348: rude = גס רוח — other forms or spellings written by hand in words.txt: גסת רוח, גסי רוח, גסות רוח
+- line 1356: pregnant = בהריון — other forms or spellings written by hand in words.txt: בהיריון, הרה
+- line 1359: innocent = חף מפשע — other forms or spellings written by hand in words.txt: חפה מפשע, חפים מפשע, חפות מפשע
+
+## Nikkud written by hand (nikkud.txt) (368)
 
 Wiktionary had no nikkud for these, so Claude wrote it. Check each one.
 
@@ -315,7 +360,6 @@ Wiktionary had no nikkud for these, so Claude wrote it. Check each one.
 - line 384: appreciate = לְהַעֲרִיךְ
 - line 386: joke = לִצְחֹק
 - line 388: destroy = לַהֲרֹס
-- line 389: deserve = לְהַגִּיעַ
 - line 392: kick = לִבְעֹט
 - line 393: refuse = לְסָרֵב
 - line 394: wash = לִשְׁטֹף
