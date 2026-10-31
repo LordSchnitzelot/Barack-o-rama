@@ -205,8 +205,9 @@ def find_he(he, word, pos, english, line, part=False):
         note = 'line %d: %s = %s — Wiktionary has it as a %s: "%s"' % (line, english, best['canon'], best['pos'], best['glosses'][:70])
         if note not in review['otherpos']: review['otherpos'].append(note)
     same = [e for e in ranked if e['pos'] == best['pos'] and normalize(e['canon']) == normalize(best['canon']) and e['canon'] != best['canon']]
-    if same and not re.search(r'\b' + re.escape(english.lower()) + r'\b', best['glosses']):
-        review['choice'].append('line %d: %s = %s — chose %s from several spellings (%s)' % (line, english, word, best['canon'], ', '.join(e['canon'] for e in same)))
+    if same and not pointed and not re.search(r'\b' + re.escape(english.lower()) + r'\b', best['glosses']):
+        note = 'line %d: %s = %s — chose %s from several spellings (%s)' % (line, english, word, best['canon'], ', '.join(e['canon'] for e in same))
+        if note not in review['choice']: review['choice'].append(note)
     return best
 
 HAND = {}   # words.txt spelling -> nikkud written by hand in nikkud.txt (listed for review)

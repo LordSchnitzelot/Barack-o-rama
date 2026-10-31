@@ -655,11 +655,10 @@ Wiktionary had no nikkud for these, so Claude wrote it. Check each one.
 - line 1827: cough = שִׁעוּל
 - line 1829: dentist = רוֹפֵא שִׁנַּיִם
 
-## Several Hebrew spellings to choose from (32)
+## Several Hebrew spellings to choose from (19)
 
 The build picked one; check it is the right word.
 
-- line 173: rather = די — chose דַּי from several spellings (דֵּי)
 - line 173: rather = די — chose דַּי from several spellings (דֵּי)
 - line 264: like = אהב — chose אָהַב from several spellings (אֹהַב)
 - line 362: notice = שם — chose שָׂם from several spellings (שָׁם)
@@ -668,27 +667,15 @@ The build picked one; check it is the right word.
 - line 546: look after = שמר — chose שָׁמַר from several spellings (שֻׁמַּר, שִׁמֵּר)
 - line 572: pay attention = שם — chose שָׂם from several spellings (שָׁם)
 - line 583: call back = חזר — chose חָזַר from several spellings (חִזֵּר)
-- line 590: person = אדם — chose אָדֹם from several spellings (אָדָם, אֹדֶם)
-- line 623: stranger = זר — chose זָר from several spellings (זֵר)
 - line 623: stranger = זר — chose זָר from several spellings (זֵר)
 - line 714: stomach = בטן — chose בֶּטֶן from several spellings (בֹּטֶן)
-- line 714: stomach = בטן — chose בֶּטֶן from several spellings (בֹּטֶן)
-- line 723: illness = מחלה — chose מַחֲלָה from several spellings (מְחִלָּה)
 - line 723: illness = מחלה — chose מַחֲלָה from several spellings (מְחִלָּה)
 - line 734: home = בית — chose בַּיִת from several spellings (בֵּי״ת)
-- line 734: home = בית — chose בַּיִת from several spellings (בֵּי״ת)
-- line 818: trash = זבל — chose זֶבֶל from several spellings (זְבֻל)
 - line 818: trash = זבל — chose זֶבֶל from several spellings (זְבֻל)
 - line 928: space = מקום — chose מָקוֹם from several spellings (מִקּוּם)
-- line 928: space = מקום — chose מָקוֹם from several spellings (מִקּוּם)
-- line 1024: June = יוני — chose יְוָנִי from several spellings (יוֹנֵי־)
-- line 1034: stuff = דברים — chose דְּבָרִים from several spellings (דַּבָּרִים)
 - line 1034: stuff = דברים — chose דְּבָרִים from several spellings (דַּבָּרִים)
 - line 1099: crime = פשע — chose פֶּשַׁע from several spellings (פֶּשַׂע)
-- line 1099: crime = פשע — chose פֶּשַׁע from several spellings (פֶּשַׂע)
 - line 1211: website = אתר — chose אֲתָר from several spellings (אֶתֶר)
-- line 1211: website = אתר — chose אֲתָר from several spellings (אֶתֶר)
-- line 1554: gate = שער — chose שַׁעַר from several spellings (שֵׂעָר, שֵׂעָר)
 - line 1554: gate = שער — chose שַׁעַר from several spellings (שֵׂעָר, שֵׂעָר)
 - line 1617: ruin = הרס — chose הָרַס from several spellings (הֵרֵס)
 
