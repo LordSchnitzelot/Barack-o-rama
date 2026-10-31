@@ -8,6 +8,8 @@
 #   modal, intj (interjection or set phrase).
 # - Hebrew is written without nikkud; the build script finds the nikkud in Wiktionary.
 #   Verbs: past / infinitive ("הלך / ללכת"). Extra accepted forms after commas ("אתה, את").
+#   Hebrew synonyms in one meaning group with "+" ("כועס + עצבני"). Adjective forms that Wiktionary
+#   lacks go in forms.txt.
 # - Label: only when the English word has more than one meaning in this file, or to clarify.
 #   Words with the same Hebrew are grouped together as synonyms.
 # - Phrases with a meaning of their own ("give up", "how are you") are entries too (spec 3.3).
@@ -1300,11 +1302,11 @@ bitter | adj | מר
 happy | adj | שמח
 glad | adj | שמח
 sad | adj | עצוב
-angry | adj | כועס
+angry | adj | כועס + עצבני
 mad | adj | כועס | angry
 crazy | adj | משוגע
 afraid | adj | מפחד
-scared | adj | מפוחד
+scared | adj | מפחד
 worried | adj | מודאג
 nervous | adj | לחוץ
 calm | adj | רגוע
@@ -1404,7 +1406,7 @@ total | adj | כולל
 huge | adj | ענק
 tiny | adj | זעיר
 upset | adj | נסער
-excited | adj | נרגש
+excited | adj | נרגש + מתרגש
 surprised | adj | מופתע
 embarrassed | adj | נבוך
 confused | adj | מבולבל
@@ -1412,7 +1414,7 @@ jealous | adj | מקנא
 interested | adj | מתעניין
 hurt | adj | פגוע
 wild | adj | פראי
-evil | adj | רשע
+evil | adj | רשע + מרושע
 holy | adj | קדוש
 blind | adj | עיוור
 deaf | adj | חירש
@@ -1454,9 +1456,9 @@ thousand | num | אלף
 million | num | מיליון
 
 # ---------- More common words ----------
-better | adj | יותר טוב
+better | adj | טוב יותר
 best | adj | הכי טוב
-worse | adj | יותר גרוע
+worse | adj | גרוע יותר
 worst | adj | הכי גרוע
 ever | adv | אי פעם
 through | prep | דרך | from one side to the other
@@ -1729,7 +1731,7 @@ tax | n | מס
 traffic | n | תנועה | cars on the road
 courage | n | אומץ
 wire | n | חוט
-physical | adj | פיזי
+physical | adj | פיזי + פיסי
 piano | n | פסנתר
 remove | v | הסיר / להסיר
 freeze | v | קפא / לקפוא

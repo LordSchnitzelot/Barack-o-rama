@@ -22,6 +22,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DRILLS = os.path.join(ROOT, 'packs', 'en-he', 'drills')
 SOURCE = os.path.join(DRILLS, 'source', 'words.txt')
 NIKKUD_FILE = os.path.join(DRILLS, 'source', 'nikkud.txt')
+FORMS_FILE = os.path.join(DRILLS, 'source', 'forms.txt')
 REVIEW = os.path.join(ROOT, 'docs', 'dictionary-review.md')
 URLS = {
     'en_50k.txt': 'https://raw.githubusercontent.com/hermitdave/FrequencyWords/master/content/2018/en/en_50k.txt',
@@ -57,6 +58,7 @@ def nfc(t):
 def has_nikkud(word): return any('ְ' <= c <= 'ׇ' and c not in '־׀׃׆' for c in word)
 
 SHEVA, HIRIQ, HOLAM, HOLAM_VAV, QUBUTZ, DAGESH = 'ְ', 'ִ', 'ֹ', 'ֺ', 'ֻ', 'ּ'
+FULL_VOWELS = '\u05b1\u05b2\u05b3\u05b5\u05b6\u05b7\u05b8\u05b9'  # hataf vowels, tsere, segol, patah, qamatz, holam
 def plene(pointed):
     """The full spelling (with the vowel letters ו and י) that speech recognition writes:
     דִּבֵּר -> דיבר, לְוַתֵּר -> לוותר, לִכְתֹּב -> לכתוב. A rough version of the Academy's rules;
@@ -78,6 +80,10 @@ def plene(pointed):
             # A consonant vav (with its own vowel) inside a word is written twice: לְוַתֵּר -> לוותר.
             if letter == 'ו' and 0 < i < last and vowels and HOLAM not in marks and HOLAM_VAV not in marks:
                 res += 'ו'
+            # A consonant yod inside a word is written twice when it is doubled (dagesh) or carries a
+            # vowel other than hiriq: מְסַיֵּם -> מסיים, טִיֵּל -> טייל; but בַּיִת, חַיִּים stay as they are.
+            if letter == 'י' and 0 < i < last and HIRIQ not in marks and (DAGESH in marks or any(v in marks for v in FULL_VOWELS)):
+                res += 'י'
             # Holam and qubutz get a vav: לִכְתֹּב -> לכתוב, סֻכָּר -> סוכר.
             if HOLAM in marks and letter not in 'וא' and not (nxt and nxt[0] == 'ו'):
                 res += 'ו'
@@ -195,19 +201,39 @@ def find_he(he, word, pos, english, line):
     return best
 
 HAND = {}   # words.txt spelling -> nikkud written by hand in nikkud.txt (listed for review)
+LOOSE = {}  # the same, by a looser spelling (see skeleton), used only when there is no exact match
+def add_hand(x, first=False):
+    for key in spellings(x): HAND[key] = nfc(x) if first else HAND.get(key, nfc(x))
+    LOOSE.setdefault(skeleton(x), nfc(x))
 def load_hand():
     for raw in open(NIKKUD_FILE, encoding='utf-8'):
         raw = raw.split('#')[0].strip()
         if not raw: continue
         # A line holds one phrase (up to 4 words), or a list of single words.
         items = [raw] if len(raw.split(' ')) <= 4 else raw.split(' ')
-        for x in items: HAND.setdefault(skeleton(x), nfc(x))
+        for x in items: add_hand(x)
 def skeleton(t):
-    """Spelling without the vowel letters ו and י, so תיאטרון finds תֵּאַטְרוֹן."""
-    t = normalize(t)
-    return t[:1] + re.sub('[וי]', '', t[1:])
+    """Spelling without the vowel letters ו and י inside a word, so תיאטרון finds תֵּאַטְרוֹן.
+    A final י stays, so טיפשי and טיפש stay apart."""
+    return ' '.join(w[:1] + re.sub('[וי]', '', w[1:-1]) + w[-1:] if len(w) > 1 else w for w in normalize(t).split(' '))
+FORMS = {}  # adjective -> accepted spellings of its other forms, from forms.txt
+def load_forms():
+    """forms.txt: "masculine | form (spelling), form, spelling". A form without brackets counts as
+    itself without nikkud; a word with no nikkud is an extra accepted spelling."""
+    for raw in open(FORMS_FILE, encoding='utf-8'):
+        raw = raw.split('#')[0].strip()
+        if not raw: continue
+        main, _, rest = (x.strip() for x in raw.partition('|'))
+        acc = []
+        for item in (x.strip() for x in rest.split(',') if x.strip()):
+            m = re.match(r'^(.*?)\s*\(([^)]*)\)$', item)
+            acc.append(normalize(m.group(2) if m else item))
+        FORMS[skeleton(main)] = acc
+        add_hand(main, first=True)
+        for a in acc: HAND[a] = nfc(main) if a not in HAND else HAND[a]
+
 def hand(text, english, line):
-    p = HAND.get(skeleton(text))
+    p = HAND.get(normalize(text)) or LOOSE.get(skeleton(text))
     if p: review['hand'].append('line %d: %s = %s' % (line, english, p))
     return p
 
@@ -276,6 +302,9 @@ def he_word(he, text, extras, pos, english, line):
     acc = set().union(*[spellings(f) for f in forms]) | {normalize(x) for x in [text] + extras}
     if pos == 'adjective' and extras:
         review['adjective_hand'].append('line %d: %s = %s — other forms or spellings written by hand in words.txt: %s' % (line, english, text, ', '.join(extras)))
+    if pos == 'adjective' and len(acc) < 3 and skeleton(text) in FORMS:
+        acc |= set(FORMS[skeleton(text)])
+        review['forms'].append('line %d: %s = %s — forms from forms.txt' % (line, english, pointed))
     if pos == 'adjective' and len(acc) < 3:
         review['adjective'].append('line %d: %s = %s' % (line, english, pointed))
         return 'no-forms'
@@ -292,7 +321,7 @@ def confirmed(en, e, english, he_text):
 # ---------- Building ----------
 def build(data):
     freq, he, to_inf, en = load(data)
-    load_hand()
+    load_hand(); load_forms()
     lines = read_source()
     entries = []   # one per English entry: {en_text, en_acc, label, pos, verbForm, he_text, he_acc, he_label, line, pair}
     for L in lines:
@@ -320,14 +349,19 @@ def build(data):
             entries.append(dict(en_text='to ' + word, en_acc=inf_acc, label=L['label'], pos='verb', verbForm='infinitive', he_text=v['inf'], he_acc=v['inf_acc'], he_label=he_label, line=L['line'], pair=pair + 1, base=word, verb=verb))
             entries.append(dict(en_text=f['past'][0], en_acc=past_acc, label=L['label'], pos='verb', verbForm='past', he_text=v['past'], he_acc=v['past_acc'], he_label=he_label, line=L['line'], pair=pair, base=word, verb=verb))
         else:
+            # Hebrew synonyms in one group: "כועס + עצבני" (spec 3.3, Groups).
+            main, *more = [x.strip() for x in main.split('+')]
             h = he_word(he, main, extras, L['pos'], word, L['line'])
             if h == 'no-forms': continue   # listed under "Adjectives without forms"
+            syn = [he_word(he, m, [], L['pos'], word, L['line']) for m in more]
+            if any(not isinstance(x, dict) for x in syn):
+                review['missing'].append('line %d: %s = %s — a Hebrew synonym has no nikkud or forms, so it was left out' % (L['line'], word, ' + '.join(more))); continue
             if not h:
                 review['missing'].append('line %d: %s = %s — Wiktionary has no nikkud (or forms) for it, so it was left out' % (L['line'], word, main)); continue
             acc = {normalize(word)}
             if L['pos'] == 'noun' and ' ' not in word: acc |= {normalize(x) for x in en_forms(en, word, 'noun').get('plural', [])}
             if not confirmed(en, h['entry'], word, h['text']): review['unconfirmed'].append('line %d: %s = %s' % (L['line'], word, h['text']))
-            entries.append(dict(en_text=word, en_acc=sorted(acc), label=L['label'], pos=L['pos'], verbForm=None, he_text=h['text'], he_acc=h['acc'], he_label=he_label, line=L['line'], pair=None, base=word))
+            entries.append(dict(en_text=word, en_acc=sorted(acc), label=L['label'], pos=L['pos'], verbForm=None, he_text=h['text'], he_acc=h['acc'], he_label=he_label, line=L['line'], pair=None, base=word, he_more=syn))
 
     # Groups: English words with the same Hebrew word (and meaning) are synonyms (spec 3.3).
     groups = collections.OrderedDict()
@@ -443,7 +477,13 @@ def build(data):
         out['en'].append(dict(g, words=en_words))
         htext = he_text[k] + (' (%s)' % he_lab[k] if he_lab.get(k) else '')
         hacc = sorted(set().union(*[set(entries[i]['he_acc']) for i in idx]))
-        out['he'].append(dict(g, words=[{'id': word_id('he', htext), 'text': htext, 'rank': min(order['he'][i] for i in idx), 'accepted': hacc}]))
+        hrank = min(order['he'][i] for i in idx)
+        he_words = [{'id': word_id('he', htext), 'text': htext, 'rank': hrank, 'accepted': hacc}]
+        # Hebrew synonyms share the group's rank (DEFAULT: they are not ranked on their own).
+        for syn in {x['text']: x for i in idx for x in entries[i].get('he_more') or []}.values():
+            if syn['text'] != he_text[k]:
+                he_words.append({'id': word_id('he', syn['text']), 'text': syn['text'], 'rank': hrank, 'accepted': syn['acc']})
+        out['he'].append(dict(g, words=he_words))
 
     source = ('Built by tools/build-dictionary.py from packs/en-he/drills/source/words.txt. Nikkud and inflections: '
               'English Wiktionary via kaikki.org (CC BY-SA 4.0). Frequency ranks: Hermit Dave\'s OpenSubtitles word lists '
@@ -469,6 +509,7 @@ def write_review(n):
                 ('assembled', 'Nikkud put together word by word', 'Phrases not in Wiktionary as a whole. Check the nikkud of each word (for example construct forms like בֵּית).'),
                 ('adjective', 'Adjectives without feminine and plural forms in Wiktionary', 'Left out until their forms are added. Add them after the Hebrew in words.txt, separated by commas: "lazy | adj | עצלן, עצלנית, עצלנים, עצלניות".'),
                 ('adjective_hand', 'Adjective forms written by hand', 'Check these extra forms and spellings.'),
+                ('forms', 'Adjective forms from forms.txt', 'Feminine and plural forms given by the owner; the masculine plurals there were added by Claude.'),
                 ('hand', 'Nikkud written by hand (nikkud.txt)', 'Wiktionary had no nikkud for these, so Claude wrote it. Check each one.'),
                 ('choice', 'Several Hebrew spellings to choose from', 'The build picked one; check it is the right word.'),
                 ('labels', 'Labels to improve', '')]
