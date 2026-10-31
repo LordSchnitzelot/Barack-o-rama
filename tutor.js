@@ -16,6 +16,7 @@
    w is the word or phrase as written ("gave up"), d its dictionary form ("gave up"; "to run" for
    "runs") and m its meaning in that same form. The app links d and m to a dictionary entry in
    code (spec 3.2, Linking chat words to the dictionary; see dictionary.js). */
+import { t as uiText } from './strings.js';
 
 /* How many flagged words the tutor is told about; the newest ones are kept. */
 export const MAX_PROFILE_WORDS = 20;
@@ -74,9 +75,9 @@ export function parseChoice(text, count) {
 /* Finds the JSON object in the model's text (some models wrap it in prose or ``` fences). */
 export function extractJSON(text) {
   const m = String(text).match(/\{[\s\S]*\}/);
-  if (!m) throw new Error('The AI did not reply in the expected format. Try again.');
+  if (!m) throw new Error(uiText('ai.format'));
   try { return JSON.parse(m[0]); }
-  catch (e) { throw new Error('The AI sent a broken reply. Try again.'); }
+  catch (e) { throw new Error(uiText('ai.broken')); }
 }
 
 const str = v => typeof v === 'string' ? v.trim() : '';
@@ -93,13 +94,13 @@ export function parseReply(pack, text) {
     .map(s => ({ target: str(s && s[t]), native: str(s && s[n]), words: wordList(s && s.words) }))
     .filter(s => s.target)
     .map(s => Object.assign(s, { words: joinSplitPhrases(s.target, s.words, pack.target.particles) }));
-  if (!sentences.length) throw new Error('The AI sent an empty reply. Try again.');
+  if (!sentences.length) throw new Error(uiText('ai.empty'));
   return { sentences, struggled: wordList(d.struggled) };
 }
 
 export function parsePhrase(text) {
   const p = str(extractJSON(text).phrase);
-  if (!p) throw new Error('The AI sent an empty reply. Try again.');
+  if (!p) throw new Error(uiText('ai.empty'));
   return p;
 }
 

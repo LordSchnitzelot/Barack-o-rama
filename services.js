@@ -2,12 +2,14 @@
    setting, so any of them can be replaced later without touching the rest of the app.
 
    - AI model:  ai.complete(system, messages) -> the model's text reply
-   - Speak:     speech.speak(text, lang, { slow }) and speech.stop(), with lang a pack language
-                (pack.target or pack.native); the pack says which voice each language uses
-   - Listen:    listen(lang, { onText, onEnd, onError }) -> { stop() }
+   - Speak:     speech.speak(text, lang, { slow, voice }), speech.prepare(texts, lang) and
+                speech.stop(), with lang a pack language (pack.target or pack.native); the pack
+                says which voice each language uses
+   - Listen:    listen(lang, { onText, onEnd, onError }) -> { stop(), cancel() }
 
    To add a provider (for example a backend that holds the API key, spec 3.2), add an entry to
    AI_PROVIDERS or VOICES with the same functions; nothing else changes. */
+import { t, langName } from './strings.js';
 
 /* ---------- AI model ---------- */
 
@@ -18,10 +20,11 @@ async function post(url, headers, body, who) {
   try {
     const r = await fetch(url, { signal: ctl.signal, method: body ? 'POST' : 'GET', headers: Object.assign({ 'content-type': 'application/json' }, headers), body: body && JSON.stringify(body) });
     const j = await r.json().catch(() => ({}));
-    if (!r.ok) throw new Error((j.error && j.error.message) || who + ' error ' + r.status);
+    if (!r.ok) throw new Error((j.error && j.error.message) || t('ai.error', { who, status: r.status }));
     return j;
   } catch (e) {
-    if (e.name === 'AbortError') throw new Error('The AI took longer than 40 seconds. Free servers can be overloaded, so try again.');
+    if (e.name === 'AbortError') throw new Error(t('ai.timeout'));
+    if (e instanceof TypeError && navigator.onLine === false) throw new Error(t('ai.offline'));
     throw e;
   } finally { clearTimeout(tm); }
 }
@@ -42,7 +45,7 @@ export const AI_PROVIDERS = {
       let id = null;
       for (const x of pref) { id = ids.find(i => x.test(i)); if (id) break; }
       id = id || ids[0];
-      if (!id) throw new Error('No chat models found on your Groq account');
+      if (!id) throw new Error(t('ai.noModels'));
       this.picked = { key: S.rk, id };
       return id;
     },
@@ -89,21 +92,40 @@ export function createAI(settings) {
    so the browser's playback speed makes up whatever is left (only "Slow" needs it). */
 const DD = { '1': 0, '0.9': 0.2, '0.75': 0.3 };
 const NAT = { 0: 1, 0.2: 0.89, 0.3: 0.875 };
-const SPN = { '1': 'Normal', '0.9': 'Easy', '0.75': 'Slow' };
+const SPN = { '1': 'speed.normal', '0.9': 'speed.easy', '0.75': 'speed.slow' };
+/* DEFAULT: how many generated sentences are kept for replay; the oldest are dropped. */
+const KEEP_AUDIO = 80;
 
-/* opts = { settings: () => S (uses S.speed and S.rateBy), status(text), toast(text) } */
+/* A twentieth of a second of silence, as a WAV file, to unlock the audio player (see below). */
+function silence() {
+  const n = 1200, v = new DataView(new ArrayBuffer(44 + n * 2));
+  [...'RIFF'].forEach((c, i) => v.setUint8(i, c.charCodeAt(0))); v.setUint32(4, 36 + n * 2, true);
+  [...'WAVEfmt '].forEach((c, i) => v.setUint8(8 + i, c.charCodeAt(0)));
+  v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true); v.setUint32(24, 24000, true);
+  v.setUint32(28, 48000, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true);
+  [...'data'].forEach((c, i) => v.setUint8(36 + i, c.charCodeAt(0))); v.setUint32(40, n * 2, true);
+  return URL.createObjectURL(new Blob([v], { type: 'audio/wav' }));
+}
+
+/* opts = { settings: () => S (uses S.speed, S.rateBy and S.voice), status(text), toast(text),
+   target: the pack's target language, voices: the pack's list of Phonon voices } */
 export function createSpeech(opts) {
   const S = () => opts.settings(), status = opts.status, toast = opts.toast;
+  const targetName = () => langName(opts.target.code);
+  const catalog = opts.voices || { base: '', list: [] };
+  const knownVoice = name => !!name && catalog.list.some(v => v.name === name);
+  const iOS = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
   /* -- Browser voice: Hebrew, and the fallback for any language -- */
   let voices = [], lastU = null;
+  const warned = new Set();
   const loadVoices = () => { voices = speechSynthesis.getVoices(); };
   if (window.speechSynthesis) { loadVoices(); speechSynthesis.onvoiceschanged = loadVoices; }
   const voiceFor = lang => { const b = lang.slice(0, 2), L = v => v.lang.replace('_', '-').toLowerCase(); return voices.find(v => L(v) === lang.toLowerCase()) || voices.find(v => L(v).startsWith(b) || (b === 'he' && L(v).startsWith('iw'))) || null; };
   function browserSpeak(text, lang, rate) {
-    if (!window.speechSynthesis) { toast('This browser cannot speak text aloud.'); return Promise.resolve(); }
+    if (!window.speechSynthesis) { toast(t('voice.cantSpeak')); return Promise.resolve(); }
     const v = voiceFor(lang.speech);
-    if (!v && lang.code === 'he' && voices.length) toast('No Hebrew voice found on this device. Add one in your phone settings (Android: Text-to-speech; iPhone: Accessibility, Spoken Content, Voices), then reload.');
+    if (!v && voices.length && !warned.has(lang.code)) { warned.add(lang.code); toast(t('voice.missing', { lang: langName(lang.code) })); }
     return new Promise(r => {
       /* Kept in a variable so Android Chrome does not drop it before it finishes. */
       const u = lastU = new SpeechSynthesisUtterance(text); u.lang = lang.speech; if (v) u.voice = v; u.rate = rate;
@@ -114,12 +136,50 @@ export function createSpeech(opts) {
     });
   }
 
+  /* -- The audio player for Phonon's sound --
+     One player is used for every sentence. iPhone lets a page play sound only from a tap, but a
+     player that has played once from a tap may play again later, for example when the tutor's
+     reply arrives. So the first tap anywhere plays a moment of silence on it. */
+  const player = new Audio();
+  player.preservesPitch = true;
+  let waiting = null; // ends the wait for the sound now playing
+  const endWait = () => { const w = waiting; waiting = null; if (w) w(); };
+  player.addEventListener('ended', endWait);
+  /* A pause from an earlier sound can arrive after the next one has started; only a real pause counts. */
+  player.addEventListener('pause', () => { if (player.paused) endWait(); });
+  async function playUrl(url, rate) {
+    endWait();
+    player.src = url;
+    player.defaultPlaybackRate = player.playbackRate = rate;
+    const ended = new Promise(r => { waiting = r; });
+    try { await player.play(); }
+    catch (e) {
+      waiting = null;
+      if (e.name === 'AbortError') return; // stopped, or replaced by another sound, before it began
+      throw e;
+    }
+    await ended;
+  }
+  let unlocked = false;
+  function unlock() {
+    if (unlocked) return;
+    unlocked = true;
+    ['click', 'touchend', 'keydown'].forEach(ev => document.removeEventListener(ev, unlock, true));
+    if (!player.src) { player.src = silence(); player.play().catch(() => {}); }
+    /* The same for the browser voice on iPhone. */
+    if (iOS && window.speechSynthesis) speechSynthesis.speak(new SpeechSynthesisUtterance(' '));
+  }
+  ['click', 'touchend', 'keydown'].forEach(ev => document.addEventListener(ev, unlock, true));
+
   /* -- Phonon: the on-device English voice -- */
-  let PH = null, phLoad = null, phKey = null, cur = null, q = Promise.resolve();
+  let PH = null, phLoad = null, phKey = null, q = Promise.resolve();
+  /* Counts stop() calls: a sentence still being generated when the sound is stopped (for example
+     when the learner starts talking) is not played once it is ready. */
+  let stops = 0;
   const cache = new Map();
   const byBrowser = P => S().rateBy === 'browser' || P.fallback;
   const rateOf = P => { if (byBrowser(P)) return +S().speed; const r = +S().speed / (NAT[P.delta] || 1); return Math.abs(r - 1) < 0.03 ? 1 : r; };
-  const speedNote = P => 'English voice: Phonon ready · speed ' + SPN[S().speed] + (rateOf(P) !== 1 ? (byBrowser(P) ? ' (browser slowdown)' : ' (Phonon + a little browser slowdown)') : '');
+  const speedNote = P => t('voice.ready', { speed: t(SPN[S().speed] || 'speed.normal') }) + (rateOf(P) !== 1 ? t(byBrowser(P) ? 'voice.browserSlow' : 'voice.mixedSlow') : '');
   function phMod() {
     if (!PH) PH = (async () => {
       /* Browsers refuse workers loaded from another site, so wrap the CDN worker in a same-origin blob that imports it. */
@@ -134,13 +194,14 @@ export function createSpeech(opts) {
     })();
     return PH;
   }
-  /* Resolves to {tts, delta, fallback} for the current speed, or null if Phonon cannot run here. */
+  /* Resolves to {tts, delta, fallback, voices} for the current speed, or null if Phonon cannot run
+     here. voices: name -> promise of the name once the voice is added ('' if it failed). */
   function phonon() {
     const dd = S().rateBy === 'browser' ? 0 : (DD[S().speed] || 0), key = String(dd);
     if (phLoad && phKey === key) return phLoad;
     const old = phLoad; phKey = key;
     phLoad = (async () => {
-      status(old ? 'English voice: changing speed…' : 'English voice: loading…');
+      status(t(old ? 'voice.changing' : 'voice.loading', { target: targetName() }));
       let P = null;
       try {
         const m = await phMod();
@@ -150,7 +211,8 @@ export function createSpeech(opts) {
           console.warn('Phonon speed setting failed, slowing in the browser instead', e);
           P = { tts: await m.PhononTTS.load({ lang: 'en' }), delta: 0, fallback: true };
         }
-      } catch (e) { console.error('Phonon failed', e); status('English voice: Phonon failed (' + (e && e.message || e) + '). Using the browser voice.'); }
+        P.voices = new Map();
+      } catch (e) { console.error('Phonon failed', e); status(t('voice.failed', { target: targetName(), e: (e && e.message) || e })); }
       /* Free the previous model once anything it was still generating has finished. */
       if (old) old.then(o => { if (o && o !== P) q.then(() => o.tts.dispose()); });
       if (P) status(speedNote(P));
@@ -158,50 +220,85 @@ export function createSpeech(opts) {
     })();
     return phLoad;
   }
-  function synth(P, t) {
-    const k = P.delta + '|' + t;
+  /* Adds a voice from Phonon's catalog the first time it is used (spec 9, tutor voice). Resolves
+     to the name to pass to Phonon, or '' for the model's own voice. */
+  function useVoice(P, name) {
+    if (!knownVoice(name)) return Promise.resolve('');
+    if (!P.voices.has(name)) {
+      const v = catalog.list.find(x => x.name === name);
+      status(t('voice.loadingVoice', { name }));
+      P.voices.set(name, P.tts.addVoice(name, catalog.base + v.file).then(() => { status(speedNote(P)); return name; }, e => {
+        P.voices.delete(name);
+        toast(t('voice.voiceFailed', { name, e: (e && e.message) || e }));
+        return '';
+      }));
+    }
+    return P.voices.get(name);
+  }
+  /* Generates a sentence once and keeps it, so replaying is instant. Requests run one at a time. */
+  function synth(P, text, voice) {
+    const k = P.delta + '|' + voice + '|' + text;
     if (!cache.has(k)) {
-      const p = q.then(() => P.tts.synthWav(t)).then(b => URL.createObjectURL(b));
+      const p = q.then(() => P.tts.synthWav(text, voice ? { voice } : {})).then(b => URL.createObjectURL(b));
       q = p.catch(() => {}); cache.set(k, p); p.catch(() => cache.delete(k));
+      if (cache.size > KEEP_AUDIO) {
+        const [oldest, op] = cache.entries().next().value;
+        cache.delete(oldest); op.then(u => URL.revokeObjectURL(u), () => {});
+      }
     }
     return cache.get(k);
   }
   /* DEFAULT: the "slower" button plays a sentence at this share of the current speed. */
   const SLOWER = 0.75;
-  async function phononSpeak(text, lang, slow) {
+  async function phononSpeak(text, lang, slow, voiceName) {
+    const my = stops;
     const P = await phonon();
+    if (my !== stops) return;
     if (!P) return browserSpeak(text, lang, +S().speed * (slow ? SLOWER : 1));
-    status('Generating voice…');
-    const u = await Promise.race([synth(P, text), new Promise((_, rj) => setTimeout(() => rj(new Error('Phonon took longer than 25 seconds')), 25000))]);
+    const voice = await useVoice(P, voiceName ?? S().voice);
+    status(t('voice.generating'));
+    const url = await Promise.race([synth(P, text, voice), new Promise((_, rj) => setTimeout(() => rj(new Error(t('voice.tooSlow'))), 25000))]);
     status(speedNote(P));
-    if (cur) cur.pause();
-    const a = cur = new Audio(u); a.preservesPitch = true; a.playbackRate = rateOf(P) * (slow ? SLOWER : 1);
-    await a.play();
-    await new Promise(r => { a.onended = r; a.onpause = r; });
+    if (my !== stops) return;
+    await playUrl(url, rateOf(P) * (slow ? SLOWER : 1));
   }
 
   /* The voices a pack can name. The speed dial only applies to the target language. */
   const VOICES = {
-    phonon: { speak: phononSpeak, load: phonon },
-    browser: { speak: (text, lang, slow) => browserSpeak(text, lang, (lang === opts.target ? +S().speed : 1) * (slow ? SLOWER : 1)), load: () => {} },
+    phonon: {
+      speak: phononSpeak,
+      load: () => phonon().then(P => P && useVoice(P, S().voice)),
+      /* Starts generating every sentence of a reply at once, so each one is ready by the time
+         the one before it finishes playing (spec 3.2, Streaming by sentence). */
+      prepare: async texts => {
+        const P = await phonon();
+        if (!P) return;
+        const voice = await useVoice(P, S().voice);
+        texts.forEach(x => synth(P, x, voice).catch(() => {}));
+      },
+    },
+    browser: { speak: (text, lang, slow) => browserSpeak(text, lang, (lang === opts.target ? +S().speed : 1) * (slow ? SLOWER : 1)), load: () => {}, prepare: () => {} },
   };
   const voiceOf = lang => VOICES[lang.voice] || VOICES.browser;
 
   return {
-    /* Loads (or reloads, after a speed change) the voices the pack uses. */
+    /* Loads (or reloads, after a speed or voice change) the voices the pack uses. */
     load() { voiceOf(opts.target).load(); },
-    async speak(text, lang, { slow = false } = {}) {
-      try { await voiceOf(lang).speak(text, lang, slow); }
+    prepare(texts, lang) { return Promise.resolve(voiceOf(lang).prepare(texts)).catch(() => {}); },
+    /* voice: a Phonon voice name to use instead of the one in the settings (to try a voice out). */
+    async speak(text, lang, { slow = false, voice } = {}) {
+      try { await voiceOf(lang).speak(text, lang, slow, voice); }
       catch (e) {
         console.error(e);
         if (lang.voice === 'browser') return;
-        toast('Voice problem (' + (e.message || e) + '). Using the browser voice.');
+        toast(t('voice.problem', { e: e.message || e }));
         await browserSpeak(text, lang, +S().speed * (slow ? SLOWER : 1));
       }
     },
     stop() {
+      stops++;
       if (window.speechSynthesis && (speechSynthesis.speaking || speechSynthesis.pending)) speechSynthesis.cancel();
-      if (cur) cur.pause();
+      player.pause(); endWait();
     },
   };
 }
@@ -212,10 +309,11 @@ const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
 export const canListen = !!SR;
 
 /* Streams what the user says in lang (a pack language) until stop() is called.
-   onText(text) gets the full transcript so far; onEnd(text) gets the final one. */
+   onText(text) gets the full transcript so far; onEnd(text) gets the final one.
+   cancel() stops listening and throws away what was heard: onEnd is not called. */
 export function listen(lang, { onText, onEnd, onError }) {
   const r = new SR();
-  let heard = '';
+  let heard = '', cancelled = false;
   r.lang = lang.speech; r.interimResults = true;
   /* Android's recognizer misbehaves in continuous mode, so it gets one phrase at a time. */
   r.continuous = !/Android/i.test(navigator.userAgent);
@@ -223,12 +321,18 @@ export function listen(lang, { onText, onEnd, onError }) {
     let fin = '', part = '';
     for (let i = 0; i < e.results.length; i++) { const x = e.results[i]; if (x.isFinal) fin += x[0].transcript + ' '; else part = x[0].transcript; }
     heard = (fin + part).trim();
-    onText(heard);
+    if (!cancelled) onText(heard);
   };
   r.onerror = e => {
-    if (e.error === 'not-allowed' || e.error === 'service-not-allowed') onError('Microphone blocked. Allow mic access, or open the page over https.');
+    if (cancelled) return;
+    if (e.error === 'not-allowed' || e.error === 'service-not-allowed') onError(t('mic.blocked'));
+    else if (e.error === 'audio-capture') onError(t('mic.none'));
+    else if (e.error === 'network') onError(t('mic.network'));
   };
-  r.onend = () => onEnd(heard);
+  r.onend = () => { if (!cancelled) onEnd(heard); };
   r.start();
-  return { stop: () => r.stop() };
+  return {
+    stop: () => r.stop(),
+    cancel: () => { cancelled = true; try { r.abort(); } catch (e) { r.stop(); } },
+  };
 }

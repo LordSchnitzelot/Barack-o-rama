@@ -4,14 +4,26 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Speaking App</title>
+<!-- Installing to the home screen (spec 3.2, PWA): the manifest, the icons and the theme color. -->
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="theme-color" content="#E9EEF5">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Speaking">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>
 :root{--bg:#E9EEF5;--ink:#14213D;--soft:#5b6a86;--card:#fff;--blue:#2547F5;--gold:#F2B705;--line:#d3dbe8;--ok:#1a7f37;--bad:#c0152f;--guide:#0f7b6c}
 *{box-sizing:border-box}
 html,body{height:100%;margin:0}
 body{font-family:'Avenir Next','Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--ink);display:flex;flex-direction:column;max-width:560px;margin:0 auto;padding-top:env(safe-area-inset-top)}
+/* Text direction: the interface follows the interface language (dir on <html>); learning content
+   always keeps its own language's direction (dir on each line), so English stays left-to-right
+   in the Hebrew interface. */
 header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:14px 16px 4px}
 h1{font-size:22px;margin:0;flex:1}
-header .pill{margin-left:4px}
+header .pill{margin-inline-start:4px}
 #back{display:none}
 body:not([data-view="home"]) #back{display:inline-block}
 #st{padding:0 16px 8px;font-size:12px;color:var(--soft);min-height:22px}
@@ -21,11 +33,11 @@ button{font:inherit;color:inherit;cursor:pointer}
 body[data-view="home"] #home,body[data-view="talk"] #talk,body[data-view="drills"] #drills{display:flex}
 /* Home: the three modes (spec 4) */
 #home{padding:8px 16px 24px;gap:12px;overflow-y:auto}
-.mode{display:block;width:100%;text-align:left;border:0;border-radius:20px;padding:18px;background:var(--card);border-left:6px solid var(--blue)}
+.mode{display:block;width:100%;text-align:start;border:0;border-radius:20px;padding:18px;background:var(--card);border-inline-start:6px solid var(--blue)}
 .mode b{display:block;font-size:20px;margin-bottom:4px}
 .mode span{color:var(--soft);font-size:14px;line-height:1.4}
-.mode.g{border-left-color:var(--guide)}
-.mode.d{border-left-color:var(--gold)}
+.mode.g{border-inline-start-color:var(--guide)}
+.mode.d{border-inline-start-color:var(--gold)}
 /* Chat and Guide share one screen; Guide gets its own color so the two are easy to tell apart (spec 5.1) */
 .bar{display:flex;align-items:center;justify-content:space-between;padding:0 16px 6px}
 #mode{font-weight:600;color:var(--blue)}
@@ -35,14 +47,15 @@ body[data-mode="guide"] #mic{background:var(--guide)}
 #chat{flex:1;overflow-y:auto;padding:8px 16px 16px;display:flex;flex-direction:column;gap:12px}
 .empty{margin:auto;text-align:center;color:var(--soft);max-width:300px;line-height:1.5}
 .msg{max-width:92%;border-radius:18px;padding:12px 14px}
-.user{align-self:flex-end;background:var(--ink);color:#fff;border-bottom-right-radius:6px}
+.user{align-self:flex-end;background:var(--ink);color:#fff;border-end-end-radius:6px}
 .user.live{opacity:.65}
-.tutor,.say{align-self:flex-start;background:var(--card);border-bottom-left-radius:6px;display:flex;flex-direction:column;gap:10px}
-.say{border-left:4px solid var(--gold)}
+.tutor,.say{align-self:flex-start;background:var(--card);border-end-start-radius:6px;display:flex;flex-direction:column;gap:10px}
+.say{border-inline-start:4px solid var(--gold)}
 .line{display:flex;align-items:flex-start;gap:6px;line-height:1.45}
-.line .t{flex:1}
+.line .t{flex:1;text-align:start}
 .en .t{font-size:18px}
-.he .t{font-size:16px;color:var(--soft);text-align:right}
+.he .t{font-size:16px;color:var(--soft)}
+/* The translation's play button lines up with the English buttons, at the same edge. */
 .he{flex-direction:row-reverse}
 /* A hidden subtitle is blurred and revealed by tapping it (spec 5.6) */
 .line.hide:not(.shown) .t{filter:blur(6px);cursor:pointer;user-select:none}
@@ -50,7 +63,7 @@ body[data-mode="guide"] #mic{background:var(--guide)}
 .ic{border:0;background:#eef1fb;color:var(--blue);width:32px;height:32px;border-radius:50%;flex:none;font-size:12px}
 .big{font-size:20px}
 .note{font-size:13px;color:var(--soft);margin:0}
-.he-live{font-size:18px;margin:0;text-align:right}
+.he-live{font-size:18px;margin:0;text-align:start}
 footer{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 16px calc(14px + env(safe-area-inset-bottom));background:var(--card);border-top:1px solid var(--line)}
 #mic,.mic{width:76px;height:76px;border-radius:50%;border:0;background:var(--blue);color:#fff;font-size:13px;font-weight:600;flex:none}
 #mic.rec,.mic.rec{background:var(--bad);animation:p 1.1s infinite}
@@ -66,22 +79,28 @@ dialog{border:0;border-radius:20px;padding:20px;width:min(92vw,420px);max-height
 dialog::backdrop{background:rgba(20,33,61,.45)}
 dialog h2,dialog h3{margin:0 0 6px}
 dialog h3{margin-top:14px;font-size:16px}
-dialog ul{padding-left:20px;margin:6px 0}
+dialog ul{padding-inline-start:20px;margin:6px 0}
 dialog li{margin:6px 0}
+/* Settings is long, so it has sections and its Save button stays in view. */
+#set{padding-bottom:0}
+#set h3{margin-top:22px;padding-top:14px;border-top:1px solid var(--line)}
+#set h3:first-of-type{border-top:0;padding-top:0;margin-top:8px}
+#set .close{position:sticky;bottom:0;margin:20px -20px 0;width:calc(100% + 40px);border-radius:0;padding:14px}
 .mean{font-size:18px;margin:4px 0 12px}
 .btns{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
 .row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
 .row span{flex:1}
 .sc{color:var(--soft)}
 .close{margin-top:16px;width:100%;padding:11px;border-radius:12px;border:0;background:var(--ink);color:#fff}
-#toast{position:fixed;left:16px;right:16px;bottom:120px;max-width:528px;margin:auto;background:var(--bad);color:#fff;padding:10px 14px;border-radius:12px;font-size:14px;z-index:10}
+#toast{position:fixed;inset:auto 16px 120px 16px;width:auto;height:auto;max-width:528px;margin:0 auto;border:0;background:var(--bad);color:#fff;padding:10px 14px;border-radius:12px;font-size:14px;z-index:10}
+#toast.good{background:var(--ok)}
 #toast[hidden]{display:none}
+#toast button{margin-inline-start:10px;background:#fff;color:var(--ink);border:0}
 /* Drills (spec 6) */
 #drills{padding:0 16px 16px;overflow-y:auto}
 .card{background:var(--card);border-radius:20px;padding:18px;display:flex;flex-direction:column;gap:12px;margin-top:8px}
 .card .kind{font-size:13px;color:var(--soft)}
-.prompt{font-size:26px;line-height:1.35}
-.prompt.he{text-align:right;direction:rtl}
+.prompt{font-size:26px;line-height:1.35;margin:0}
 .center{display:flex;justify-content:center;gap:10px;align-items:center;flex-wrap:wrap}
 .verdict{font-size:18px;font-weight:600}
 .verdict.ok{color:var(--ok)}
@@ -94,59 +113,88 @@ dialog li{margin:6px 0}
 </head>
 <body data-view="home">
 <header>
-  <button class="pill" id="back" aria-label="Back to home">←</button>
-  <h1 id="title">Speaking</h1>
-  <button class="pill" id="wb">My words (0)</button><button class="pill" id="sb">Settings</button>
+  <button class="pill" id="back" data-t="app.backArrow" data-t-aria="app.back"></button>
+  <h1 id="title"></h1>
+  <button class="pill" id="wb"></button><button class="pill" id="sb" data-t="app.settings"></button>
 </header>
-<div id="st"></div>
+<div id="st" role="status"></div>
 
 <main id="home" class="view">
-  <button class="mode" data-go="chat"><b>Chat</b><span>Free conversation with your tutor, in English.</span></button>
-  <button class="mode g" data-go="guide"><b>Guide</b><span>A lesson: the tutor picks a subject and runs exercises with you.</span></button>
-  <button class="mode d" data-go="drills"><b>Drills</b><span>Spoken practice of words and sentences, both ways. New words every session.</span></button>
+  <button class="mode" data-go="chat"><b data-t="home.chat"></b><span data-t="home.chatDesc"></span></button>
+  <button class="mode g" data-go="guide"><b data-t="home.guide"></b><span data-t="home.guideDesc"></span></button>
+  <button class="mode d" data-go="drills"><b data-t="home.drills"></b><span data-t="home.drillsDesc"></span></button>
 </main>
 
 <section id="talk" class="view">
-  <div class="bar"><span id="mode">Chat</span><button class="pill" id="end">End session</button></div>
+  <div class="bar"><span id="mode"></span><button class="pill" id="end" data-t="talk.end"></button></div>
   <div id="chat"></div>
   <footer>
-    <button class="pill" id="say">How do I say it?</button>
-    <button id="mic">Tap to talk</button>
-    <select id="sp" aria-label="Tutor speed"><option value="0.75">Slow</option><option value="0.9">Easy</option><option value="1">Normal</option></select>
+    <button class="pill" id="say"></button>
+    <button id="mic"></button>
+    <select id="sp" data-t-aria="talk.speed"><option value="0.75" data-t="speed.slow"></option><option value="0.9" data-t="speed.easy"></option><option value="1" data-t="speed.normal"></option></select>
   </footer>
 </section>
 
 <section id="drills" class="view"></section>
 
-<div id="toast" hidden></div>
+<div id="toast" role="alert" popover="manual" hidden></div>
 
 <dialog id="set">
-  <h2>Settings</h2>
-  <label>Languages</label>
-  <p class="note">Learning English, from Hebrew. (More languages later.)</p>
-  <label for="se">English subtitles</label>
-  <select id="se"><option value="show">Show</option><option value="hide">Hide (tap a line to see it)</option></select>
-  <label for="sh">Hebrew translation</label>
-  <select id="sh"><option value="show">Show</option><option value="hide">Hide (tap a line to see it)</option></select>
-  <label for="co">Corrections</label>
-  <select id="co"><option value="live">As we go</option><option value="end">At the end of the session</option><option value="off">Off</option></select>
-  <label for="lv">Your English level (helps the tutor at the start)</label>
-  <select id="lv"><option value="beginner">Beginner</option><option value="intermediate">Intermediate</option><option value="advanced">Advanced</option></select>
-  <label>Talking</label>
-  <p class="note">Tap to talk, tap again when you finish. (Hands-free comes later.)</p>
-  <label for="sp2">Tutor speed</label>
-  <select id="sp2"><option value="0.75">Slow</option><option value="0.9">Easy</option><option value="1">Normal</option></select>
-  <label for="rb">How the speed dial slows the English voice</label>
-  <select id="rb"><option value="phonon">Phonon speaking rate (natural)</option><option value="browser">Browser playback speed (stretched)</option></select>
-  <label for="pv">AI provider</label>
-  <select id="pv"><option value="groq">Groq (free)</option><option value="gemini">Gemini</option></select>
-  <label for="rk">Groq API key</label><input id="rk" type="password" autocomplete="off">
-  <label for="gm">Groq model (leave empty to pick automatically)</label><input id="gm" placeholder="automatic">
-  <label for="gk">Gemini API key (free from Google AI Studio)</label><input id="gk" type="password" autocomplete="off">
-  <label for="mo">Gemini model</label><input id="mo">
-  <p class="note" style="margin-top:12px">Your key is stored only in this browser. Speech recognition and the Hebrew voice come from the browser. The English voice is Phonon, running on your device.</p>
-  <p class="note" style="margin-top:8px">Dictionary: English Wiktionary (via kaikki.org, CC BY-SA 4.0). Word frequencies: Hermit Dave's OpenSubtitles lists (CC BY-SA 4.0).</p>
-  <button class="close" id="save">Save</button>
+  <h2 data-t="set.title"></h2>
+
+  <h3 data-t="set.learning"></h3>
+  <label for="ui" data-t="set.uiLang"></label>
+  <select id="ui"><option value="en">English</option><option value="he">עברית</option></select>
+  <label data-t="set.languages"></label>
+  <p class="note" data-t="set.languagesNote"></p>
+  <label for="se" data-t="set.en"></label>
+  <select id="se"><option value="show" data-t="set.show"></option><option value="hide" data-t="set.hide"></option></select>
+  <label for="sh" data-t="set.he"></label>
+  <select id="sh"><option value="show" data-t="set.show"></option><option value="hide" data-t="set.hide"></option></select>
+  <label for="co" data-t="set.corrections"></label>
+  <select id="co"><option value="live" data-t="set.corrLive"></option><option value="end" data-t="set.corrEnd"></option><option value="off" data-t="set.corrOff"></option></select>
+  <label for="lv" data-t="set.level"></label>
+  <select id="lv"><option value="beginner" data-t="set.beginner"></option><option value="intermediate" data-t="set.intermediate"></option><option value="advanced" data-t="set.advanced"></option></select>
+  <label data-t="set.talking"></label>
+  <p class="note" data-t="set.talkingNote"></p>
+
+  <h3 data-t="set.voiceHead"></h3>
+  <label for="sp2" data-t="set.speed"></label>
+  <select id="sp2"><option value="0.75" data-t="speed.slow"></option><option value="0.9" data-t="speed.easy"></option><option value="1" data-t="speed.normal"></option></select>
+  <label for="vo" data-t="set.voice"></label>
+  <select id="vo"></select>
+  <div class="btns"><button class="pill" id="vtry" data-t="set.tryVoice"></button></div>
+  <label for="rb" data-t="set.rateBy"></label>
+  <select id="rb"><option value="phonon" data-t="set.ratePhonon"></option><option value="browser" data-t="set.rateBrowser"></option></select>
+
+  <h3 data-t="set.ai"></h3>
+  <label for="pv" data-t="set.provider"></label>
+  <select id="pv"><option value="groq" data-t="set.groqFree"></option><option value="gemini">Gemini</option></select>
+  <label for="rk" data-t="set.groqKey"></label><input id="rk" type="password" autocomplete="off" dir="ltr">
+  <label for="gm" data-t="set.groqModel"></label><input id="gm" data-t-ph="set.auto" dir="ltr">
+  <label for="gk" data-t="set.geminiKey"></label><input id="gk" type="password" autocomplete="off" dir="ltr">
+  <label for="mo" data-t="set.geminiModel"></label><input id="mo" dir="ltr">
+  <p class="note" style="margin-top:12px" data-t="set.keyNote"></p>
+
+  <h3 data-t="set.data"></h3>
+  <p class="note" data-t="set.dataNote"></p>
+  <p class="note" id="dstats" style="margin-top:6px"></p>
+  <div class="btns"><button class="pill" id="bexp" data-t="set.export"></button><button class="pill" id="bimp" data-t="set.import"></button></div>
+  <input type="file" id="bfile" accept=".json,application/json" hidden>
+
+  <h3 data-t="set.install"></h3>
+  <p class="note" id="iyes" data-t="set.installed" hidden></p>
+  <div id="ino">
+    <p class="note" data-t="set.installNote"></p>
+    <div class="btns" id="ibtnrow" hidden><button class="pill" id="ibtn" data-t="set.installBtn"></button></div>
+    <p class="note" style="margin-top:8px" data-t="set.installIos"></p>
+    <p class="note" style="margin-top:8px" data-t="set.installAndroid"></p>
+  </div>
+
+  <h3 data-t="set.about"></h3>
+  <p class="note" data-t="set.credits"></p>
+
+  <button class="close" id="save" data-t="set.save"></button>
 </dialog>
 <dialog id="wd"></dialog>
 <dialog id="wl"></dialog>
