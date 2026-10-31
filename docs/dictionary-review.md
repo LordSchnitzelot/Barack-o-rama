@@ -417,7 +417,7 @@ Wiktionary had no nikkud for these, so Claude wrote it. Check each one.
 - line 433: mean = לְהִתְכַּוֵּן
 - line 435: worry = לִדְאֹג
 - line 436: miss = לְהִתְגַּעְגֵּעַ
-- line 437: miss = לְפַסְפֵס
+- line 437: miss = לְפַסְפֵּס
 - line 438: lose weight = לִרְזוֹת
 - line 439: sound = לְהִשָּׁמַע
 - line 440: matter = לְשַׁנּוֹת
