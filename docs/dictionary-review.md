@@ -92,7 +92,7 @@ Wiktionary does not list this pair. Most are fine (Wiktionary is incomplete); ch
 - line 796: weapon = נֶשֶׁק
 - line 884: park = פַּארְק
 - line 915: top = חֵלֶק עֶלְיוֹן
-- line 917: inside = פָּנִים
+- line 917: inside = פְּנִים
 - line 918: edge = קָצֶה
 - line 928: space = מָקוֹם
 - line 970: sheep = כִּבְשָׂה
@@ -268,7 +268,7 @@ Feminine and plural forms given by the owner; the masculine plurals there were a
 - line 1781: desperate = נוֹאָשׁ — forms from forms.txt
 - line 1798: precious = יְקַר עֵרֶךְ — forms from forms.txt
 
-## Nikkud written by hand (nikkud.txt) (379)
+## Nikkud written by hand (nikkud.txt) (380)
 
 Wiktionary had no nikkud for these, so Claude wrote it. Check each one.
 
@@ -538,6 +538,7 @@ Wiktionary had no nikkud for these, so Claude wrote it. Check each one.
 - line 884: park = פַּארְק
 - line 906: theater = תֵּאַטְרוֹן
 - line 915: top = חֵלֶק עֶלְיוֹן (written with nikkud in words.txt)
+- line 917: inside = פְּנִים (written with nikkud in words.txt)
 - line 929: sky = שָׁמַיִם
 - line 970: sheep = כִּבְשָׂה
 - line 1019: January = יָנוּאָר

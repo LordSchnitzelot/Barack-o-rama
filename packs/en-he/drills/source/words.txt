@@ -914,7 +914,7 @@ center | n | מרכז
 front | n | חזית
 top | n | חֵלֶק עֶלְיוֹן, חלק עליון
 bottom | n | תחתית
-inside | n | פנים | the inner part
+inside | n | פְּנִים | the inner part
 edge | n | קצה
 end | n | סוף
 north | n | צפון
