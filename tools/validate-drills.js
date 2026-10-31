@@ -25,7 +25,8 @@
   const NIKKUD = /[ְ-ׇּׁׂ]/;
   const HEBREW_WORD = /^[א-תְ-ׇּׁׂ׳״]+$/;
   const ENGLISH_WORD = /^[A-Za-z][A-Za-z']*$/;
-  const LABEL = /^[A-Za-z][A-Za-z ,'-]*$/;
+  // Labels are in the entry's own language, so a label never gives away the translation (spec 3.3).
+  const LABEL = { en: /^[A-Za-z][A-Za-z ,'-]*$/, he: /^[א-ת][א-ת ,'׳״־-]*$/ };
 
   // The answer normalization from spec 3.3: lowercase, punctuation removed,
   // nikkud removed. Accepted forms are stored already normalized.
@@ -152,7 +153,7 @@
 
           // Labels: English, in brackets, at the end.
           const { bare, label } = splitLabel(w.text);
-          if (label !== null && !LABEL.test(label)) err(W, 'the label "' + label + '" must be English words');
+          if (label !== null && !LABEL[lang].test(label)) err(W, 'the label "' + label + '" must be ' + (lang === 'he' ? 'Hebrew words (a Hebrew label must not give away the English)' : 'English words'));
           if (/[()]/.test(bare)) err(W, 'brackets are only allowed for one label at the end, like "bat (sports)"');
           if (!bares.has(bare)) bares.set(bare, []);
           bares.get(bare).push({ w, label, group: g });

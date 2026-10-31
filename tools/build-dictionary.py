@@ -202,7 +202,9 @@ def find_he(he, word, pos, english, line):
 
 HAND = {}   # words.txt spelling -> nikkud written by hand in nikkud.txt (listed for review)
 LOOSE = {}  # the same, by a looser spelling (see skeleton), used only when there is no exact match
+FULL = {}   # the same, by the everyday full spelling only (wins over HAND)
 def add_hand(x, first=False):
+    FULL[plene(x)] = nfc(x) if first else FULL.get(plene(x), nfc(x))
     for key in spellings(x): HAND[key] = nfc(x) if first else HAND.get(key, nfc(x))
     LOOSE.setdefault(skeleton(x), nfc(x))
 def load_hand():
@@ -235,7 +237,7 @@ def load_forms():
         for a in acc: HAND[a] = nfc(main) if a not in HAND else HAND[a]
 
 def hand(text, english, line):
-    p = HAND.get(normalize(text)) or LOOSE.get(skeleton(text))
+    p = FULL.get(normalize(text)) or HAND.get(normalize(text)) or LOOSE.get(skeleton(text))
     if p: review['hand'].append('line %d: %s = %s' % (line, english, p))
     return p
 
@@ -336,7 +338,6 @@ def build(data):
         m = re.match(r'^(.*?)\s*\(([^)]+)\)\s*$', heb)
         if m: heb, he_label = m.group(1), m.group(2)
         items = [x.strip() for x in heb.split(',') if x.strip()]
-        if he_label and not L['label']: L['label'] = he_label   # "(call out)" labels the English too
         main, extras = items[0], items[1:]
         word = L['en']
         if L['pos'] == 'verb' and main.partition('/')[2].strip() == '-':
@@ -417,6 +418,9 @@ def build(data):
 
     # Labels (spec 3.3): needed when two entries are spelled the same, or when an English entry
     # is spelled like an answer of another group. The label from words.txt is used when there is one.
+    HE_POS = {'noun': 'שם עצם', 'adjective': 'תואר', 'adverb': 'תואר הפועל', 'past': 'עבר', 'infinitive': 'שם הפועל',
+              'pronoun': 'כינוי גוף', 'preposition': 'מילת יחס', 'conjunction': 'מילת חיבור', 'determiner': 'כמת',
+              'number': 'מספר', 'question': 'מילת שאלה', 'modal': 'פועל עזר', 'interjection': 'מילת קריאה', 'verb': 'פועל'}
     POS_LABEL = {'noun': 'noun', 'verb': 'verb', 'adjective': 'adjective', 'adverb': 'adverb', 'pronoun': 'pronoun',
                  'preposition': 'preposition', 'conjunction': 'conjunction', 'determiner': 'determiner', 'number': 'number',
                  'question': 'question', 'modal': 'modal', 'interjection': 'greeting'}
@@ -447,21 +451,18 @@ def build(data):
     he_text = {k: k[2] for k in groups}
     he_bare = collections.defaultdict(list)
     for k in groups: he_bare[k[2]].append(k)
+    # Hebrew labels are written in Hebrew, so a label never gives away the English answer
+    # (spec 3.3): the label from words.txt, else the Hebrew name of the part of speech.
     he_lab = {}
     for bare, ks in he_bare.items():
         if len(ks) == 1 and not ks[0][3]: continue
         for k in ks:
             first = entries[groups[k][0]]
-            he_lab[k] = k[3] or (first['label'] or first['base'] if len(ks) > 1 else None)
+            he_lab[k] = k[3] or (HE_POS['past' if first['verbForm'] == 'past' else 'infinitive' if first['verbForm'] else first['pos']] if len(ks) > 1 else None)
         labs = collections.Counter(he_lab[k] for k in ks)
         for k in ks:
             if labs[he_lab[k]] > 1:
-                first = entries[groups[k][0]]
-                he_lab[k] = '%s, %s' % (he_lab[k], 'past tense' if first['verbForm'] == 'past' else POS_LABEL[first['pos']])
-        labs = collections.Counter(he_lab[k] for k in ks)
-        for k in ks:
-            if labs[he_lab[k]] > 1:
-                review['labels'].append('%s (%s): Hebrew entries spelled the same with the same label — give each its own label in words.txt' % (bare, he_lab[k]))
+                review['labels'].append('%s (%s): several Hebrew entries with the same spelling and label — give each its own Hebrew label in words.txt' % (bare, he_lab[k]))
 
     # Permanent ids: reuse the starter set's id for the same text, so saved progress is kept.
     old_ids = {}

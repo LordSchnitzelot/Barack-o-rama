@@ -84,8 +84,11 @@ infinitive entries. In sentences, present-tense words are tagged with the infini
 ### Labels
 
 A label is needed when two entries are spelled the same but mean different things, such as
-`time (occasion)` = פַּעַם and `time (duration)` = זְמַן, or Hebrew `עַל (on top of)` = "on" and
-`עַל (about a topic)` = "about". Labels are always in English.
+`time (occasion)` = פַּעַם and `time (duration)` = זְמַן, or Hebrew `קֶרֶן (אור)` = "ray" and
+`קֶרֶן (בעל חיים)` = "horn". A label is written in the entry's own language, so it never gives away
+the translation: English labels on English entries, Hebrew labels on Hebrew entries. When one Hebrew
+spelling has entries with different parts of speech, the build labels them with the part of speech in
+Hebrew: `מֵת (עבר)` = "died", `מֵת (תואר)` = "dead".
 
 In English, a label is also needed when a word is spelled like an answer of another group:
 `put (past tense)` needs a label because "put" is also an accepted answer for "to put".
@@ -129,8 +132,8 @@ The checker (`tools/validate-drills.js`) tests every rule:
   points at exactly one group in the other language, in both directions.
 - Group numbers are unique, every group has at least one word, and every word `id` appears only
   once, so every entry is in exactly one group.
-- Every entry is distinct. Entries spelled the same need labels; labels are English, in brackets,
-  at the end.
+- Every entry is distinct. Entries spelled the same need labels, in brackets at the end, in the
+  entry's own language (English labels on English entries, Hebrew labels on Hebrew entries).
 - English entries are English letters only and have no "the", "a" or "an". Hebrew entries are
   Hebrew letters only, and every Hebrew word has nikkud.
 - Every entry has a frequency rank (a whole number, 1 or more).

@@ -12,6 +12,9 @@
 #   Hebrew synonyms in one meaning group with "+" ("כועס + עצבני"). Adjective forms that Wiktionary
 #   lacks go in forms.txt.
 # - Label: only when the English word has more than one meaning in this file, or to clarify.
+#   A Hebrew label goes in brackets after the Hebrew, in Hebrew: "קרן (אור)". When one Hebrew word
+#   has several entries with different parts of speech, the build labels them itself in Hebrew
+#   (מֵת (עבר), מֵת (תואר)); entries with the same part of speech need a label written here.
 #   Words with the same Hebrew are grouped together as synonyms.
 # - Phrases with a meaning of their own ("give up", "how are you") are entries too (spec 3.3).
 
@@ -64,7 +67,7 @@ another | det | עוד | one more
 all | det | כל
 every | det | כל
 each | det | כׇּל אֶחָד, כל אחד, כל אחת
-some | det | כמה | a few
+some | det | כמה (מעט) | a few
 many | det | הרבה
 much | det | הרבה
 few | det | מעט
@@ -84,8 +87,8 @@ when | q | מתי
 why | q | למה, מדוע
 how | q | איך
 which | q | איזה, איזו, אילו
-how much | q | כמה | amount
-how many | q | כמה | number
+how much | q | כמה (שאלה) | amount
+how many | q | כמה (שאלה) | number
 
 # ---------- Small words: prepositions, conjunctions, adverbs ----------
 with | prep | עם
@@ -96,7 +99,7 @@ about | prep | על | a topic
 about | adv | בערך | approximately
 on | prep | על | on top of
 under | prep | מתחת
-before | prep | לפני
+before | prep | לפני (קודם)
 after | prep | אחרי
 between | prep | בין
 near | prep | ליד, קרוב
@@ -116,7 +119,7 @@ because | conj | כי, מפני ש, בגלל ש
 but | conj | אבל
 or | conj | או
 if | conj | אם
-so | conj | אז | therefore
+so | conj | אז (לכן) | therefore
 so | adv | כל כך | very
 also | adv | גם
 too | adv | גם | also
@@ -125,8 +128,8 @@ very | adv | מאוד
 really | adv | באמת
 just | adv | רק | only
 only | adv | רק | only
-not | adv | לא
-no | intj | לא
+not | adv | לא (שלילה)
+no | intj | לא (תשובה)
 yes | intj | כן
 never | adv | אף פעם, לעולם
 always | adv | תמיד
@@ -138,7 +141,7 @@ already | adv | כבר
 still | adv | עדיין
 yet | adv | עדיין | until now
 now | adv | עכשיו
-then | adv | אז | at that time
+then | adv | אז (באותו זמן) | at that time
 here | adv | כאן, פה
 there | adv | שם
 today | adv | היום
@@ -178,7 +181,7 @@ slowly | adv | לאט
 fast | adv | מהר
 once | adv | פעם אחת
 twice | adv | פעמיים
-ago | adv | לפני
+ago | adv | לפני (זמן שעבר)
 instead | adv | במקום
 anyway | adv | בכל מקרה
 especially | adv | במיוחד
@@ -194,7 +197,7 @@ thank you | intj | תודה
 thanks | intj | תודה
 sorry | intj | סליחה
 excuse me | intj | סליחה
-hello | intj | שלום
+hello | intj | שלום (ברכה)
 hi | intj | היי
 goodbye | intj | להתראות
 bye | intj | ביי
@@ -226,16 +229,16 @@ right now | adv | עכשיו, ברגע זה
 all right | intj | בסדר
 
 # ---------- Verbs (past / infinitive) ----------
-be | v | היה / להיות
+be | v | היה / להיות (קיום)
 do | v | עשה / לעשות
 make | v | עשה / לעשות
 go | v | הלך / ללכת
 come | v | בא / לבוא
-get | v | קיבל / לקבל | receive
+get | v | קיבל / לקבל (משהו) | receive
 get | v | הגיע / להגיע | arrive
 arrive | v | הגיע / להגיע
 reach | v | הגיע / להגיע
-receive | v | קיבל / לקבל
+receive | v | קיבל / לקבל (משהו)
 know | v | ידע / לדעת | a fact
 know | v | הכיר / להכיר | a person
 recognize | v | זיהה / לזהות
@@ -243,18 +246,18 @@ think | v | חשב / לחשוב
 want | v | רצה / לרצות
 see | v | ראה / לראות
 look | v | הסתכל / להסתכל
-watch | v | צפה / לצפות
+watch | v | צפה / לצפות (לראות)
 tell | v | סיפר / לספר
 say | v | אמר / לומר
 talk | v | דיבר / לדבר
 speak | v | דיבר / לדבר
 take | v | לקח / לקחת
-give | v | נתן / לתת
-let | v | נתן / לתת (allow)
+give | v | נתן / לתת (נתינה)
+let | v | נתן / לתת (רשות)
 find | v | מצא / למצוא
 call | v | התקשר / להתקשר | phone
-call | v | קרא / לקרוא (call out)
-read | v | קרא / לקרוא | a book
+call | v | קרא / לקרוא (בקול) | name or shout
+read | v | קרא / לקרוא (טקסט) | a book
 feel | v | הרגיש / להרגיש
 need | modal | צריך, צריכה, צריכים, צריכות
 love | v | אהב / לאהוב
@@ -263,9 +266,9 @@ help | v | עזר / לעזור
 happen | v | קרה / לקרות
 work | v | עבד / לעבוד
 wait | v | חיכה / לחכות
-stop | v | עצר / לעצור
+stop | v | עצר / לעצור (תנועה)
 leave | v | עזב / לעזוב | go away from
-keep | v | שמר / לשמור
+keep | v | שמר / לשמור (להחזיק)
 put | v | שם / לשים
 start | v | התחיל / להתחיל
 begin | v | התחיל / להתחיל
@@ -277,7 +280,7 @@ listen | v | הקשיב / להקשיב
 hear | v | שמע / לשמוע
 understand | v | הבין / להבין
 die | v | מת / למות
-ask | v | שאל / לשאול | a question
+ask | v | שאל / לשאול (שאלה) | a question
 ask | v | ביקש / לבקש | for something
 kill | v | הרג / להרוג
 turn | v | פנה / לפנות | change direction
@@ -299,7 +302,7 @@ eat | v | אכל / לאכול
 drink | v | שתה / לשתות
 sit | v | ישב / לשבת
 stand | v | עמד / לעמוד
-change | v | שינה / לשנות
+change | v | שינה / לשנות (שינוי)
 pay | v | שילם / לשלם
 close | v | סגר / לסגור
 open | v | פתח / לפתוח
@@ -308,10 +311,10 @@ hit | v | היכה / להכות
 check | v | בדק / לבדוק
 deal | v | התמודד / להתמודד | cope
 wish | v | איחל / לאחל
-laugh | v | צחק / לצחוק
+laugh | v | צחק / לצחוק (צחוק)
 fight | v | נלחם / להילחם
 cut | v | חתך / לחתוך
-read | v | קרא / לקרוא
+read | v | קרא / לקרוא (טקסט)
 write | v | כתב / לכתוב
 break | v | שבר / לשבור
 answer | v | ענה / לענות
@@ -350,7 +353,7 @@ learn | v | למד / ללמוד
 study | v | למד / ללמוד
 wear | v | לבש / ללבוש
 enjoy | v | נהנה / ליהנות
-return | v | חזר / לחזור
+return | v | חזר / לחזור (למקום)
 offer | v | הציע / להציע
 pass | v | עבר / לעבור | go past
 clean | v | ניקה / לנקות
@@ -361,7 +364,7 @@ wake up | v | התעורר / להתעורר
 hide | v | הסתתר / להסתתר
 finish | v | סיים / לסיים
 cry | v | בכה / לבכות
-become | v | נהיה / להיות | turn into
+become | v | נהיה / להיות (שינוי)
 swear | v | נשבע / להישבע
 imagine | v | דמיין / לדמיין
 prove | v | הוכיח / להוכיח
@@ -381,12 +384,12 @@ relax | v | נרגע / להירגע
 teach | v | לימד / ללמד
 taste | v | טעם / לטעום
 serve | v | הגיש / להגיש
-accept | v | קיבל / לקבל (accept)
+accept | v | קיבל / לקבל (הסכמה)
 burn | v | שרף / לשרוף
 cost | v | עלה / לעלות | have a price
 appreciate | v | העריך / להעריך
 owe | v | היה חייב / להיות חייב
-joke | v | צחק / לצחוק (joke)
+joke | v | צחק / לצחוק (בדיחה)
 smile | v | חייך / לחייך
 destroy | v | הרס / להרוס
 deserve | v | הגיע לו / -, הגיע, הגיע ל, הגיע לה, הגיע להם, הגיע להן, הגיע לי, הגיע לנו, הגיע לך, הגיע לכם, הגיע לכן
@@ -421,7 +424,7 @@ raise | v | הרים / להרים
 lift | v | הרים / להרים
 hire | v | שכר / לשכור
 rent | v | שכר / לשכור
-lay | v | הניח / להניח
+lay | v | הניח / להניח (לשים)
 seem | v | נראה / להיראות
 look like | v | נראה / להיראות
 bring | v | הביא / להביא
@@ -434,9 +437,9 @@ miss | v | התגעגע / להתגעגע | feel sad without
 miss | v | פספס / לפספס | not catch
 lose weight | v | רזה / לרזות
 sound | v | נשמע / להישמע
-matter | v | שינה / לשנות (matter)
+matter | v | שינה / לשנות (חשיבות)
 guess | v | ניחש / לנחש
-suppose | v | הניח / להניח (suppose)
+suppose | v | הניח / להניח (השערה)
 seem | v | נראה / להיראות
 fit | v | התאים / להתאים
 suit | v | התאים / להתאים
@@ -454,7 +457,7 @@ sell | v | מכר / למכור
 handle | v | טיפל / לטפל
 treat | v | טיפל / לטפל
 take care of | v | טיפל / לטפל
-arrest | v | עצר / לעצור (arrest)
+arrest | v | עצר / לעצור (משטרה)
 escape | v | ברח / לברוח
 run away | v | ברח / לברוח
 suck | v | מצץ / למצוץ
@@ -465,7 +468,7 @@ cross | v | חצה / לחצות
 recognize | v | זיהה / לזהות
 correct | v | תיקן / לתקן
 waste | v | בזבז / לבזבז
-guard | v | שמר / לשמור (guard)
+guard | v | שמר / לשמור (להגן)
 protect | v | הגן / להגן
 study | v | למד / ללמוד
 practice | v | התאמן / להתאמן
@@ -475,7 +478,7 @@ climb | v | טיפס / לטפס
 swim | v | שחה / לשחות
 travel | v | טייל / לטייל
 cancel | v | ביטל / לבטל
-borrow | v | שאל / לשאול (borrow)
+borrow | v | שאל / לשאול (השאלה)
 lend | v | השאיל / להשאיל
 rest | v | נח / לנוח
 breathe | v | נשם / לנשום
@@ -506,12 +509,12 @@ prefer | v | העדיף / להעדיף
 include | v | כלל / לכלול
 contain | v | הכיל / להכיל
 exist | v | היה קיים / להתקיים
-expect | v | ציפה / לצפות | think will happen
+expect | v | ציפה / לצפות (לחכות ל)
 wait for | v | חיכה / לחכות
 pray | v | התפלל / להתפלל
 bless | v | בירך / לברך
-thank | v | הודה / להודות
-admit | v | הודה / להודות (admit)
+thank | v | הודה / להודות (תודה)
+admit | v | הודה / להודות (הודאה)
 deny | v | הכחיש / להכחיש
 warn | v | הזהיר / להזהיר
 threaten | v | איים / לאיים
@@ -524,8 +527,8 @@ lie down | v | שכב / לשכוב
 get up | v | קם / לקום
 stand up | v | קם / לקום
 sit down | v | התיישב / להתיישב
-come back | v | חזר / לחזור
-go back | v | חזר / לחזור
+come back | v | חזר / לחזור (למקום)
+go back | v | חזר / לחזור (למקום)
 come in | v | נכנס / להיכנס
 go out | v | יצא / לצאת
 leave | v | יצא / לצאת | go out of
@@ -540,7 +543,7 @@ find out | v | גילה / לגלות
 figure out | v | הבין / להבין
 look up | v | חיפש / לחפש | search
 look up to | v | העריץ / להעריץ
-look after | v | שמר / לשמור (look after)
+look after | v | שמר / לשמור (לטפל)
 put on | v | לבש / ללבוש | clothes
 take off | v | המריא / להמריא | plane
 take off | v | הוריד / להוריד | clothes
@@ -577,7 +580,7 @@ get married | v | התחתן / להתחתן
 get dressed | v | התלבש / להתלבש
 get ready | v | התכונן / להתכונן
 get better | v | השתפר / להשתפר
-call back | v | חזר / לחזור (call back)
+call back | v | חזר / לחזור (בטלפון)
 
 # ---------- Nouns: people and family ----------
 man | n | איש, גבר
@@ -792,7 +795,7 @@ ball | n | כדור
 gun | n | אקדח
 weapon | n | נשק
 bomb | n | פצצה
-money | n | כסף
+money | n | כסף (תשלום)
 cash | n | מזומן
 dollar | n | דולר
 price | n | מחיר
@@ -945,7 +948,7 @@ plant | n | צמח
 leaf | n | עלה
 wood | n | עץ | material
 gold | n | זהב
-silver | n | כסף | metal
+silver | n | כסף (מתכת) | metal
 iron | n | ברזל
 oil | n | שמן
 gas | n | גז
@@ -1060,15 +1063,20 @@ hate | n | שנאה
 anger | n | כעס
 joy | n | שמחה
 happiness | n | אושר
-peace | n | שלום | no war
+peace | n | שלום (בין עמים) | no war
 war | n | מלחמה
 fight | n | ריב
 game | n | משחק
 sport | n | ספורט
 music | n | מוזיקה
 song | n | שיר
-movie | n | סרט
-film | n | סרט
+movie | n | סרט (קולנוע)
+film | n | סרט (קולנוע)
+ribbon | n | סרט (קישוט)
+tablecloth | n | מפה (שולחן)
+ray | n | קרן (אור)
+horn | n | קרן (בעל חיים)
+fund | n | קרן (כספים)
 show | n | הופעה
 party | n | מסיבה
 wedding | n | חתונה
@@ -1082,7 +1090,7 @@ job | n | עבודה
 work | n | עבודה
 business | n | עסק
 company | n | חברה | business
-money | n | כסף
+money | n | כסף (תשלום)
 price | n | מחיר
 cost | n | עלות
 government | n | ממשלה
@@ -1203,7 +1211,7 @@ internet | n | אינטרנט
 website | n | אתר
 video | n | סרטון
 photo | n | תמונה
-movie | n | סרט
+movie | n | סרט (קולנוע)
 system | n | מערכת
 service | n | שירות
 security | n | ביטחון
@@ -1216,7 +1224,7 @@ key | n | מפתח
 code | n | קוד
 note | n | פתק
 sign | n | שלט
-map | n | מפה
+map | n | מפה (דרכים)
 mission | n | משימה
 project | n | פרויקט
 order | n | הזמנה | in a shop
@@ -1551,7 +1559,7 @@ clearly | adv | בבירור
 crew | n | צוות
 investigation | n | חקירה
 national | adj | לאומי
-several | det | כמה | some
+several | det | כמה (מעט) | some
 strength | n | כוח
 hardly | adv | בקושי
 possibly | adv | אולי | perhaps
