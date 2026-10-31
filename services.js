@@ -206,13 +206,18 @@ export function createSpeech(opts) {
     phLoad = (async () => {
       status(t(old ? 'voice.changing' : 'voice.loading', { target: targetName() }));
       let P = null;
+      /* The first time, the model (about 65 MB) is downloaded, which can take a while on a phone,
+         so its progress is shown. Later loads come from the browser's cache. */
+      const onProgress = ({ file, loaded, total, cached }) => {
+        if (!cached && total && file === 'weights') status(t('voice.downloading', { target: targetName(), pct: Math.min(99, Math.floor(loaded / total * 100)) }));
+      };
       try {
         const m = await phMod();
-        try { P = { tts: await m.PhononTTS.load(dd ? { lang: 'en', conditions: { duration_delta: dd } } : { lang: 'en' }), delta: dd, fallback: false }; }
+        try { P = { tts: await m.PhononTTS.load(dd ? { lang: 'en', conditions: { duration_delta: dd }, onProgress } : { lang: 'en', onProgress }), delta: dd, fallback: false }; }
         catch (e) {
           if (!dd) throw e;
           console.warn('Phonon speed setting failed, slowing in the browser instead', e);
-          P = { tts: await m.PhononTTS.load({ lang: 'en' }), delta: 0, fallback: true };
+          P = { tts: await m.PhononTTS.load({ lang: 'en', onProgress }), delta: 0, fallback: true };
         }
         P.voices = new Map();
       } catch (e) { console.error('Phonon failed', e); status(t('voice.failed', { target: targetName(), e: (e && e.message) || e })); }

@@ -5,12 +5,13 @@ import * as D from './drills.js';
 import * as DD from './drill-data.js';
 import { sentenceCheckPrompt, sentenceCheckMessage, parseCheck } from './tutor.js';
 import { listen, canListen } from './services.js';
-import { pack, $, esc, attrs, S, toast, needKey, ai, stopAudio, play, dictReady, data as files, W, wordsReady, saveWord, flag } from './shell.js';
+import { pack, $, esc, attrs, S, saveSettings, toast, needKey, ai, stopAudio, play, dictReady, data as files, W, wordsReady, saveWord, flag } from './shell.js';
 import { t, langName } from './strings.js';
 import * as store from './store.js';
 
 let data = null, session = null, drill = null, rec = null, hinted = [], score = { right: 0, total: 0 }, missed = [];
-let mode = 'mixed';
+/* What to practice (spec 6.1): Mixed by default; the last choice is remembered. */
+let mode = D.MODES.includes(S.drillMode) ? S.drillMode : 'mixed';
 const box = () => $('#drills');
 const side = lang => lang === pack.target.code ? 'target' : 'native';
 const langOf = code => code === pack.target.code ? pack.target : pack.native;
@@ -21,7 +22,7 @@ export async function openDrills() {
   box().innerHTML = `<div class="card"><b>${esc(t('drills.title'))}</b><p class="note">${esc(t('drills.intro'))}</p>
     <label for="dm">${esc(t('drills.what'))}</label><select id="dm">${D.MODES.map(k => `<option value="${k}"${k === mode ? ' selected' : ''}>${esc(t('drills.' + k))}</option>`).join('')}</select>
     <div class="center"><button class="mic" id="dgo">${esc(t('drills.start'))}</button></div></div>`;
-  $('#dm').onchange = e => { mode = e.target.value; };
+  $('#dm').onchange = e => { mode = e.target.value; saveSettings({ drillMode: mode }); };
   $('#dgo').onclick = start;
 }
 /* Leaving Drills: a recording still running is thrown away, so it cannot answer a drill that is gone. */
