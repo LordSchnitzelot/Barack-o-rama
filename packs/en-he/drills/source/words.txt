@@ -1,0 +1,1843 @@
+# English-for-Hebrew-speakers dictionary: the meanings and translations, one per line.
+# tools/build-dictionary.py turns this file into dictionary-en.json and dictionary-he.json,
+# taking nikkud, inflected forms and frequency ranks from Wiktionary and OpenSubtitles.
+#
+#   english | part of speech | hebrew | label
+#
+# - Part of speech: n (noun), v (verb), adj, adv, pron, prep, conj, det, num, q (question word),
+#   modal, intj (interjection or set phrase).
+# - Hebrew is written without nikkud; the build script finds the nikkud in Wiktionary.
+#   Verbs: past / infinitive ("הלך / ללכת"). Extra accepted forms after commas ("אתה, את").
+#   Hebrew synonyms in one meaning group with "+" ("כועס + עצבני"). Adjective forms that Wiktionary
+#   lacks go in forms.txt.
+# - Label: only when the English word has more than one meaning in this file, or to clarify.
+#   Words with the same Hebrew are grouped together as synonyms.
+# - Phrases with a meaning of their own ("give up", "how are you") are entries too (spec 3.3).
+
+# ---------- Pronouns and people words ----------
+I | pron | אני
+you | pron | אתה, את | one person
+you | pron | אתם, אתן | several people
+he | pron | הוא
+she | pron | היא
+we | pron | אנחנו
+they | pron | הם, הן
+me | pron | אותי
+him | pron | אותו
+her | pron | אותה | object
+us | pron | אותנו
+them | pron | אותם, אותן
+my | pron | שלי
+your | pron | שֶׁלְּךָ, שלך | one person
+your | pron | שלכם, שלכן | several people
+his | pron | שלו
+her | pron | שלה | possessive
+our | pron | שלנו
+their | pron | שלהם, שלהן
+mine | pron | שלי | possessive
+yours | pron | שֶׁלְּךָ, שלך, שלכם, שלכן | possessive
+myself | pron | עצמי
+yourself | pron | עצמך
+himself | pron | עצמו
+herself | pron | עצמה
+ourselves | pron | עצמנו
+themselves | pron | עצמם
+this | pron | זה, זאת, זו
+that | pron | ההוא, ההיא | over there
+these | pron | אלה, אלו
+those | pron | ההם, ההן
+someone | pron | מישהו, מישהי
+somebody | pron | מישהו, מישהי
+anyone | pron | מישהו | any person
+everyone | pron | כולם
+everybody | pron | כולם
+nobody | pron | אף אחד, אף אחת
+no one | pron | אף אחד, אף אחת
+something | pron | משהו
+anything | pron | משהו | any thing
+everything | pron | הכל, הכול
+nothing | pron | כלום, שום דבר
+each other | pron | זה את זה
+other | adj | אחר
+another | det | עוד | one more
+all | det | כל
+every | det | כל
+each | det | כׇּל אֶחָד, כל אחד, כל אחת
+some | det | כמה | a few
+many | det | הרבה
+much | det | הרבה
+few | det | מעט
+both | det | שניהם, שתיהן
+enough | det | מספיק
+more | det | יותר
+less | det | פחות
+most | det | רוב
+own | adj | עצמי | belonging to
+same | adj | זהה
+
+# ---------- Question words ----------
+what | q | מה
+who | q | מי
+where | q | איפה, היכן
+when | q | מתי
+why | q | למה, מדוע
+how | q | איך
+which | q | איזה, איזו, אילו
+how much | q | כמה | amount
+how many | q | כמה | number
+
+# ---------- Small words: prepositions, conjunctions, adverbs ----------
+with | prep | עם
+from | prep | מִן, מ, מן
+without | prep | בלי
+for | prep | בשביל
+about | prep | על | a topic
+about | adv | בערך | approximately
+on | prep | על | on top of
+under | prep | מתחת
+before | prep | לפני
+after | prep | אחרי
+between | prep | בין
+near | prep | ליד, קרוב
+behind | prep | מאחורי
+against | prep | נגד
+until | prep | עד
+since | prep | מאז
+during | prep | במהלך, בזמן
+inside | adv | בפנים
+outside | adv | בחוץ
+around | prep | מסביב, סביב
+across | prep | מעבר
+toward | prep | לכיוון, לעבר
+except | prep | חוץ מ
+like | prep | כמו | similar to
+because | conj | כי, מפני ש, בגלל ש
+but | conj | אבל
+or | conj | או
+if | conj | אם
+so | conj | אז | therefore
+so | adv | כל כך | very
+also | adv | גם
+too | adv | גם | also
+too | adv | יותר מדי | more than enough
+very | adv | מאוד
+really | adv | באמת
+just | adv | רק | only
+only | adv | רק | only
+not | adv | לא
+no | intj | לא
+yes | intj | כן
+never | adv | אף פעם, לעולם
+always | adv | תמיד
+sometimes | adv | לפעמים
+often | adv | לעתים קרובות, הרבה פעמים
+usually | adv | בדרך כלל
+again | adv | שוב, עוד פעם
+already | adv | כבר
+still | adv | עדיין
+yet | adv | עדיין | until now
+now | adv | עכשיו
+then | adv | אז | at that time
+here | adv | כאן, פה
+there | adv | שם
+today | adv | היום
+tomorrow | adv | מחר
+yesterday | adv | אתמול
+tonight | adv | הלילה
+soon | adv | בקרוב
+later | adv | אחר כך, מאוחר יותר
+early | adv | מוקדם
+late | adv | מאוחר
+maybe | adv | אולי
+perhaps | adv | אולי
+probably | adv | כנראה
+almost | adv | כמעט
+even | adv | אפילו
+together | adv | ביחד, יחד
+alone | adv | לבד
+away | adv | משם | at a distance
+back | adv | בחזרה
+up | adv | למעלה
+down | adv | למטה
+upstairs | adv | למעלה | on the floor above
+downstairs | adv | למטה | on the floor below
+everywhere | adv | בכל מקום
+somewhere | adv | איפשהו
+anywhere | adv | בשום מקום, בכל מקום
+far | adv | רחוק
+quite | adv | די
+rather | adv | די | fairly
+enough | adv | מספיק | to a sufficient degree
+exactly | adv | בדיוק
+actually | adv | בעצם, למעשה
+finally | adv | סוף סוף, לבסוף
+suddenly | adv | פתאום
+quickly | adv | מהר
+slowly | adv | לאט
+fast | adv | מהר
+once | adv | פעם אחת
+twice | adv | פעמיים
+ago | adv | לפני
+instead | adv | במקום
+anyway | adv | בכל מקרה
+especially | adv | במיוחד
+certainly | adv | בטח, בוודאי
+definitely | adv | בהחלט
+absolutely | adv | בהחלט, לגמרי
+completely | adv | לגמרי
+totally | adv | לגמרי
+seriously | adv | ברצינות
+of course | adv | כמובן, ברור
+please | intj | בבקשה
+thank you | intj | תודה
+thanks | intj | תודה
+sorry | intj | סליחה
+excuse me | intj | סליחה
+hello | intj | שלום
+hi | intj | היי
+goodbye | intj | להתראות
+bye | intj | ביי
+OK | intj | בסדר
+fine | intj | בסדר
+okay | intj | בסדר
+well | adv | טוב | in a good way
+wow | intj | וואו
+welcome | intj | ברוך הבא, ברוכה הבאה, ברוכים הבאים
+good morning | intj | בוקר טוב
+good night | intj | לילה טוב
+good evening | intj | ערב טוב
+how are you | intj | מה שלומך, מה נשמע
+you're welcome | intj | אין בעד מה, בבקשה
+congratulations | intj | מזל טוב
+cheers | intj | לחיים
+good luck | intj | בהצלחה
+never mind | intj | לא משנה
+no problem | intj | אין בעיה
+of course not | intj | ממש לא
+see you | intj | נתראה
+take care | intj | שמור על עצמך, שמרי על עצמך
+excuse me | intj | סליחה
+by the way | adv | אגב, דרך אגב
+at least | adv | לפחות
+at all | adv | בכלל
+for example | adv | למשל, לדוגמה
+right now | adv | עכשיו, ברגע זה
+all right | intj | בסדר
+
+# ---------- Verbs (past / infinitive) ----------
+be | v | היה / להיות
+do | v | עשה / לעשות
+make | v | עשה / לעשות
+go | v | הלך / ללכת
+come | v | בא / לבוא
+get | v | קיבל / לקבל | receive
+get | v | הגיע / להגיע | arrive
+arrive | v | הגיע / להגיע
+reach | v | הגיע / להגיע
+receive | v | קיבל / לקבל
+know | v | ידע / לדעת | a fact
+know | v | הכיר / להכיר | a person
+recognize | v | זיהה / לזהות
+think | v | חשב / לחשוב
+want | v | רצה / לרצות
+see | v | ראה / לראות
+look | v | הסתכל / להסתכל
+watch | v | צפה / לצפות
+tell | v | סיפר / לספר
+say | v | אמר / לומר
+talk | v | דיבר / לדבר
+speak | v | דיבר / לדבר
+take | v | לקח / לקחת
+give | v | נתן / לתת
+let | v | נתן / לתת (allow)
+find | v | מצא / למצוא
+call | v | התקשר / להתקשר | phone
+call | v | קרא / לקרוא (call out)
+read | v | קרא / לקרוא | a book
+feel | v | הרגיש / להרגיש
+need | modal | צריך, צריכה, צריכים, צריכות
+love | v | אהב / לאהוב
+like | v | אהב / לאהוב | enjoy
+help | v | עזר / לעזור
+happen | v | קרה / לקרות
+work | v | עבד / לעבוד
+wait | v | חיכה / לחכות
+stop | v | עצר / לעצור
+leave | v | עזב / לעזוב | go away from
+keep | v | שמר / לשמור
+put | v | שם / לשים
+start | v | התחיל / להתחיל
+begin | v | התחיל / להתחיל
+stay | v | נשאר / להישאר
+live | v | גר / לגור | have a home
+live | v | חי / לחיות | be alive
+meet | v | פגש / לפגוש
+listen | v | הקשיב / להקשיב
+hear | v | שמע / לשמוע
+understand | v | הבין / להבין
+die | v | מת / למות
+ask | v | שאל / לשאול | a question
+ask | v | ביקש / לבקש | for something
+kill | v | הרג / להרוג
+turn | v | פנה / לפנות | change direction
+try | v | ניסה / לנסות
+move | v | זז / לזוז | change position
+move | v | עבר / לעבור | to a new home
+hold | v | החזיק / להחזיק
+play | v | שיחק / לשחק
+believe | v | האמין / להאמין
+remember | v | זכר / לזכור
+forget | v | שכח / לשכוח
+hope | v | קיווה / לקוות
+use | v | השתמש / להשתמש
+run | v | רץ / לרוץ | move fast on foot
+run | v | ניהל / לנהל | be in charge of
+manage | v | ניהל / לנהל
+sleep | v | ישן / לישון
+eat | v | אכל / לאכול
+drink | v | שתה / לשתות
+sit | v | ישב / לשבת
+stand | v | עמד / לעמוד
+change | v | שינה / לשנות
+pay | v | שילם / לשלם
+close | v | סגר / לסגור
+open | v | פתח / לפתוח
+hurt | v | פגע / לפגוע | cause pain
+hit | v | היכה / להכות
+check | v | בדק / לבדוק
+deal | v | התמודד / להתמודד | cope
+wish | v | איחל / לאחל
+laugh | v | צחק / לצחוק
+fight | v | נלחם / להילחם
+cut | v | חתך / לחתוך
+read | v | קרא / לקרוא
+write | v | כתב / לכתוב
+break | v | שבר / לשבור
+answer | v | ענה / לענות
+plan | v | תכנן / לתכנן
+trust | v | בטח / לבטוח
+hate | v | שנא / לשנוא
+buy | v | קנה / לקנות
+send | v | שלח / לשלוח
+marry | v | התחתן / להתחתן
+save | v | הציל / להציל | rescue
+save | v | חסך / לחסוך | money
+follow | v | עקב / לעקוב
+hurry | v | מיהר / למהר
+pick | v | בחר / לבחור
+choose | v | בחר / לבחור
+promise | v | הבטיח / להבטיח
+throw | v | זרק / לזרוק
+win | v | ניצח / לנצח
+fall | v | נפל / ליפול
+drive | v | נהג / לנהוג
+touch | v | נגע / לגעת
+dance | v | רקד / לרקוד
+sing | v | שר / לשיר
+shoot | v | ירה / לירות
+attack | v | תקף / לתקוף
+explain | v | הסביר / להסביר
+catch | v | תפס / לתפוס
+continue | v | המשיך / להמשיך
+wonder | v | תהה / לתהות
+kiss | v | נישק / לנשק
+lie | v | שיקר / לשקר | say what is not true
+lie | v | שכב / לשכוב | lie down
+pull | v | משך / למשוך
+drop | v | הפיל / להפיל
+learn | v | למד / ללמוד
+study | v | למד / ללמוד
+wear | v | לבש / ללבוש
+enjoy | v | נהנה / ליהנות
+return | v | חזר / לחזור
+offer | v | הציע / להציע
+pass | v | עבר / לעבור | go past
+clean | v | ניקה / לנקות
+sell | v | מכר / למכור
+grow | v | גדל / לגדול
+notice | v | שם לב / לשים לב
+wake up | v | התעורר / להתעורר
+hide | v | הסתתר / להסתתר
+finish | v | סיים / לסיים
+cry | v | בכה / לבכות
+become | v | נהיה / להיות | turn into
+swear | v | נשבע / להישבע
+imagine | v | דמיין / לדמיין
+prove | v | הוכיח / להוכיח
+spend | v | בילה / לבלות | time
+spend | v | הוציא / להוציא | money
+push | v | דחף / לדחוף
+knock | v | דפק / לדפוק
+count | v | ספר / לספור
+mention | v | הזכיר / להזכיר
+agree | v | הסכים / להסכים
+share | v | שיתף / לשתף
+grab | v | תפס / לתפוס
+jump | v | קפץ / לקפוץ
+visit | v | ביקר / לבקר
+fix | v | תיקן / לתקן
+relax | v | נרגע / להירגע
+teach | v | לימד / ללמד
+taste | v | טעם / לטעום
+serve | v | הגיש / להגיש
+accept | v | קיבל / לקבל (accept)
+burn | v | שרף / לשרוף
+cost | v | עלה / לעלות | have a price
+appreciate | v | העריך / להעריך
+owe | v | היה חייב / להיות חייב
+joke | v | צחק / לצחוק (joke)
+smile | v | חייך / לחייך
+destroy | v | הרס / להרוס
+# deserve: waiting for the owner's decision (Hebrew says מגיע לי, which has no infinitive).
+quit | v | עזב / לעזוב | stop doing a job
+steal | v | גנב / לגנוב
+kick | v | בעט / לבעוט
+refuse | v | סירב / לסרב
+wash | v | שטף / לשטוף
+cook | v | בישל / לבשל
+add | v | הוסיף / להוסיף
+consider | v | שקל / לשקול
+build | v | בנה / לבנות
+lose | v | איבד / לאבד
+fly | v | טס / לטוס
+smell | v | הריח / להריח
+forgive | v | סלח / לסלוח
+decide | v | החליט / להחליט
+cover | v | כיסה / לכסות
+search | v | חיפש / לחפש
+look for | v | חיפש / לחפש
+fill | v | מילא / למלא
+draw | v | צייר / לצייר
+smoke | v | עישן / לעשן
+blame | v | האשים / להאשים
+press | v | לחץ / ללחוץ
+enter | v | נכנס / להיכנס
+allow | v | הרשה / להרשות
+vote | v | הצביע / להצביע
+copy | v | העתיק / להעתיק
+lock | v | נעל / לנעול
+raise | v | הרים / להרים
+lift | v | הרים / להרים
+hire | v | שכר / לשכור
+rent | v | שכר / לשכור
+lay | v | הניח / להניח
+seem | v | נראה / להיראות
+look like | v | נראה / להיראות
+bring | v | הביא / להביא
+show | v | הראה / להראות
+carry | v | נשא / לשאת
+mean | v | התכוון / להתכוון
+care | v | היה אכפת / להיות אכפת
+worry | v | דאג / לדאוג
+miss | v | התגעגע / להתגעגע | feel sad without
+miss | v | פספס / לפספס | not catch
+lose weight | v | רזה / לרזות
+sound | v | נשמע / להישמע
+matter | v | שינה / לשנות (matter)
+guess | v | ניחש / לנחש
+suppose | v | הניח / להניח (suppose)
+seem | v | נראה / להיראות
+fit | v | התאים / להתאים
+suit | v | התאים / להתאים
+order | v | הזמין / להזמין | in a restaurant
+invite | v | הזמין / להזמין
+book | v | הזמין / להזמין | reserve
+report | v | דיווח / לדווח
+record | v | הקליט / להקליט
+test | v | בדק / לבדוק
+blow | v | נשף / לנשוף
+beat | v | ניצח / לנצח | defeat
+lead | v | הוביל / להוביל
+join | v | הצטרף / להצטרף
+sell | v | מכר / למכור
+handle | v | טיפל / לטפל
+treat | v | טיפל / לטפל
+take care of | v | טיפל / לטפל
+arrest | v | עצר / לעצור (arrest)
+escape | v | ברח / לברוח
+run away | v | ברח / לברוח
+suck | v | מצץ / למצוץ
+roll | v | גלגל / לגלגל
+apologize | v | התנצל / להתנצל
+remind | v | הזכיר / להזכיר
+cross | v | חצה / לחצות
+recognize | v | זיהה / לזהות
+correct | v | תיקן / לתקן
+waste | v | בזבז / לבזבז
+guard | v | שמר / לשמור (guard)
+protect | v | הגן / להגן
+study | v | למד / ללמוד
+practice | v | התאמן / להתאמן
+train | v | התאמן / להתאמן
+ride | v | רכב / לרכוב
+climb | v | טיפס / לטפס
+swim | v | שחה / לשחות
+travel | v | טייל / לטייל
+cancel | v | ביטל / לבטל
+borrow | v | שאל / לשאול (borrow)
+lend | v | השאיל / להשאיל
+rest | v | נח / לנוח
+breathe | v | נשם / לנשום
+shout | v | צעק / לצעוק
+scream | v | צרח / לצרוח
+yell | v | צעק / לצעוק
+whisper | v | לחש / ללחוש
+describe | v | תיאר / לתאר
+compare | v | השווה / להשוות
+complain | v | התלונן / להתלונן
+celebrate | v | חגג / לחגוג
+prepare | v | הכין / להכין
+improve | v | שיפר / לשפר
+increase | v | הגדיל / להגדיל
+reduce | v | הקטין / להקטין
+develop | v | פיתח / לפתח
+create | v | יצר / ליצור
+produce | v | ייצר / לייצר
+invent | v | המציא / להמציא
+discover | v | גילה / לגלות
+reveal | v | גילה / לגלות
+solve | v | פתר / לפתור
+fail | v | נכשל / להיכשל
+succeed | v | הצליח / להצליח
+manage to | v | הצליח / להצליח
+choose | v | בחר / לבחור
+prefer | v | העדיף / להעדיף
+include | v | כלל / לכלול
+contain | v | הכיל / להכיל
+exist | v | היה קיים / להתקיים
+expect | v | ציפה / לצפות | think will happen
+wait for | v | חיכה / לחכות
+pray | v | התפלל / להתפלל
+bless | v | בירך / לברך
+thank | v | הודה / להודות
+admit | v | הודה / להודות (admit)
+deny | v | הכחיש / להכחיש
+warn | v | הזהיר / להזהיר
+threaten | v | איים / לאיים
+scare | v | הפחיד / להפחיד
+surprise | v | הפתיע / להפתיע
+shock | v | זעזע / לזעזע
+calm down | v | נרגע / להירגע
+cheat | v | רימה / לרמות
+lie down | v | שכב / לשכוב
+get up | v | קם / לקום
+stand up | v | קם / לקום
+sit down | v | התיישב / להתיישב
+come back | v | חזר / לחזור
+go back | v | חזר / לחזור
+come in | v | נכנס / להיכנס
+go out | v | יצא / לצאת
+leave | v | יצא / לצאת | go out of
+get out | v | יצא / לצאת
+come on | intj | קדימה, יאללה
+give up | v | ויתר / לוותר | stop trying
+give back | v | החזיר / להחזיר
+bring back | v | החזיר / להחזיר
+pick up | v | הרים / להרים | lift
+pick up | v | אסף / לאסוף | collect someone
+find out | v | גילה / לגלות
+figure out | v | הבין / להבין
+look up | v | חיפש / לחפש | search
+look up to | v | העריץ / להעריץ
+look after | v | שמר / לשמור (look after)
+put on | v | לבש / ללבוש | clothes
+take off | v | המריא / להמריא | plane
+take off | v | הוריד / להוריד | clothes
+turn on | v | הדליק / להדליק
+turn off | v | כיבה / לכבות
+shut up | v | שתק / לשתוק
+hang up | v | ניתק / לנתק | phone
+hang out | v | בילה / לבלות
+grow up | v | גדל / לגדול
+break up | v | נפרד / להיפרד
+make up | v | המציא / להמציא | invent a story
+get along | v | הסתדר / להסתדר
+work out | v | התאמן / להתאמן | exercise
+run out | v | נגמר / להיגמר
+go on | v | המשיך / להמשיך
+keep going | v | המשיך / להמשיך
+carry on | v | המשיך / להמשיך
+set up | v | הקים / להקים
+check out | v | בדק / לבדוק
+fill in | v | מילא / למלא
+show up | v | הופיע / להופיע
+appear | v | הופיע / להופיע
+disappear | v | נעלם / להיעלם
+fall asleep | v | נרדם / להירדם
+fall in love | v | התאהב / להתאהב
+pay attention | v | שם לב / לשים לב
+make sure | v | וידא / לוודא
+take part | v | השתתף / להשתתף
+take place | v | התרחש / להתרחש
+change your mind | v | התחרט / להתחרט
+make a mistake | v | טעה / לטעות
+be wrong | v | טעה / לטעות
+get married | v | התחתן / להתחתן
+get dressed | v | התלבש / להתלבש
+get ready | v | התכונן / להתכונן
+get better | v | השתפר / להשתפר
+call back | v | חזר / לחזור (call back)
+
+# ---------- Nouns: people and family ----------
+man | n | איש, גבר
+woman | n | אישה
+wife | n | אישה
+husband | n | בעל
+person | n | אָדָם, אדם
+people | n | אנשים
+child | n | ילד
+kid | n | ילד
+boy | n | ילד
+girl | n | ילדה
+baby | n | תינוק
+friend | n | חבר
+girlfriend | n | חברה
+boyfriend | n | חבר
+family | n | משפחה
+father | n | אבא, אב
+dad | n | אבא
+mother | n | אמא, אם
+mom | n | אמא
+parent | n | הורה
+son | n | בן
+daughter | n | בת
+brother | n | אח
+sister | n | אחות
+uncle | n | דוד
+aunt | n | דודה
+cousin | n | בן דוד, בת דודה
+grandfather | n | סבא
+grandmother | n | סבתא
+grandson | n | נכד
+granddaughter | n | נכדה
+guy | n | בחור
+lady | n | גברת
+gentleman | n | אדון
+sir | n | אדוני
+neighbor | n | שכן
+guest | n | אורח
+stranger | n | זר
+king | n | מלך
+queen | n | מלכה
+prince | n | נסיך
+princess | n | נסיכה
+boss | n | בוס
+team | n | קבוצה
+group | n | קבוצה
+couple | n | זוג
+pair | n | זוג
+partner | n | שותף
+member | n | חבר | of a group
+human | n | בן אדם
+
+# ---------- Nouns: jobs ----------
+doctor | n | רופא
+nurse | n | אחות | in a hospital
+teacher | n | מורה
+student | n | תלמיד | at school
+student | n | סטודנט | at university
+pupil | n | תלמיד
+lawyer | n | עורך דין
+judge | n | שופט
+police | n | משטרה
+police officer | n | שוטר
+cop | n | שוטר
+officer | n | קצין
+soldier | n | חייל
+army | n | צבא
+captain | n | קפטן
+driver | n | נהג
+cook | n | טבח
+chef | n | שף
+waiter | n | מלצר
+worker | n | עובד
+employee | n | עובד
+manager | n | מנהל
+director | n | במאי | of a film
+president | n | נשיא
+leader | n | מנהיג
+writer | n | סופר
+author | n | סופר
+artist | n | אמן
+singer | n | זמר
+actor | n | שחקן
+player | n | שחקן
+farmer | n | חקלאי
+engineer | n | מהנדס
+scientist | n | מדען
+professor | n | פרופסור
+detective | n | בלש
+agent | n | סוכן
+pilot | n | טייס
+secretary | n | מזכיר
+reporter | n | כתב
+journalist | n | עיתונאי
+thief | n | גנב
+criminal | n | פושע
+killer | n | רוצח
+murderer | n | רוצח
+witness | n | עד
+victim | n | קורבן
+hero | n | גיבור
+enemy | n | אויב
+client | n | לקוח
+customer | n | לקוח
+patient | n | מטופל
+expert | n | מומחה
+
+# ---------- Nouns: body and health ----------
+body | n | גוף
+head | n | ראש
+face | n | פנים
+eye | n | עין
+ear | n | אוזן
+nose | n | אף
+mouth | n | פה
+tooth | n | שן
+tongue | n | לשון
+lip | n | שפה | of the mouth
+hair | n | שיער
+neck | n | צוואר
+throat | n | גרון
+shoulder | n | כתף
+arm | n | זרוע
+hand | n | יד
+finger | n | אצבע
+leg | n | רגל
+foot | n | רגל, כף רגל
+knee | n | ברך
+back | n | גב
+stomach | n | בטן
+heart | n | לב
+brain | n | מוח
+blood | n | דם
+bone | n | עצם
+skin | n | עור
+health | n | בריאות
+pain | n | כאב
+headache | n | כאב ראש
+illness | n | מחלה
+disease | n | מחלה
+medicine | n | תרופה
+hospital | n | בית חולים
+breath | n | נשימה
+voice | n | קול
+sound | n | צליל
+noise | n | רעש
+
+# ---------- Nouns: home and things ----------
+house | n | בית
+home | n | בית
+room | n | חדר
+bedroom | n | חדר שינה
+bathroom | n | חדר אמבטיה
+kitchen | n | מטבח
+apartment | n | דירה
+door | n | דלת
+window | n | חלון
+wall | n | קיר
+floor | n | רצפה | ground of a room
+floor | n | קומה | level of a building
+roof | n | גג
+stairs | n | מדרגות
+garden | n | גינה
+yard | n | חצר
+bed | n | מיטה
+table | n | שולחן
+chair | n | כיסא
+sofa | n | ספה
+couch | n | ספה
+desk | n | שֻׁלְחַן כְּתִיבָה, שולחן כתיבה
+light | n | אור
+lamp | n | מנורה
+key | n | מפתח
+lock | n | מנעול
+box | n | קופסה
+bag | n | תיק
+bottle | n | בקבוק
+glass | n | כוס | for drinking
+cup | n | כוס | small, with a handle
+plate | n | צלחת
+knife | n | סכין
+fork | n | מזלג
+spoon | n | כף
+picture | n | תמונה
+photo | n | תמונה
+mirror | n | מראה
+clock | n | שעון
+watch | n | שעון | on the wrist
+phone | n | טלפון
+computer | n | מחשב
+television | n | טלוויזיה
+TV | n | טלוויזיה
+radio | n | רדיו
+camera | n | מצלמה
+machine | n | מכונה
+tool | n | כלי
+paper | n | נייר
+pen | n | עט
+pencil | n | עיפרון
+book | n | ספר
+letter | n | מכתב | a message
+letter | n | אות | of the alphabet
+card | n | כרטיס
+ticket | n | כרטיס
+newspaper | n | עיתון
+magazine | n | מגזין
+gift | n | מתנה
+present | n | מתנה
+toy | n | צעצוע
+ball | n | כדור
+gun | n | אקדח
+weapon | n | נשק
+bomb | n | פצצה
+money | n | כסף
+cash | n | מזומן
+dollar | n | דולר
+price | n | מחיר
+bill | n | חשבון
+clothes | n | בגדים
+shirt | n | חולצה
+dress | n | שמלה
+pants | n | מכנסיים
+shoe | n | נעל
+hat | n | כובע
+coat | n | מעיל
+jacket | n | מעיל
+pocket | n | כיס
+ring | n | טבעת
+suit | n | חליפה
+umbrella | n | מטרייה
+wallet | n | ארנק
+soap | n | סבון
+towel | n | מגבת
+trash | n | זבל
+garbage | n | זבל
+
+# ---------- Nouns: food and drink ----------
+food | n | אוכל
+water | n | מים
+coffee | n | קפה
+tea | n | תה
+milk | n | חלב
+juice | n | מיץ
+beer | n | בירה
+wine | n | יין
+bread | n | לחם
+cake | n | עוגה
+cheese | n | גבינה
+egg | n | ביצה
+meat | n | בשר
+chicken | n | עוף | food
+fish | n | דג
+rice | n | אורז
+soup | n | מרק
+salad | n | סלט
+fruit | n | פרי
+apple | n | תפוח
+banana | n | בננה
+orange | n | תפוז
+vegetable | n | ירק
+tomato | n | עגבנייה
+potato | n | תפוח אדמה
+sugar | n | סוכר
+salt | n | מלח
+chocolate | n | שוקולד
+ice cream | n | גלידה
+sandwich | n | כריך
+pizza | n | פיצה
+breakfast | n | ארוחת בוקר
+lunch | n | ארוחת צהריים
+dinner | n | ארוחת ערב
+meal | n | ארוחה
+restaurant | n | מסעדה
+menu | n | תפריט
+
+# ---------- Nouns: places ----------
+place | n | מקום
+world | n | עולם
+country | n | ארץ, מדינה
+state | n | מדינה
+city | n | עיר
+town | n | עיירה
+village | n | כפר
+street | n | רחוב
+road | n | כביש, דרך
+way | n | דרך
+school | n | בית ספר
+university | n | אוניברסיטה
+college | n | מכללה
+class | n | כיתה
+office | n | משרד
+shop | n | חנות
+store | n | חנות
+market | n | שוק
+supermarket | n | סופרמרקט
+bank | n | בנק
+hotel | n | מלון
+church | n | כנסייה
+synagogue | n | בית כנסת
+park | n | פארק
+beach | n | חוף
+sea | n | ים
+ocean | n | אוקיינוס
+river | n | נהר
+lake | n | אגם
+mountain | n | הר
+hill | n | גבעה
+forest | n | יער
+island | n | אי
+desert | n | מדבר
+field | n | שדה
+farm | n | חווה
+airport | n | שדה תעופה
+station | n | תחנה
+building | n | בניין
+bridge | n | גשר
+prison | n | כלא
+jail | n | כלא
+court | n | בית משפט
+museum | n | מוזיאון
+library | n | ספרייה
+theater | n | תיאטרון
+cinema | n | קולנוע
+hospital | n | בית חולים
+area | n | אזור
+corner | n | פינה
+side | n | צד
+middle | n | אמצע
+center | n | מרכז
+front | n | חזית
+top | n | חֵלֶק עֶלְיוֹן, חלק עליון
+bottom | n | תחתית
+inside | n | פנים | the inner part
+edge | n | קצה
+end | n | סוף
+north | n | צפון
+south | n | דרום
+east | n | מזרח
+west | n | מערב
+earth | n | כדור הארץ
+land | n | אדמה
+ground | n | קרקע
+space | n | חלל | outer space
+space | n | מקום | room for something
+sky | n | שמיים
+sun | n | שמש
+moon | n | ירח
+star | n | כוכב
+air | n | אוויר
+fire | n | אש
+ice | n | קרח
+snow | n | שלג
+rain | n | גשם
+wind | n | רוח
+weather | n | מזג אוויר
+cloud | n | ענן
+storm | n | סערה
+stone | n | אבן
+rock | n | סלע
+tree | n | עץ
+flower | n | פרח
+grass | n | דשא
+plant | n | צמח
+leaf | n | עלה
+wood | n | עץ | material
+gold | n | זהב
+silver | n | כסף | metal
+iron | n | ברזל
+oil | n | שמן
+gas | n | גז
+
+# ---------- Nouns: animals ----------
+animal | n | חיה
+dog | n | כלב
+cat | n | חתול
+horse | n | סוס
+cow | n | פרה
+bird | n | ציפור
+mouse | n | עכבר
+rat | n | חולדה
+snake | n | נחש
+bear | n | דוב
+lion | n | אריה
+monkey | n | קוף
+pig | n | חזיר
+sheep | n | כבשה
+chicken | n | תרנגולת | animal
+bat | n | עטלף | animal
+bug | n | חרק
+insect | n | חרק
+fly | n | זבוב
+bee | n | דבורה
+wolf | n | זאב
+
+# ---------- Nouns: time ----------
+time | n | זמן | duration
+time | n | פעם | occasion
+day | n | יום
+night | n | לילה
+morning | n | בוקר
+afternoon | n | צהריים, אחר הצהריים
+evening | n | ערב
+week | n | שבוע
+weekend | n | סוף שבוע
+month | n | חודש
+year | n | שנה
+hour | n | שעה
+minute | n | דקה
+second | n | שנייה
+moment | n | רגע
+century | n | מאה | hundred years
+age | n | גיל
+birthday | n | יום הולדת
+holiday | n | חג
+vacation | n | חופשה
+past | n | עבר
+future | n | עתיד
+present | n | הווה | now
+life | n | חיים
+death | n | מוות
+history | n | היסטוריה
+season | n | עונה
+summer | n | קיץ
+winter | n | חורף
+spring | n | אביב
+autumn | n | סתיו
+fall | n | סתיו | season
+Sunday | n | יום ראשון
+Monday | n | יום שני
+Tuesday | n | יום שלישי
+Wednesday | n | יום רביעי
+Thursday | n | יום חמישי
+Friday | n | יום שישי
+Saturday | n | שבת
+January | n | ינואר
+February | n | פברואר
+March | n | מרץ
+April | n | אפריל
+May | n | מאי
+June | n | יוּנִי, יוני
+July | n | יולי
+August | n | אוגוסט
+September | n | ספטמבר
+October | n | אוקטובר
+November | n | נובמבר
+December | n | דצמבר
+
+# ---------- Nouns: ideas, events and everyday life ----------
+thing | n | דבר
+stuff | n | דברים
+word | n | מילה
+name | n | שם
+language | n | שפה | spoken language
+English | n | אנגלית
+Hebrew | n | עברית
+question | n | שאלה
+answer | n | תשובה
+problem | n | בעיה
+idea | n | רעיון
+reason | n | סיבה
+truth | n | אמת
+lie | n | שקר
+fact | n | עובדה
+story | n | סיפור
+news | n | חדשות
+information | n | מידע
+message | n | הודעה
+mistake | n | טעות
+chance | n | הזדמנות, סיכוי
+choice | n | בחירה
+decision | n | החלטה
+plan | n | תוכנית
+dream | n | חלום
+wish | n | משאלה
+hope | n | תקווה
+fear | n | פחד
+love | n | אהבה
+hate | n | שנאה
+anger | n | כעס
+joy | n | שמחה
+happiness | n | אושר
+peace | n | שלום | no war
+war | n | מלחמה
+fight | n | ריב
+game | n | משחק
+sport | n | ספורט
+music | n | מוזיקה
+song | n | שיר
+movie | n | סרט
+film | n | סרט
+show | n | הופעה
+party | n | מסיבה
+wedding | n | חתונה
+marriage | n | נישואים
+meeting | n | פגישה
+date | n | תאריך | day of the month
+date | n | דייט | romantic meeting
+trip | n | טיול
+travel | n | נסיעה
+job | n | עבודה
+work | n | עבודה
+business | n | עסק
+company | n | חברה | business
+money | n | כסף
+price | n | מחיר
+cost | n | עלות
+government | n | ממשלה
+law | n | חוק
+rule | n | כלל
+crime | n | פשע
+murder | n | רצח
+case | n | מקרה
+accident | n | תאונה
+trouble | n | צרה
+danger | n | סכנה
+help | n | עזרה
+advice | n | עצה
+favor | n | טובה
+secret | n | סוד
+surprise | n | הפתעה
+gift | n | מתנה
+luck | n | מזל
+fun | n | כיף
+joke | n | בדיחה
+part | n | חלק
+piece | n | חתיכה
+half | n | חצי
+number | n | מספר
+list | n | רשימה
+line | n | שורה | of text
+line | n | תור | waiting people
+page | n | עמוד
+test | n | מבחן
+exam | n | מבחן
+lesson | n | שיעור
+homework | n | שיעורי בית
+example | n | דוגמה
+difference | n | הבדל
+change | n | שינוי
+result | n | תוצאה
+reason | n | סיבה
+power | n | כוח
+energy | n | אנרגיה
+health | n | בריאות
+mind | n | שכל
+soul | n | נשמה
+spirit | n | רוח | soul
+heart | n | לב
+feeling | n | הרגשה
+sense | n | היגיון
+memory | n | זיכרון
+experience | n | ניסיון
+knowledge | n | ידע
+education | n | חינוך
+science | n | מדע
+art | n | אמנות
+culture | n | תרבות
+religion | n | דת
+god | n | אלוהים
+heaven | n | גן עדן
+hell | n | גיהנום
+nature | n | טבע
+color | n | צבע
+shape | n | צורה
+size | n | גודל
+weight | n | משקל
+kind | n | סוג
+type | n | סוג
+sort | n | סוג
+way | n | אופן | manner
+side | n | צד
+step | n | צעד
+level | n | רמה
+point | n | נקודה
+goal | n | מטרה
+purpose | n | מטרה
+reason | n | סיבה
+attention | n | תשומת לב
+interest | n | עניין
+matter | n | עניין
+subject | n | נושא
+topic | n | נושא
+situation | n | מצב
+condition | n | מצב
+position | n | עמדה
+relationship | n | קשר, מערכת יחסים
+contact | n | קשר
+respect | n | כבוד
+honor | n | כבוד
+pride | n | גאווה
+shame | n | בושה
+pleasure | n | הנאה
+fun | n | כיף
+smile | n | חיוך
+laugh | n | צחוק
+tear | n | דמעה
+kiss | n | נשיקה
+hug | n | חיבוק
+sleep | n | שינה
+dream | n | חלום
+rest | n | מנוחה
+noise | n | רעש
+silence | n | שקט
+fire | n | שריפה | a fire that burns things
+smoke | n | עשן
+car | n | מכונית, רכב
+bus | n | אוטובוס
+train | n | רכבת
+plane | n | מטוס
+boat | n | סירה
+ship | n | ספינה
+bike | n | אופניים
+bicycle | n | אופניים
+truck | n | משאית
+taxi | n | מונית
+engine | n | מנוע
+wheel | n | גלגל
+flight | n | טיסה
+address | n | כתובת
+email | n | אימייל
+internet | n | אינטרנט
+website | n | אתר
+video | n | סרטון
+photo | n | תמונה
+movie | n | סרט
+system | n | מערכת
+service | n | שירות
+security | n | ביטחון
+evidence | n | ראיה
+report | n | דוח
+file | n | קובץ
+form | n | טופס
+document | n | מסמך
+key | n | מפתח
+code | n | קוד
+note | n | פתק
+sign | n | שלט
+map | n | מפה
+mission | n | משימה
+project | n | פרויקט
+order | n | הזמנה | in a shop
+order | n | סדר | arrangement
+
+# ---------- Adjectives ----------
+good | adj | טוב
+bad | adj | רע
+great | adj | נהדר | very good
+big | adj | גדול
+large | adj | גדול
+small | adj | קטן
+little | adj | קטן
+new | adj | חדש
+old | adj | ישן | not new
+old | adj | זקן | not young
+young | adj | צעיר
+long | adj | ארוך
+short | adj | קצר
+high | adj | גבוה
+tall | adj | גבוה
+low | adj | נמוך
+wide | adj | רחב
+narrow | adj | צר
+thick | adj | עבה
+thin | adj | רזה | person
+fat | adj | שמן
+heavy | adj | כבד
+light | adj | קל | not heavy
+easy | adj | קל
+hard | adj | קשה
+difficult | adj | קשה
+simple | adj | פשוט
+hot | adj | חם
+warm | adj | חם
+cold | adj | קר
+cool | adj | מגניב | great
+wet | adj | רטוב
+dry | adj | יבש
+clean | adj | נקי
+dirty | adj | מלוכלך
+full | adj | מלא
+empty | adj | ריק
+open | adj | פתוח
+closed | adj | סגור
+right | adj | צודק | correct, of a person
+right | adj | ימני | direction
+left | adj | שמאלי | direction
+correct | adj | נכון
+true | adj | נכון
+wrong | adj | לא נכון, שגוי
+real | adj | אמיתי
+fake | adj | מזויף
+free | adj | חופשי | not held
+free | adv | חינם | costs nothing
+busy | adj | עסוק
+ready | adj | מוכן
+sure | adj | בטוח | certain
+safe | adj | בטוח | not in danger
+dangerous | adj | מסוכן
+important | adj | חשוב
+possible | adj | אפשרי
+impossible | adj | בלתי אפשרי
+necessary | adj | הכרחי
+different | adj | שונה
+same | adj | אותו, אותה, אותם, אותן | the same one
+special | adj | מיוחד
+normal | adj | נורמלי, רגיל
+strange | adj | מוזר
+weird | adj | מוזר
+funny | adj | מצחיק
+serious | adj | רציני
+interesting | adj | מעניין
+boring | adj | משעמם
+beautiful | adj | יפה
+pretty | adj | יפה
+nice | adj | נחמד
+kind | adj | נחמד | friendly
+lovely | adj | מקסים
+ugly | adj | מכוער
+cute | adj | חמוד
+sweet | adj | מתוק
+bitter | adj | מר
+happy | adj | שמח
+glad | adj | שמח
+sad | adj | עצוב
+angry | adj | כועס + עצבני
+mad | adj | כועס | angry
+crazy | adj | משוגע
+afraid | adj | מפחד
+scared | adj | מפחד
+worried | adj | מודאג
+nervous | adj | לחוץ
+calm | adj | רגוע
+quiet | adj | שקט
+loud | adj | רועש
+tired | adj | עייף
+hungry | adj | רעב
+thirsty | adj | צמא
+sick | adj | חולה
+ill | adj | חולה
+healthy | adj | בריא
+alive | adj | חי
+dead | adj | מת
+rich | adj | עשיר
+poor | adj | עני
+cheap | adj | זול
+expensive | adj | יקר
+dear | adj | יקר | loved
+strong | adj | חזק
+weak | adj | חלש
+fast | adj | מהיר
+quick | adj | מהיר
+slow | adj | איטי
+smart | adj | חכם
+clever | adj | חכם
+stupid | adj | טיפש
+silly | adj | טיפשי
+famous | adj | מפורסם
+popular | adj | פופולרי
+perfect | adj | מושלם
+amazing | adj | מדהים
+wonderful | adj | נפלא
+terrible | adj | נורא
+awful | adj | נורא
+horrible | adj | נורא
+excellent | adj | מצוין
+lucky | adj | בר מזל, בת מזל, בני מזל, בנות מזל
+proud | adj | גאה
+honest | adj | ישר, כן
+polite | adj | מנומס
+rude | adj | גס רוח, גסת רוח, גסי רוח, גסות רוח
+lazy | adj | עצלן
+brave | adj | אמיץ
+careful | adj | זהיר
+friendly | adj | ידידותי
+lonely | adj | בודד
+married | adj | נשוי
+single | adj | רווק | not married
+pregnant | adj | בהריון, בהיריון, הרה
+drunk | adj | שיכור
+guilty | adj | אשם
+innocent | adj | חף מפשע, חפה מפשע, חפים מפשע, חפות מפשע
+fair | adj | הוגן
+private | adj | פרטי
+public | adj | ציבורי
+personal | adj | אישי
+local | adj | מקומי
+foreign | adj | זר | from another country
+main | adj | ראשי
+whole | adj | שלם
+entire | adj | שלם
+complete | adj | שלם
+broken | adj | שבור
+fresh | adj | טרי
+deep | adj | עמוק
+dark | adj | חשוך
+bright | adj | בהיר
+soft | adj | רך
+hard | adj | קשה | not soft
+sharp | adj | חד
+flat | adj | שטוח
+round | adj | עגול
+straight | adj | ישר | not curved
+close | adj | קרוב
+near | adj | קרוב
+far | adj | רחוק
+next | adj | הבא
+last | adj | אחרון | final
+last | adj | שעבר | most recent
+first | adj | ראשון
+second | adj | שני | number two in order
+third | adj | שלישי
+final | adj | סופי
+early | adj | מוקדם
+late | adj | מאוחר | after the right time
+modern | adj | מודרני
+ancient | adj | עתיק
+favorite | adj | אהוב
+available | adj | פנוי
+missing | adj | חסר
+extra | adj | נוסף
+certain | adj | בטוח | sure
+clear | adj | ברור
+obvious | adj | ברור
+quick | adj | מהיר
+total | adj | כולל
+huge | adj | ענק
+tiny | adj | זעיר
+upset | adj | נסער
+excited | adj | נרגש + מתרגש
+surprised | adj | מופתע
+embarrassed | adj | נבוך
+confused | adj | מבולבל
+jealous | adj | מקנא
+interested | adj | מתעניין
+hurt | adj | פגוע
+wild | adj | פראי
+evil | adj | רשע + מרושע
+holy | adj | קדוש
+blind | adj | עיוור
+deaf | adj | חירש
+
+# ---------- Colors ----------
+color | n | צבע
+red | adj | אדום
+blue | adj | כחול
+green | adj | ירוק
+yellow | adj | צהוב
+black | adj | שחור
+white | adj | לבן
+brown | adj | חום
+gray | adj | אפור
+pink | adj | ורוד
+purple | adj | סגול
+orange | adj | כתום
+
+# ---------- Numbers ----------
+zero | num | אפס
+one | num | אחד, אחת
+two | num | שניים, שתיים, שני, שתי
+three | num | שלושה, שלוש
+four | num | ארבעה, ארבע
+five | num | חמישה, חמש
+six | num | שישה, שש
+seven | num | שבעה, שבע
+eight | num | שמונה
+nine | num | תשעה, תשע
+ten | num | עשרה, עשר
+eleven | num | אחד עשר, אחת עשרה
+twelve | num | שנים עשר, שתים עשרה
+twenty | num | עשרים
+thirty | num | שלושים
+forty | num | ארבעים
+fifty | num | חמישים
+hundred | num | מאה
+thousand | num | אלף
+million | num | מיליון
+
+# ---------- More common words ----------
+better | adj | טוב יותר
+best | adj | הכי טוב
+worse | adj | גרוע יותר
+worst | adj | הכי גרוע
+ever | adv | אי פעם
+through | prep | דרך | from one side to the other
+else | adv | אחר | other
+while | conj | בזמן ש, כש
+walk | n | הליכה
+control | n | שליטה
+control | v | שלט / לשלוט
+act | v | פעל / לפעול
+bet | v | התערב / להתערב
+worth | adj | שווה
+born | adj | נולד
+seat | n | מושב
+club | n | מועדון
+force | n | כוח
+force | v | הכריח / להכריח
+tough | adj | קשוח
+dare | v | העז / להעז
+stick | n | מקל
+match | n | גפרור | for fire
+match | n | משחק | sports game
+doubt | n | ספק
+doubt | v | פקפק / לפקפק
+scene | n | סצנה
+action | n | פעולה
+risk | n | סיכון
+track | n | מסלול
+issue | n | סוגיה
+hole | n | חור
+trick | n | תרגיל
+support | n | תמיכה
+support | v | תמך / לתמוך
+spot | n | נקודה
+duty | n | חובה
+race | n | מרוץ
+board | n | לוח
+ghost | n | רוח רפאים
+stuck | adj | תקוע
+magic | n | קסם
+suspect | n | חשוד
+battle | n | קרב
+account | n | חשבון
+stage | n | במה
+conversation | n | שיחה
+department | n | מחלקה
+band | n | להקה
+monster | n | מפלצת
+loss | n | אובדן
+crowd | n | קהל
+camp | n | מחנה
+apart | adv | בנפרד
+earlier | adv | קודם
+double | adj | כפול
+character | n | דמות
+opportunity | n | הזדמנות
+pressure | n | לחץ
+detail | n | פרט
+fan | n | מעריץ
+above | prep | מעל
+devil | n | שטן
+beauty | n | יופי
+event | n | אירוע
+apparently | adv | כנראה | it seems
+trial | n | משפט
+ridiculous | adj | מגוחך
+simply | adv | פשוט
+challenge | n | אתגר
+tight | adj | צמוד
+asleep | adj | ישן | sleeping
+claim | v | טען / לטעון
+remain | v | נשאר / להישאר
+discuss | v | דן / לדון
+target | n | מטרה | something to hit
+faith | n | אמונה
+willing | adj | מוכן | ready to
+responsible | adj | אחראי
+justice | n | צדק
+military | adj | צבאי
+common | adj | נפוץ
+speed | n | מהירות
+request | n | בקשה
+coach | n | מאמן
+sight | n | ראייה
+gate | n | שער
+career | n | קריירה
+view | n | נוף
+emergency | n | חירום
+clearly | adv | בבירור
+crew | n | צוות
+investigation | n | חקירה
+national | adj | לאומי
+several | det | כמה | some
+strength | n | כוח
+hardly | adv | בקושי
+possibly | adv | אולי | perhaps
+crash | n | התרסקות
+opinion | n | דעה
+realize | v | הבין / להבין
+female | adj | נקבי
+freedom | n | חופש
+powerful | adj | חזק
+suggest | v | הציע / להציע
+natural | adj | טבעי
+male | adj | זכרי
+operation | n | ניתוח
+painting | n | ציור
+wound | n | פצע
+responsibility | n | אחריות
+nearly | adv | כמעט
+shower | n | מקלחת
+effect | n | השפעה
+fantastic | adj | פנטסטי
+prisoner | n | אסיר
+nonsense | n | שטויות
+original | adj | מקורי
+research | n | מחקר
+pretend | v | העמיד פנים / להעמיד פנים
+incredible | adj | מדהים
+bite | v | נשך / לנשוך
+dumb | adj | טיפש
+regret | v | התחרט / להתחרט
+honestly | adv | בכנות
+image | n | תמונה
+society | n | חברה | people living together
+path | n | שביל
+owner | n | בעלים
+universe | n | יקום
+nowhere | adv | בשום מקום
+harm | n | נזק
+switch | n | מתג
+theory | n | תאוריה
+contract | n | חוזה
+comfortable | adj | נוח
+amount | n | כמות
+birth | n | לידה
+afford | v | הרשה לעצמו / להרשות לעצמו
+pool | n | בריכה
+distance | n | מרחק
+unfortunately | adv | לצערי, למרבה הצער
+speech | n | נאום
+heat | n | חום
+wave | n | גל
+usual | adj | רגיל
+cigarette | n | סיגריה
+aware | adj | מודע
+proof | n | הוכחה
+ruin | v | הרס / להרוס
+surgery | n | ניתוח
+focus | v | התרכז / להתרכז
+social | adj | חברתי
+brilliant | adj | מבריק
+community | n | קהילה
+priest | n | כומר
+threat | n | איום
+handsome | adj | נאה
+mayor | n | ראש עיר
+paint | v | צבע / לצבוע
+official | adj | רשמי
+staff | n | צוות
+nation | n | אומה
+professional | adj | מקצועי
+funeral | n | הלוויה
+journey | n | מסע
+avoid | v | נמנע / להימנע
+divorce | n | גירושים
+degree | n | תואר | university
+rise | v | עלה / לעלות | go up
+value | n | ערך
+easily | adv | בקלות
+insane | adj | משוגע
+trade | n | מסחר
+success | n | הצלחה
+toilet | n | שירותים
+giant | n | ענק
+desire | n | תשוקה
+reality | n | מציאות
+castle | n | טירה
+basically | adv | בעצם
+chest | n | חזה
+shake | v | ניער / לנער
+naked | adj | עירום
+damage | n | נזק
+square | n | כיכר
+mood | n | מצב רוח
+demand | v | דרש / לדרוש
+dig | v | חפר / לחפור
+genius | n | גאון
+football | n | כדורגל
+miracle | n | נס
+fortune | n | הון
+shadow | n | צל
+cure | n | תרופה | for a disease
+rescue | v | חילץ / לחלץ
+period | n | תקופה
+sentence | n | משפט | words
+effort | n | מאמץ
+winner | n | מנצח
+option | n | אפשרות
+personally | adv | באופן אישי
+exciting | adj | מרגש
+permission | n | רשות
+role | n | תפקיד
+legal | adj | חוקי
+revenge | n | נקמה
+competition | n | תחרות
+skill | n | מיומנות
+likely | adj | סביר
+talent | n | כישרון
+connection | n | קשר
+cancer | n | סרטן
+material | n | חומר
+repeat | v | חזר על / לחזור על
+text | n | טקסט
+uniform | n | מדים
+insist | v | התעקש / להתעקש
+scary | adj | מפחיד
+clue | n | רמז
+deliver | v | מסר / למסור
+romantic | adj | רומנטי
+awake | adj | ער
+appointment | n | תור | at a doctor
+complicated | adj | מסובך
+factory | n | מפעל
+familiar | adj | מוכר
+pity | n | חבל
+treasure | n | אוצר
+insurance | n | ביטוח
+spy | n | מרגל
+pleased | adj | מרוצה
+regular | adj | רגיל
+political | adj | פוליטי
+citizen | n | אזרח
+delicious | adj | טעים
+chain | n | שרשרת
+bath | n | אמבטיה
+debt | n | חוב
+circle | n | עיגול
+chase | v | רדף / לרדוף
+attempt | n | ניסיון | try
+eventually | adv | בסופו של דבר
+positive | adj | חיובי
+ashamed | adj | מתבייש
+adult | n | מבוגר
+score | n | ניקוד
+direction | n | כיוון
+hunt | v | צד / לצוד
+performance | n | הופעה
+exchange | v | החליף / להחליף
+replace | v | החליף / להחליף
+odd | adj | מוזר
+nightmare | n | סיוט
+grave | n | קבר
+movement | n | תנועה
+neighborhood | n | שכונה
+tower | n | מגדל
+punch | n | אגרוף
+palace | n | ארמון
+dawn | n | שחר
+badly | adv | רע | in a bad way
+pure | adj | טהור
+golden | adj | זהוב
+mercy | n | רחמים
+explosion | n | פיצוץ
+wise | adj | חכם
+trap | n | מלכודת
+mystery | n | תעלומה
+interrupt | v | הפריע / להפריע
+license | n | רישיון
+tax | n | מס
+traffic | n | תנועה | cars on the road
+courage | n | אומץ
+wire | n | חוט
+physical | adj | פיזי + פיסי
+piano | n | פסנתר
+remove | v | הסיר / להסיר
+freeze | v | קפא / לקפוא
+device | n | מכשיר
+disgusting | adj | מגעיל
+shopping | n | קניות
+midnight | n | חצות
+pie | n | פאי
+mail | n | דואר
+violence | n | אלימות
+friendship | n | חברות
+design | n | עיצוב
+prayer | n | תפילה
+central | adj | מרכזי
+protection | n | הגנה
+technology | n | טכנולוגיה
+illegal | adj | בלתי חוקי
+generation | n | דור
+solution | n | פתרון
+billion | num | מיליארד
+metal | n | מתכת
+grateful | adj | אסיר תודה
+extremely | adv | מאוד, ביותר
+experiment | n | ניסוי
+progress | n | התקדמות
+separate | adj | נפרד
+curious | adj | סקרן
+literally | adv | ממש
+border | n | גבול
+dust | n | אבק
+unbelievable | adj | לא ייאמן
+lack | n | מחסור
+screen | n | מסך
+struggle | n | מאבק
+limit | n | גבול | the most allowed
+tip | n | טיפ
+possibility | n | אפשרות
+desperate | adj | נואש
+schedule | n | לוח זמנים
+mask | n | מסכה
+loan | n | הלוואה
+mostly | adv | בעיקר
+product | n | מוצר
+directly | adv | ישירות
+false | adj | שקרי
+silent | adj | שקט | making no sound
+tiger | n | נמר
+colleague | n | עמית
+convince | v | שכנע / לשכנע
+rare | adj | נדיר
+someday | adv | יום אחד
+therefore | adv | לכן
+kingdom | n | ממלכה
+quality | n | איכות
+precious | adj | יקר ערך
+youth | n | נוער
+prize | n | פרס
+percent | n | אחוז
+passion | n | תשוקה
+belt | n | חגורה
+ambulance | n | אמבולנס
+ordinary | adj | רגיל
+successful | adj | מצליח
+task | n | משימה
+collect | v | אסף / לאסוף
+exact | adj | מדויק
+coward | n | פחדן
+negative | adj | שלילי
+recover | v | החלים / להחלים
+failure | n | כישלון
+garage | n | מוסך
+darkness | n | חושך
+sale | n | מכירה
+valley | n | עמק
+grade | n | ציון
+require | v | דרש / לדרוש
+emotion | n | רגש
+pocket | n | כיס
+coin | n | מטבע
+smell | n | ריח
+taste | n | טעם
+temperature | n | טמפרטורה
+fever | n | חום | when sick
+cough | n | שיעול
+cold | n | הצטננות | illness
+dentist | n | רופא שיניים
+pharmacy | n | בית מרקחת
+passport | n | דרכון
+suitcase | n | מזוודה
+luggage | n | מטען
+reservation | n | הזמנה | of a room or table
+receipt | n | קבלה
+discount | n | הנחה
+change | n | עודף | money back
+waiter | n | מלצר
+bill | n | חשבון | in a restaurant
+tip | n | טיפ | for a waiter
+recipe | n | מתכון
+oven | n | תנור
+fridge | n | מקרר
+refrigerator | n | מקרר
+sink | n | כיור
+shelf | n | מדף
+drawer | n | מגירה
+blanket | n | שמיכה
+pillow | n | כרית
+curtain | n | וילון
+carpet | n | שטיח
+neighbor | n | שכן

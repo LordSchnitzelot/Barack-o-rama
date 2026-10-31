@@ -113,14 +113,15 @@ test('word answers: articles (default choice) and near misses', () => {
 /* ---------- Spaced repetition ---------- */
 
 test('spaced repetition: right answers wait longer, a wrong one comes back at once', () => {
+  /* due is counted in drills answered */
   const r = D.newRecord(0);
   D.review(r, true, 0);
   assert.equal(r.due, D.INTERVALS[1]);
   D.review(r, true, 0);
   D.review(r, true, 0);
   assert.equal(r.level, 3);
-  assert.equal(r.due, 3 * D.DAY);
-  D.review(r, false, 100);
+  assert.equal(r.due, D.INTERVALS[3]);
+  D.review(r, false, 100, 100);
   assert.equal(r.level, 0);
   assert.equal(r.due, 100);
   assert.equal(r.weak, true);
@@ -135,7 +136,7 @@ test('spaced repetition: weak until right twice in a row; never retired', () => 
   assert.equal(r.weak, false);
   for (let i = 0; i < 20; i++) D.review(r, true, 0);
   assert.equal(r.level, D.INTERVALS.length - 1);
-  assert.equal(r.due, 60 * D.DAY); // still comes back, every 60 days
+  assert.equal(r.due, D.INTERVALS[D.INTERVALS.length - 1]); // still comes back, every 1,000 drills
 });
 
 test('progress is kept per word and per direction', () => {
@@ -175,7 +176,7 @@ function bigSetup() {
       if (i < 10) D.review(r, false, 0); // weak
       p.progress[i + 1 + ':0'] = { ...(p.progress[i + 1 + ':0'] || {}), [dir]: r };
     }
-  now.t = 2 * D.DAY; // the known words are due
+  p.count = 5; // the known words are due
   return { d, p, now };
 }
 
@@ -192,7 +193,7 @@ test('selection mix: 4 new, 4 weak, 2 known in a session of 10', () => {
 
 test('selection mix: known words come up only when due', () => {
   const { d, p, now } = bigSetup();
-  now.t = 1; // nothing known is due yet
+  p.count = 0; // nothing known is due yet
   const s = D.startSession(d, p, { mode: 'words', rng: seeded(3), now });
   let dr;
   while ((dr = D.nextDrill(s))) assert.notEqual(dr.bucket, 'known');
@@ -301,7 +302,8 @@ test('progression: sentences once every word in them is ready', () => {
 });
 
 test('progression: a right sentence credits every word in it; a hint does not', () => {
-  const d = sample(), p = fresh(), now = clock(2 * D.DAY);
+  const d = sample(), p = fresh(), now = clock();
+  p.count = 5;
   for (const k of ['1:0', '2:0', '8:0', '5:0']) p.progress[k] = { understand: D.review(D.newRecord(0), true, 0) };
   const s = D.startSession(d, p, { mode: 'sentences', size: 1, rng: always(0.1), now }); // 0.1: comprehension
   const dr = D.nextDrill(s);
@@ -317,7 +319,8 @@ test('progression: a right sentence credits every word in it; a hint does not', 
 });
 
 test('progression: a wrong sentence only counts against the drilled word', () => {
-  const d = sample(), p = fresh(), now = clock(2 * D.DAY);
+  const d = sample(), p = fresh(), now = clock();
+  p.count = 5;
   for (const k of ['1:0', '2:0']) p.progress[k] = { understand: D.review(D.newRecord(0), true, 0) };
   const s = D.startSession(d, p, { mode: 'sentences', size: 1, rng: always(0.1), now });
   const dr = D.nextDrill(s);
@@ -330,7 +333,8 @@ test('progression: a wrong sentence only counts against the drilled word', () =>
 });
 
 test('progression: a Hebrew sentence credits the English words already started', () => {
-  const d = sample(), p = fresh(), now = clock(2 * D.DAY);
+  const d = sample(), p = fresh(), now = clock();
+  p.count = 5;
   p.progress['1:0'] = { say: D.review(D.newRecord(0), true, 0) };
   p.progress['2:0'] = { say: D.review(D.newRecord(0), true, 0) }; // "big" started, "large" not
   const s = D.startSession(d, p, { mode: 'sentences', size: 1, rng: always(0.9), now });
@@ -352,4 +356,15 @@ test('word drill: saying a synonym also credits the synonym', () => {
   D.recordAnswer(s, dr, { correct: c.result === 'right', matched: c.matched });
   assert.equal(p.progress['2:0'].say.level, 2);
   assert.equal(p.progress['2:1'].say.level, 1);
+});
+
+test('counting drills: every answer adds one, and a known word waits that many drills', () => {
+  const d = sample(), p = fresh();
+  const s = D.startSession(d, p, { mode: 'comprehension', size: 2, rng: always(0.9), now: clock() });
+  const dr = D.nextDrill(s);
+  D.recordAnswer(s, dr, { correct: true });
+  assert.equal(p.count, 1);
+  assert.equal(D.getRecord(p, dr.item, 'understand').due, 1 + D.INTERVALS[1]);
+  D.recordAnswer(s, D.nextDrill(s), { correct: false });
+  assert.equal(p.count, 2);
 });

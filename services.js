@@ -2,7 +2,7 @@
    setting, so any of them can be replaced later without touching the rest of the app.
 
    - AI model:  ai.complete(system, messages) -> the model's text reply
-   - Speak:     speech.speak(text, lang) and speech.stop(), with lang a pack language
+   - Speak:     speech.speak(text, lang, { slow }) and speech.stop(), with lang a pack language
                 (pack.target or pack.native); the pack says which voice each language uses
    - Listen:    listen(lang, { onText, onEnd, onError }) -> { stop() }
 
@@ -166,14 +166,16 @@ export function createSpeech(opts) {
     }
     return cache.get(k);
   }
-  async function phononSpeak(text, lang) {
+  /* DEFAULT: the "slower" button plays a sentence at this share of the current speed. */
+  const SLOWER = 0.75;
+  async function phononSpeak(text, lang, slow) {
     const P = await phonon();
-    if (!P) return browserSpeak(text, lang, +S().speed);
+    if (!P) return browserSpeak(text, lang, +S().speed * (slow ? SLOWER : 1));
     status('Generating voice…');
     const u = await Promise.race([synth(P, text), new Promise((_, rj) => setTimeout(() => rj(new Error('Phonon took longer than 25 seconds')), 25000))]);
     status(speedNote(P));
     if (cur) cur.pause();
-    const a = cur = new Audio(u); a.preservesPitch = true; a.playbackRate = rateOf(P);
+    const a = cur = new Audio(u); a.preservesPitch = true; a.playbackRate = rateOf(P) * (slow ? SLOWER : 1);
     await a.play();
     await new Promise(r => { a.onended = r; a.onpause = r; });
   }
@@ -181,20 +183,20 @@ export function createSpeech(opts) {
   /* The voices a pack can name. The speed dial only applies to the target language. */
   const VOICES = {
     phonon: { speak: phononSpeak, load: phonon },
-    browser: { speak: (text, lang) => browserSpeak(text, lang, lang === opts.target ? +S().speed : 1), load: () => {} },
+    browser: { speak: (text, lang, slow) => browserSpeak(text, lang, (lang === opts.target ? +S().speed : 1) * (slow ? SLOWER : 1)), load: () => {} },
   };
   const voiceOf = lang => VOICES[lang.voice] || VOICES.browser;
 
   return {
     /* Loads (or reloads, after a speed change) the voices the pack uses. */
     load() { voiceOf(opts.target).load(); },
-    async speak(text, lang) {
-      try { await voiceOf(lang).speak(text, lang); }
+    async speak(text, lang, { slow = false } = {}) {
+      try { await voiceOf(lang).speak(text, lang, slow); }
       catch (e) {
         console.error(e);
         if (lang.voice === 'browser') return;
         toast('Voice problem (' + (e.message || e) + '). Using the browser voice.');
-        await browserSpeak(text, lang, +S().speed);
+        await browserSpeak(text, lang, +S().speed * (slow ? SLOWER : 1));
       }
     },
     stop() {
