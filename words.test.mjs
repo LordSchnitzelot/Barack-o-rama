@@ -14,7 +14,7 @@ test('tapping a word saves it with an "understands" score of 0, due now', () => 
   assert.equal(W.score(r.understand), 0);
   assert.equal(r.understand.weak, true);
   assert.equal(r.say, null); // tapping is about understanding
-  assert.equal(W.nextReview(r), 1000);
+  assert.equal(W.nextReview(r), 0); // due at once (counted in drills)
   assert.equal(r.created, 1000);
   assert.equal(r.modified, 1000);
 });

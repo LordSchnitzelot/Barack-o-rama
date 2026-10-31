@@ -17,7 +17,7 @@
   const TENSES = ['present', 'past', 'future', 'imperative'];
 
   const GROUP_FIELDS = ['id', 'pos', 'verbForm', 'otherForm', 'words'];
-  const WORD_FIELDS = ['id', 'text', 'rank', 'accepted', 'sayAs'];
+  const WORD_FIELDS = ['id', 'text', 'rank', 'accepted', 'sayAs', 'seenAs'];
   const SENTENCE_FIELDS = ['id', 'language', 'text', 'tags', 'tenses', 'clauses', 'difficulty'];
 
   // Hebrew points (nikkud), cantillation marks and Hebrew punctuation.
@@ -25,7 +25,8 @@
   const NIKKUD = /[ְ-ׇּׁׂ]/;
   const HEBREW_WORD = /^[א-תְ-ׇּׁׂ׳״]+$/;
   const ENGLISH_WORD = /^[A-Za-z][A-Za-z']*$/;
-  const LABEL = /^[A-Za-z][A-Za-z ,'-]*$/;
+  // Labels are in the entry's own language, so a label never gives away the translation (spec 3.3).
+  const LABEL = { en: /^[A-Za-z][A-Za-z ,'-]*$/, he: /^[א-ת][א-ת ,'׳״־-]*$/ };
 
   // The answer normalization from spec 3.3: lowercase, punctuation removed,
   // nikkud removed. Accepted forms are stored already normalized.
@@ -115,7 +116,8 @@
         if (!POS.includes(g.pos)) err(G, '"pos" must be one of: ' + POS.join(', '));
         if (g.pos === 'verb') {
           if (!VERB_FORMS.includes(g.verbForm)) err(G, 'a verb group needs "verbForm": "past" or "infinitive"');
-          if (!Number.isInteger(g.otherForm)) err(G, 'a verb group needs "otherForm": the id of the group with its other verb form');
+          // A past verb with no Hebrew infinitive ("deserved" = הִגִּיעַ לוֹ) may have no other form.
+          if (!Number.isInteger(g.otherForm) && !(g.verbForm === 'past' && g.otherForm === undefined)) err(G, 'a verb group needs "otherForm": the id of the group with its other verb form');
         } else {
           if (g.verbForm !== undefined) err(G, '"verbForm" is only for verb groups');
           if (g.otherForm !== undefined) err(G, '"otherForm" is only for verb groups');
@@ -151,7 +153,7 @@
 
           // Labels: English, in brackets, at the end.
           const { bare, label } = splitLabel(w.text);
-          if (label !== null && !LABEL.test(label)) err(W, 'the label "' + label + '" must be English words');
+          if (label !== null && !LABEL[lang].test(label)) err(W, 'the label "' + label + '" must be ' + (lang === 'he' ? 'Hebrew words (a Hebrew label must not give away the English)' : 'English words'));
           if (/[()]/.test(bare)) err(W, 'brackets are only allowed for one label at the end, like "bat (sports)"');
           if (!bares.has(bare)) bares.set(bare, []);
           bares.get(bare).push({ w, label, group: g });
@@ -204,6 +206,16 @@
             }
             if (g.pos === 'adjective' && lang === 'he' && seen.size < 3) {
               err(W, 'a Hebrew adjective accepts every gender and number (at least 3 different spellings), found ' + seen.size);
+            }
+          }
+
+          // Optional "seen as": spellings that point at this entry in sentences and in the chat
+          // (Hebrew future and command forms) but are not accepted as answers.
+          if (w.seenAs !== undefined) {
+            if (!Array.isArray(w.seenAs)) err(W, '"seenAs" must be a list');
+            else for (const a of w.seenAs) {
+              if (typeof a !== 'string' || normalize(a) !== a) err(W, 'seen-as form "' + a + '" must be stored normalized');
+              else if ((w.accepted || []).includes(a)) err(W, 'seen-as form "' + a + '" is already an accepted answer');
             }
           }
 

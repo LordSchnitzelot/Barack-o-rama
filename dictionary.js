@@ -15,7 +15,7 @@ export function buildIndex(target, native) {
   for (const g of target.groups)
     for (const w of g.words) {
       const entry = { id: w.id, text: w.text, group: g.id, pos: g.pos };
-      for (const f of new Set([stripLabel(w.text), ...(w.accepted || [])].map(normalize))) {
+      for (const f of new Set([stripLabel(w.text), ...(w.accepted || []), ...(w.seenAs || [])].map(normalize))) {
         if (!f) continue;
         if (!byForm.has(f)) byForm.set(f, []);
         byForm.get(f).push(entry);
@@ -25,7 +25,7 @@ export function buildIndex(target, native) {
   for (const g of native.groups)
     partners.set(g.id, {
       text: g.words.map(w => w.text).join(', '),
-      forms: new Set(g.words.flatMap(w => [stripLabel(w.text), ...(w.accepted || [])]).map(normalize)),
+      forms: new Set(g.words.flatMap(w => [stripLabel(w.text), ...(w.accepted || []), ...(w.seenAs || [])]).map(normalize)),
     });
   return { byForm, partners, longest };
 }

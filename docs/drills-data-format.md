@@ -52,6 +52,7 @@ same number**. That is how a group "points at" its partner: group 151 in the Eng
 | `rank` | The frequency rank: 1 is the most common. New words are taught from rank 1 down. |
 | `accepted` | Every answer that counts as correct for this word, already **normalized** (lowercase, no punctuation, no nikkud), because that is how spoken answers are compared. |
 | `sayAs` | Optional. Only for words spelled alike but pronounced differently. The app speaks this instead of `text`. Example: `read (past tense)` has `"sayAs": "red (past tense)"`. |
+| `seenAs` | Optional, Hebrew infinitives. Spellings that point at this entry when they appear in a sentence or in the chat, but are not accepted answers: the future and command forms (אֵלֵךְ and לֵךְ point at לָלֶכֶת). Stored normalized. |
 
 ### How a drill uses this
 
@@ -70,6 +71,10 @@ Every verb has two group pairs, tested separately: the infinitive and the past.
 | infinitive | "to go" (accepts "to go" and "go") | לָלֶכֶת |
 | past | "went" | הָלַךְ (accepts הלך, הלכה, הלכתי, הלכת, הלכנו, הלכתם, הלכתן, הלכו) |
 
+The infinitive also accepts the present tense (הולך, הולכת, הולכים, הולכות); the future and command
+forms are listed in `seenAs` instead. A verb with no Hebrew infinitive has only a past group with no
+`otherForm`: "deserved" = הִגִּיעַ לוֹ.
+
 The two groups point at each other with `otherForm`. A past group's partner is always a past group,
 so saying "go" for הָלַךְ is wrong.
 
@@ -79,8 +84,11 @@ infinitive entries. In sentences, present-tense words are tagged with the infini
 ### Labels
 
 A label is needed when two entries are spelled the same but mean different things, such as
-`time (occasion)` = פַּעַם and `time (duration)` = זְמַן, or Hebrew `עַל (on top of)` = "on" and
-`עַל (about a topic)` = "about". Labels are always in English.
+`time (occasion)` = פַּעַם and `time (duration)` = זְמַן, or Hebrew `קֶרֶן (אור)` = "ray" and
+`קֶרֶן (בעל חיים)` = "horn". A label is written in the entry's own language, so it never gives away
+the translation: English labels on English entries, Hebrew labels on Hebrew entries. When one Hebrew
+spelling has entries with different parts of speech, the build labels them with the part of speech in
+Hebrew: `מֵת (עבר)` = "died", `מֵת (תואר)` = "dead".
 
 In English, a label is also needed when a word is spelled like an answer of another group:
 `put (past tense)` needs a label because "put" is also an accepted answer for "to put".
@@ -124,8 +132,8 @@ The checker (`tools/validate-drills.js`) tests every rule:
   points at exactly one group in the other language, in both directions.
 - Group numbers are unique, every group has at least one word, and every word `id` appears only
   once, so every entry is in exactly one group.
-- Every entry is distinct. Entries spelled the same need labels; labels are English, in brackets,
-  at the end.
+- Every entry is distinct. Entries spelled the same need labels, in brackets at the end, in the
+  entry's own language (English labels on English entries, Hebrew labels on Hebrew entries).
 - English entries are English letters only and have no "the", "a" or "an". Hebrew entries are
   Hebrew letters only, and every Hebrew word has nikkud.
 - Every entry has a frequency rank (a whole number, 1 or more).
@@ -158,59 +166,51 @@ a list of problems.
 `node tools/test-validate-drills.js` proves the checker works: it breaks each rule on purpose in a
 copy of the data and checks that the problem is reported.
 
-## The starter set
+## How the dictionary is built
 
-The starter set has the 300 most common English words, as 365 group pairs (394 English entries and
-387 Hebrew entries), plus 60 tagged sentences (50 English, 10 Hebrew).
+The two dictionary files and the sentences file are **built**, not edited by hand. The parts that
+need a person's judgment live in plain text files that anyone can read and correct:
 
-- **Where it came from.** It was written by hand to test the format; no outside dictionary was
-  copied, so there is no license question for it. The frequency ranks are approximate, based on
-  common English word-frequency lists. **The Hebrew ranks are copied from their English partners**
-  for now. Build step 6 replaces this with a licensed dictionary and real frequency data.
-- **How the 300 words were counted.** Each counted word is a dictionary headword, so "go" counts once
-  but gives two entries ("to go" and "went"), and "know" gives four ("to know (a fact)",
-  "to know (a person)", "knew (a fact)", "knew (a person)"). "people" is stored as "person"
-  (nouns are singular).
-- **Words with one shared Hebrew translation are one group.** For example {"to do", "to make"} =
-  לַעֲשׂוֹת, {"no", "not"} = לֹא, {"woman", "wife"} = אִשָּׁה, {"child", "boy"} = יֶלֶד.
-- **Words left out.** Going down a common-words list, 150 words were skipped to reach 300 usable ones.
-  47 have no single Hebrew dictionary word or would break a rule:
-
-| Word | Why it was left out |
+| File | What it holds |
 | --- | --- |
-| the | Hebrew uses the prefix ה |
-| and | Hebrew uses the prefix ו |
-| a | no Hebrew word |
-| in | Hebrew uses the prefix ב |
-| have | no Hebrew verb; Hebrew uses יש ל |
-| it | Hebrew uses הוא/היא/זה depending on gender |
-| at | Hebrew uses the prefix ב or אצל |
-| by | several Hebrew words (על ידי, ליד) |
-| as | Hebrew uses כ or כמו |
-| would, will, could | Hebrew uses verb tense |
-| into | Hebrew uses לתוך |
-| than | Hebrew uses the prefix מ |
-| its | Hebrew uses שלו/שלה depending on gender |
-| well, any, through, should, over, become, most, another, seem, such, must | several Hebrew words |
-| may, might | Hebrew uses אולי or verb tense |
-| state | mostly a US meaning |
-| own, let | no single Hebrew word |
-| while | Hebrew uses בזמן ש |
-| same | Hebrew uses אותו, which is already "him" |
-| turn, case, off, point, set | many meanings |
-| American | proper adjective |
-| next | Hebrew uses הבא, with the prefix ה |
-| lot | Hebrew uses הרבה, already "many" |
-| kid, anything, perhaps, yeah | same Hebrew word as an included word (ילד, משהו, אולי, כן); could be added to those groups later |
-| person | included, as the singular of "people" |
-| oh | interjection |
+| `packs/en-he/drills/source/words.txt` | One meaning per line: the English word, its part of speech, the Hebrew word, and a label when needed. Verbs give the Hebrew past and infinitive ("הלך / ללכת"). |
+| `packs/en-he/drills/source/forms.txt` | Feminine and plural forms of adjectives that Wiktionary has none for. A spelling without nikkud in brackets follows a form when it differs: `מְזֻיֶּפֶת (מזויפת)`. |
+| `packs/en-he/drills/source/nikkud.txt` | Nikkud for the few words Wiktionary has none for (written by Claude; each needs a person's check). |
+| `packs/en-he/drills/source/sentences.txt` | The sentences, with their tenses and clauses. A word with several meanings carries its label in curly brackets: `know{a person}`. |
 
-  The other 103 were simply not chosen for this starter set: few, each, national, though, issue,
-  since, provide, away, yet, political, among, ever, however, member, include, once, least, real,
-  best, several, ago, lead, social, whether, follow, create, public, others, allow, add, spend,
-  sure, within, grow, result, guy, himself, force, offer, across, although, second, toward, able,
-  policy, process, including, consider, appear, actually, human, serve, market, expect, sense,
-  build, nation, plan, cut, college, interest, death, course, experience, reach, local, kill,
-  remain, effect, suggest, control, raise, care, field, else, pass, former, major, require, along,
-  development, themselves, report, role, better, economic, effort, rate, drug, leader, light, mind,
-  pull, free, military, less, according, decision, develop, view, relationship, carry, town.
+`tools/build-dictionary.py` fills in everything else from the sources in spec 3.3: the nikkud, every
+Hebrew past form, the infinitive, present and future forms, feminine and plural forms (English
+Wiktionary's Hebrew entries, via kaikki.org), English forms such as "runs", "ran" and "running"
+(English Wiktionary), and frequency ranks counted over all of a word's forms (OpenSubtitles). English
+words with the same Hebrew word are grouped as synonyms; labels are added where two entries are
+spelled the same. It also checks every pair against Wiktionary's own translations and writes
+`docs/dictionary-review.md`: the entries a person should check. `tools/build-sentences.py` then tags
+every word of every sentence with its exact entry and works out the difficulty.
+
+```bash
+python3 tools/build-dictionary.py --download DATA_DIR
+```
+
+```bash
+python3 tools/build-dictionary.py DATA_DIR
+```
+
+```bash
+python3 tools/build-sentences.py
+```
+
+```bash
+node tools/validate-drills.js
+```
+
+The first command downloads the sources once (it reads about 3.5 GB and keeps about 100 MB). Word
+`id`s are permanent: when an entry keeps its text, it keeps its id, so saved progress is not lost.
+
+Some choices made by the build (not decided by the spec):
+
+- English nouns also accept their plural ("books"), and Hebrew nouns theirs.
+- Every other English verb form counts as the infinitive (spec 3.3): "runs", "running" and "given"
+  for "to run"/"to give". The Hebrew infinitive accepts the present tense; future and command forms
+  are in `seenAs`.
+- A phrase's frequency is that of its rarest word.
+- Hebrew is accepted in both spellings: with and without the vowel letters ו and י (דיבר and דבר).
