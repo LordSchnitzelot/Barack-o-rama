@@ -5,7 +5,7 @@ import * as D from './drills.js';
 import * as DD from './drill-data.js';
 import { sentenceCheckPrompt, sentenceCheckMessage, parseCheck } from './tutor.js';
 import { listen, canListen } from './services.js';
-import { pack, $, esc, S, toast, needKey, ai, stopAudio, play, dictReady, data as files, W, wordsReady, saveWord, flag } from './shell.js';
+import { pack, $, esc, attrs, S, toast, needKey, ai, stopAudio, play, dictReady, data as files, W, wordsReady, saveWord, flag } from './shell.js';
 import { t, langName } from './strings.js';
 import * as store from './store.js';
 
@@ -14,8 +14,6 @@ let mode = 'mixed';
 const box = () => $('#drills');
 const side = lang => lang === pack.target.code ? 'target' : 'native';
 const langOf = code => code === pack.target.code ? pack.target : pack.native;
-/* The language attributes for content in a language: its code and its text direction. */
-const attrs = code => `lang="${code}" dir="${langOf(code).dir}"`;
 
 /* ---------- Start and end ---------- */
 export async function openDrills() {

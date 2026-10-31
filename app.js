@@ -1,12 +1,12 @@
 /* The app's entry: the home screen with its three modes (spec 4), Settings (spec 9) and My words.
    The screens live in talk.js (Chat and Guide) and drill-screen.js (Drills); what they share
    lives in shell.js. */
-import { $, esc, S, saveSettings, speech, stopAudio, play, ai, wordsReady, byNewest, W, pack, toast, hideToast, applyUiLang, countWords, setStatus } from './shell.js';
+import { $, esc, attrs, S, saveSettings, speech, stopAudio, play, ai, wordsReady, byNewest, W, pack, toast, hideToast, applyUiLang, countWords, setStatus } from './shell.js';
 import { t } from './strings.js';
 import * as Words from './words.js';
 import * as Backup from './backup.js';
 import * as store from './store.js';
-import { openTalk, endTalk, relabelTalk } from './talk.js';
+import { openTalk, endTalk, relabelTalk, MAX_NOTES } from './talk.js';
 import { openDrills, closeDrills, relabelDrills } from './drill-screen.js';
 
 speech.load();
@@ -33,7 +33,7 @@ $('#wb').onclick = async () => {
   const list = byNewest();
   $('#wl').innerHTML = `<h3>${esc(t('words.title'))}</h3>` + (list.length
     ? `<p class="note">${esc(t('words.help'))}</p>` +
-      list.map(x => `<div class="row"><span><b lang="${T.code}" dir="${T.dir}">${esc(x.text)}</b><br><small lang="${N.code}" dir="${N.dir}">${esc(x.meaning)}</small><br><small class="sc">${esc(t('words.understands'))} ${scoreHtml(x.understand)} · ${esc(t('words.canSay'))} ${scoreHtml(x.say)}</small></span><button class="ic" data-id="${esc(x.id)}" aria-label="${esc(t('words.hear', { w: x.text }))}">▶</button></div>`).join('')
+      list.map(x => `<div class="row"><span><b ${attrs(T)}>${esc(x.text)}</b><br><small ${attrs(N)}>${esc(x.meaning)}</small><br><small class="sc">${esc(t('words.understands'))} ${scoreHtml(x.understand)} · ${esc(t('words.canSay'))} ${scoreHtml(x.say)}</small></span><button class="ic" data-id="${esc(x.id)}" aria-label="${esc(t('words.hear', { w: x.text }))}">▶</button></div>`).join('')
     : `<p class="note">${esc(t('words.empty'))}</p>`) +
     `<button class="close" onclick="this.closest('dialog').close()">${esc(t('common.close'))}</button>`;
   $('#wl').querySelectorAll('.ic').forEach(b => b.onclick = () => { stopAudio(); play(W.get(b.dataset.id).text, 'target'); });
@@ -99,6 +99,18 @@ $('#bexp').onclick = async () => {
     toast(t('backup.saved', { file: name }), { good: true });
   } catch (e) { toast(e.message); }
 };
+/* The settings from a backup that this version of Settings can show: a choice must be one of its
+   list's options, and a typed value must be text. Anything else keeps its current value. */
+function validSettings(incoming) {
+  const out = {};
+  for (const [id, k] of Object.entries(FIELDS)) {
+    const v = incoming[k], el = $('#' + id);
+    if (!(k in incoming) || Backup.SECRET_SETTINGS.includes(k) || typeof v !== 'string') continue;
+    if (el.tagName === 'SELECT' && ![...el.options].some(o => o.value === v)) continue;
+    out[k] = v;
+  }
+  return out;
+}
 $('#bimp').onclick = () => $('#bfile').click();
 $('#bfile').onchange = async e => {
   const f = e.target.files[0];
@@ -111,11 +123,13 @@ $('#bfile').onchange = async e => {
     const notes = Backup.newer(await store.allNotes(), b.notes);
     const meta = Backup.mergeMeta(await store.allMeta(), b.meta);
     await store.putWords(words); await store.putNotes(notes); await store.putMetas(meta);
+    await store.trimNotes(MAX_NOTES);
     words.forEach(r => W.set(r.id, r));
     countWords();
     /* The settings come back too, except the API keys, which stay as they are on this device. */
-    const relang = b.settings.ui && b.settings.ui !== S.ui;
-    saveSettings(Object.fromEntries(Object.entries(b.settings).filter(([k]) => k in S)));
+    const settings = validSettings(b.settings);
+    const relang = settings.ui && settings.ui !== S.ui;
+    saveSettings(settings);
     if (relang) relabel();
     fill(); fillStats(); speech.load();
     toast(words.length || notes.length ? t('backup.restored', { words: words.length, notes: notes.length }) : t('backup.nothingNew'), { good: true });

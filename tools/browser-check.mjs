@@ -10,7 +10,8 @@
    What is faked:
    - The microphone: speech recognition "hears" whatever the test sets in window.__say.
    - The AI: requests to Groq get ready-made replies, picked by what the request asks for.
-   - Phonon is not downloaded (its CDN is blocked), so the app falls back to the browser voice. */
+   - Phonon is replaced by a stand-in that makes a short beep for each sentence after a short
+     wait, so the app's audio player is tested without downloading the real model. */
 import { createRequire } from 'node:module';
 import { createServer } from 'node:http';
 import { readFile, mkdir, rm } from 'node:fs/promises';
@@ -42,6 +43,7 @@ const tutorReply = {
   sentences: [
     { en: 'Hello! It is nice to meet you.', he: 'שלום! נעים להכיר אותך.', words: [{ w: 'nice', d: 'nice', m: 'נֶחְמָד' }, { w: 'meet', d: 'to meet', m: 'לִפְגּוֹשׁ' }] },
     { en: 'Did you give up coffee?', he: 'ויתרת על קפה?', words: [{ w: 'give', d: 'to give', m: 'לְוַתֵּר' }, { w: 'up', d: 'up', m: 'לְוַתֵּר' }, { w: 'coffee', d: 'coffee', m: 'קָפֶה' }] },
+    { en: 'What do you drink now?', he: 'מה אתה שותה עכשיו?', words: [{ w: 'drink', d: 'to drink', m: 'לִשְׁתּוֹת' }, { w: 'now', d: 'now', m: 'עַכְשָׁו' }] },
   ],
   struggled: [{ w: 'water', d: 'water', m: 'מַיִם' }],
 };
@@ -54,6 +56,27 @@ function aiReply(system, messages) {
   return tutorReply;
 }
 
+/* ---------- The stand-in Phonon ----------
+   Same interface as phonon-tts (load, addVoice, synthWav, dispose). Each sentence becomes a 0.3 s
+   beep, made after 120 ms; window.__tts records what was asked, and window.__audio what played. */
+const FAKE_PHONON = `
+const log = (window.__tts = window.__tts || { loads: [], voices: [], synth: [] });
+function beep(seconds) {
+  const rate = 8000, n = Math.round(rate * seconds), v = new DataView(new ArrayBuffer(44 + n * 2));
+  const str = (o, x) => [...x].forEach((c, i) => v.setUint8(o + i, c.charCodeAt(0)));
+  str(0, 'RIFF'); v.setUint32(4, 36 + n * 2, true); str(8, 'WAVEfmt '); v.setUint32(16, 16, true);
+  v.setUint16(20, 1, true); v.setUint16(22, 1, true); v.setUint32(24, rate, true); v.setUint32(28, rate * 2, true);
+  v.setUint16(32, 2, true); v.setUint16(34, 16, true); str(36, 'data'); v.setUint32(40, n * 2, true);
+  for (let i = 0; i < n; i++) v.setInt16(44 + i * 2, Math.round(3000 * Math.sin(i / 3)), true);
+  return new Blob([v], { type: 'audio/wav' });
+}
+export class PhononTTS {
+  static async load(o) { log.loads.push(JSON.stringify(o)); return new PhononTTS(); }
+  async addVoice(name) { log.voices.push(name); }
+  async synthWav(text, o = {}) { log.synth.push({ text, voice: o.voice || '', at: performance.now() }); await new Promise(r => setTimeout(r, 120)); return beep(0.3); }
+  dispose() {}
+}`;
+
 /* ---------- The checks ---------- */
 const results = [];
 const check = (name, ok, extra = '') => { results.push({ name, ok }); console.log((ok ? 'ok    ' : 'FAIL  ') + name + (extra ? '  (' + extra + ')' : '')); };
@@ -64,7 +87,7 @@ async function main() {
   const browser = await chromium.launch();
   const context = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, serviceWorkers: 'block', acceptDownloads: true });
   const aiCalls = [];
-  await context.route('https://cdn.jsdelivr.net/**', r => r.abort());
+  await context.route('https://cdn.jsdelivr.net/npm/phonon-tts@0.5.0/+esm', r => r.fulfill({ body: FAKE_PHONON, headers: { 'content-type': 'text/javascript', 'access-control-allow-origin': '*' } }));
   await context.route('https://huggingface.co/**', r => r.abort());
   await context.route('https://api.groq.com/**', async r => {
     const url = r.request().url();
@@ -87,11 +110,35 @@ async function main() {
     const synth = { speaking: false, pending: false, getVoices: () => [{ lang: 'he-IL', name: 'Hebrew' }, { lang: 'en-US', name: 'English' }], speak(u) { window.__spoken.push(u.text); setTimeout(() => u.onend && u.onend(), 5); }, cancel() {}, resume() {}, onvoiceschanged: null };
     Object.defineProperty(window, 'speechSynthesis', { value: synth });
     window.SpeechSynthesisUtterance = function (t) { this.text = t; };
+    /* What the audio player does: 'play'; 'end' when a sound reached its end; 'cut' when it
+       stopped before the end; 'late end' for an "ended" signal that arrives after the next sound
+       has already started (it must not stop that sound). At its end a sound sends "pause" and
+       then "ended", and the browser may drop the "ended" once the next sound starts. */
+    window.__audio = [];
+    /* Listens to every audio player from the moment it is made, so it hears each signal before the
+       app reacts to it (and perhaps starts the next sound). */
+    const RealAudio = window.Audio;
+    window.Audio = function (...args) {
+      const el = new RealAudio(...args);
+      const fin = ev => {
+        if (el.__done) return;
+        const atEnd = el.ended || (el.duration > 0 && el.currentTime >= el.duration - 0.05);
+        if (atEnd) { el.__done = true; window.__audio.push('end'); }
+        else if (ev.type === 'pause') { el.__done = true; window.__audio.push('cut'); }
+        else window.__audio.push('late end');
+      };
+      el.addEventListener('pause', fin); el.addEventListener('ended', fin);
+      return el;
+    };
+    window.Audio.prototype = RealAudio.prototype;
+    const P = HTMLMediaElement.prototype, realPlay = P.play;
+    P.play = function () { this.__done = false; window.__audio.push('play'); return realPlay.call(this); };
   });
 
   const page = await context.newPage();
   const errors = [];
   page.on('pageerror', e => errors.push(e.message));
+  if (process.env.DEBUG) page.on('console', m => console.log('  [page] ' + m.text()));
   page.on('console', m => { if (m.type() === 'error' && !/Phonon failed|net::ERR_FAILED|Failed to load resource|Failed to fetch dynamically imported module/.test(m.text())) errors.push(m.text()); });
   const shot = async name => { if (SHOTS) { await mkdir(join(ROOT, 'tools/shots'), { recursive: true }); await page.screenshot({ path: join(ROOT, 'tools/shots', name + '.png') }); } };
   const speak = async (text, button) => { await page.evaluate(t => { window.__say = t; }, text); await page.click(button); await page.waitForTimeout(80); await page.click(button); };
@@ -110,11 +157,25 @@ async function main() {
 
   /* Chat */
   await page.click('[data-go="chat"]');
+  await page.evaluate(() => { window.__audio.length = 0; });
   await page.click('#go');
   await page.waitForSelector('.msg.tutor', { timeout: 5000 });
-  check('Chat: the tutor starts the conversation', (await page.$$('.msg.tutor .sent')).length === 2);
+  check('Chat: the tutor starts the conversation', (await page.$$('.msg.tutor .sent')).length === 3);
   check('Chat: a split phrasal verb is joined ("give up")', await page.$$eval('.w', ws => ws.some(w => w.textContent === 'give up')));
   check('Chat: the Hebrew translation is shown', (await page.textContent('.line.he .t')).includes('שלום'));
+  /* The tutor's sentences play in full, one after the other, and the later ones are made while
+     the first plays (spec 3.2, Streaming by sentence). */
+  await page.waitForFunction(() => window.__audio.filter(x => x === 'end').length >= 3, null, { timeout: 5000 }).catch(() => {});
+  await page.waitForTimeout(300);
+  const audio = await page.evaluate(() => ({ played: window.__audio.slice(), synth: window.__tts.synth.slice(-3) }));
+  check('Chat: every sentence plays to the end, in order', audio.played.filter(x => x !== 'late end').join() === 'play,end,play,end,play,end', audio.played.join(', '));
+  check('Chat: the later sentences are prepared while the first plays', audio.synth.map(x => x.text).join('|') === tutorReply.sentences.map(x => x.en).join('|') && audio.synth[2].at - audio.synth[0].at < 600);
+  /* Stopping: the mic stops the tutor, and a sentence still being made is not played afterwards. */
+  await page.evaluate(() => { window.__audio.length = 0; });
+  await page.click('.sent .ic[data-a="target"]');
+  await page.click('.sent .ic[data-a="target"]');
+  await page.waitForTimeout(600);
+  check('Chat: a quick double tap on play plays the sentence once, with no voice problem', (await page.evaluate(() => window.__audio.filter(x => x.startsWith('end')).length)) === 1 && !(await page.$eval('#toast', el => !el.hidden && /Voice problem/.test(el.textContent))));
   await shot('03-chat');
   await page.click('.w[data-w="coffee"]');
   await page.click('#wy');
@@ -184,6 +245,58 @@ async function main() {
     return new Promise(ok => { const q = db.transaction('meta').objectStore('meta').get('drills'); q.onsuccess = () => ok((q.result && q.result.value) > 0); });
   }));
 
+  /* More sessions, answering every word right, the way a learner who knows them would. Words
+     become known, and sentence drills appear once every word of a sentence is known (spec 6.5). */
+  const dicts = {};
+  for (const l of ['en', 'he']) dicts[l] = JSON.parse(await readFile(join(ROOT, `packs/en-he/drills/dictionary-${l}.json`), 'utf8'));
+  const answerFor = (text, lang) => {
+    const other = lang === 'en' ? 'he' : 'en';
+    for (const g of dicts[lang].groups) if (g.words.some(w => w.text === text)) return dicts[other].groups.find(x => x.id === g.id).words[0].accepted[0];
+    return null;
+  };
+  const tally = { sessions: 0, words: 0, right: 0, sentences: 0, hintShown: false, hintFlagged: false, sentenceShot: false };
+  while (tally.sessions < 20 && tally.sentences < 3) {
+    tally.sessions++;
+    await page.click('#dagain');
+    await page.waitForSelector('#dagain', { state: 'detached', timeout: 5000 });
+    for (let guard = 0; guard < 30; guard++) {
+      await page.waitForSelector('#drills .card .kind, #dagain', { timeout: 5000 });
+      if (await page.$('#dagain')) break;
+      const kind = await page.textContent('#drills .card .kind');
+      if (/New word/.test(kind)) { await page.click('#dnext'); continue; }
+      const prompt = await page.$eval('#drills .line', l => ({ text: l.querySelector('.prompt').textContent, lang: l.lang }));
+      if (/sentence/.test(kind)) {
+        tally.sentences++;
+        if (!tally.sentenceShot) { tally.sentenceShot = true; await shot('19-drill-sentence'); }
+        /* Tap a word before answering, for its meaning (spec 6.6). */
+        const tok = await page.$('#drills .tok');
+        if (tok) {
+          await tok.click();
+          await page.waitForSelector('#wd[open]', { timeout: 3000 });
+          tally.hintShown = tally.hintShown || !!(await page.textContent('#wd .mean')).trim();
+          await page.click('#wd .close');
+          tally.hintFlagged = tally.hintFlagged || !!(await page.$('#drills .tok.hinted'));
+        }
+        await speak('my translation of ' + prompt.text, '#dmic');
+      } else {
+        tally.words++;
+        await speak(answerFor(prompt.text, prompt.lang) || 'xyz', '#dmic');
+      }
+      await page.waitForSelector('#dnext, #dyes', { timeout: 5000 });
+      if (await page.$('#dyes')) await page.click('#dyes');
+      await page.waitForSelector('#dnext', { timeout: 5000 });
+      if (await page.$('#dres .verdict.ok')) tally.right++;
+      await page.click('#dnext');
+    }
+  }
+  check('Drills: every word said right is marked right', tally.right === tally.words + tally.sentences, `${tally.right} right of ${tally.words} words and ${tally.sentences} sentences in ${tally.sessions} sessions`);
+  check('Drills: sentence drills appear once their words are known', tally.sentences > 0);
+  check('Drills: tapping a word in a sentence shows its meaning and marks it', tally.hintShown && tally.hintFlagged);
+  check('Drills: the AI checks sentence answers', aiCalls.some(c => /spoken translation/.test(c.system)));
+  await page.click('#wb');
+  check('My words: Drills fill the score dots', (await page.textContent('#wl')).includes('●'));
+  await page.click('#wl .close');
+
   /* Leaving while the microphone is on: what was heard must not reach the next screen. */
   await page.click('#back');
   await page.click('[data-go="drills"]');
@@ -209,6 +322,10 @@ async function main() {
   /* Settings: the voice list, and the interface in Hebrew (spec 9). */
   await page.click('#sb');
   check('Settings: 25 tutor voices plus the default', (await page.$$('#vo option')).length === 26);
+  await page.selectOption('#vo', 'Maeve');
+  await page.click('#vtry');
+  await page.waitForFunction(() => window.__tts.synth.some(x => x.voice === 'Maeve'), null, { timeout: 5000 }).catch(() => {});
+  check('Settings: Try this voice speaks with the chosen voice', await page.evaluate(() => window.__tts.voices.includes('Maeve') && window.__tts.synth.some(x => x.voice === 'Maeve' && /English tutor/.test(x.text))));
   await page.selectOption('#vo', 'Harper');
   await page.selectOption('#ui', 'he');
   await shot('12-settings-en');

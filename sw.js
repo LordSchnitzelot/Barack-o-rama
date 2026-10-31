@@ -33,7 +33,7 @@ self.addEventListener('fetch', e => {
   e.respondWith((async () => {
     try {
       const res = await fetch(req);
-      if (res.ok) { const copy = res.clone(); caches.open(CACHE).then(c => c.put(req, copy)); }
+      if (res.ok) { const copy = res.clone(); e.waitUntil(caches.open(CACHE).then(c => c.put(req, copy))); }
       return res;
     } catch (err) {
       const saved = await caches.match(req, { ignoreSearch: true });

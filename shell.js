@@ -13,6 +13,9 @@ export { pack };
 export const $ = s => document.querySelector(s);
 export const ld = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) || d; } catch (e) { return d; } };
 export const sv = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
+/* The lang and dir attributes for content in one of the pack's languages, given its code ('en') or
+   the pack language itself, so it keeps its own direction inside the interface. */
+export const attrs = lang => { const L = typeof lang === 'string' ? (lang === pack.target.code ? pack.target : pack.native) : lang; return `lang="${L.code}" dir="${L.dir}"`; };
 export const esc = x => String(x).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
 /* ---------- Settings (spec 9) ----------
@@ -87,6 +90,7 @@ export const W = new Map(); // id -> record, including words only practiced in D
 /* My words lists the flagged words and weak spots (spec 6), newest first. */
 export const byNewest = () => [...W.values()].filter(isListed).sort((a, b) => b.modified - a.modified);
 export const countWords = () => { const b = $('#wb'); if (b) b.textContent = t('app.words', { n: byNewest().length }); };
+countWords();
 /* Loads the saved words, and carries over the first demo's list (kept in localStorage) once.
    Words saved before only dictionary words were kept are removed. */
 export const wordsReady = (async () => {
@@ -138,7 +142,7 @@ function keepData() {
    for this word only. info = { text, form, meaning, example }. onFlag(entry) is called once saved. */
 export function openWord(info, onFlag) {
   const box = $('#wd');
-  box.innerHTML = `<h3 dir="${pack.target.dir}" lang="${pack.target.code}">${esc(info.text)}</h3><p class="note">${t('word.ask')}</p><div class="btns"><button class="pill" id="wy">${t('word.show')}</button><button class="pill" id="wnx">${t('word.notNow')}</button></div>`;
+  box.innerHTML = `<h3 ${attrs(pack.target)}>${esc(info.text)}</h3><p class="note">${t('word.ask')}</p><div class="btns"><button class="pill" id="wy">${t('word.show')}</button><button class="pill" id="wnx">${t('word.notNow')}</button></div>`;
   $('#wnx').onclick = () => box.close();
   $('#wy').onclick = () => reveal(info, onFlag);
   box.showModal();
@@ -147,7 +151,7 @@ async function reveal(info, onFlag) {
   const box = $('#wd');
   const found = lookup(dict, info.form || info.text, info.meaning);
   const show = (title, shown, note) => {
-    box.innerHTML = `<h3 dir="${pack.target.dir}" lang="${pack.target.code}">${esc(title)}</h3><p dir="${pack.native.dir}" lang="${pack.native.code}" class="mean">${esc(shown)}</p><button class="pill" id="wp">${t('common.hear')}</button><p class="note" id="wn" style="margin-top:12px">${esc(note)}</p><button class="close" onclick="this.closest('dialog').close()">${t('common.close')}</button>`;
+    box.innerHTML = `<h3 ${attrs(pack.target)}>${esc(title)}</h3><p ${attrs(pack.native)} class="mean">${esc(shown)}</p><button class="pill" id="wp">${t('common.hear')}</button><p class="note" id="wn" style="margin-top:12px">${esc(note)}</p><button class="close" onclick="this.closest('dialog').close()">${t('common.close')}</button>`;
     $('#wp').onclick = () => { stopAudio(); play(title, 'target'); };
   };
   const save = entry => {

@@ -6,14 +6,18 @@ import { listen, canListen } from './services.js';
 import { phrasesInText, wordsInPhrase } from './dictionary.js';
 import { t } from './strings.js';
 import * as store from './store.js';
-import { pack, $, esc, S, setStatus, toast, needKey, ai, stopAudio, play, playAll, getDict, link, meaning, flag, byNewest, openWord, weakSpots } from './shell.js';
+import { pack, $, esc, attrs, S, setStatus, toast, needKey, ai, stopAudio, play, playAll, getDict, link, meaning, flag, byNewest, openWord, weakSpots } from './shell.js';
 
-let mode = 'chat', msgs = [], busy = 0, rec = null, liveEl = null;
+let mode = 'chat', msgs = [], rec = null, liveEl = null;
 /* What happened this session, for the summary: words saved, and what the learner said. */
 let session = null;
 /* Counts sessions. Work still running when a session ends (a reply on its way, the microphone)
    checks this and is dropped, so nothing arrives into the next screen. */
 let talkId = 0;
+/* The work running (talking to the AI), by the session it belongs to: only the current session's
+   work makes the buttons wait. */
+const working = [];
+const isBusy = () => working.includes(talkId);
 const T = pack.target, N = pack.native;
 
 export function openTalk(m) {
@@ -49,8 +53,8 @@ function addTutor(reply) {
   const box = document.createElement('div'); box.className = 'msg tutor';
   reply.sentences.forEach(s => {
     const d = document.createElement('div'); d.className = 'sent'; d.dataset.target = s.target; d.dataset.native = s.native;
-    d.innerHTML = `<div class="line en ${S.en}" dir="${T.dir}"><span class="t" lang="${T.code}">${wrap(s.target, s.words)}</span><button class="ic" data-a="target" aria-label="${esc(t('talk.replay'))}">▶</button><button class="ic" data-a="slow" aria-label="${esc(t('talk.slower'))}">🐢</button></div>` +
-      (s.native ? `<div class="line he ${S.he}" dir="${N.dir}"><span class="t" lang="${N.code}">${esc(s.native)}</span><button class="ic" data-a="native" aria-label="${esc(t('talk.playNative'))}">▶</button></div>` : '');
+    d.innerHTML = `<div class="line en ${S.en}" ${attrs(T)}><span class="t">${wrap(s.target, s.words)}</span><button class="ic" data-a="target" aria-label="${esc(t('talk.replay'))}">▶</button><button class="ic" data-a="slow" aria-label="${esc(t('talk.slower'))}">🐢</button></div>` +
+      (s.native ? `<div class="line he ${S.he}" ${attrs(N)}><span class="t">${esc(s.native)}</span><button class="ic" data-a="native" aria-label="${esc(t('talk.playNative'))}">▶</button></div>` : '');
     box.appendChild(d);
   });
   add(box);
@@ -78,22 +82,22 @@ async function profile() {
 function ui() {
   const m = rec && rec.mode;
   $('#mic').className = m === 'talk' ? 'rec' : '';
+  const busy = isBusy();
   $('#mic').textContent = t(m === 'talk' ? 'talk.send' : busy ? 'talk.thinking' : 'talk.talk');
   $('#say').className = 'pill' + (m === 'say' ? ' rec' : '');
   $('#say').textContent = t(m === 'say' ? 'talk.sayDone' : 'talk.say');
-  $('#mic').disabled = !!busy || m === 'say';
-  $('#say').disabled = !!busy || m === 'talk';
-  $('#end').disabled = !!busy || !!m;
-  const go = $('#go'); if (go) go.disabled = !!busy || !!m;
+  $('#mic').disabled = busy || m === 'say';
+  $('#say').disabled = busy || m === 'talk';
+  $('#end').disabled = busy || !!m;
+  const go = $('#go'); if (go) go.disabled = busy || !!m;
 }
-/* Runs one step of the conversation. busy counts the steps running, so the buttons wait for them.
-   A problem is shown only if its session is still open. */
-async function run(task) {
-  const id = talkId;
-  busy++; ui();
+/* Runs a piece of work for the current session, so its buttons wait for it. A problem is shown
+   only if the session is still open. */
+async function run(task, id = talkId) {
+  working.push(id); ui();
   try { await task(); }
   catch (e) { if (id === talkId) { toast(e.message); setStatus(t('talk.stopped', { e: e.message })); } }
-  busy--; ui();
+  working.splice(working.indexOf(id), 1); ui();
 }
 /* Sends the conversation to the tutor, then shows and speaks its reply. */
 async function askTutor(id) {
@@ -111,7 +115,7 @@ async function askTutor(id) {
   addTutor(reply); playAll(reply.sentences.map(s => s.target));
 }
 function toggle(kind) {
-  if (busy) return;
+  if (isBusy()) return;
   if (!canListen) return toast(t('common.noMic'));
   if (!ai.hasKey()) return needKey();
   if (rec) { rec.stop(); return; }
@@ -119,7 +123,7 @@ function toggle(kind) {
   if (kind === 'talk') liveEl = addUser('…', true);
   else {
     liveEl = document.createElement('div'); liveEl.className = 'msg say';
-    liveEl.innerHTML = `<p class="note">${esc(t('talk.sayPrompt', { done: t('talk.sayDone') }))}</p><p class="he-live" dir="${N.dir}" lang="${N.code}">…</p>`;
+    liveEl.innerHTML = `<p class="note">${esc(t('talk.sayPrompt', { done: t('talk.sayDone') }))}</p><p class="he-live" ${attrs(N)}>…</p>`;
     add(liveEl);
   }
   const id = talkId;
@@ -153,12 +157,12 @@ async function sayFlow(he, id) {
   const found = wordsInPhrase(getDict(), en, he);
   found.forEach(e => { flag(e, { meaning: meaning(e), example: en, source: 'how-do-I-say-it' }); session.flagged.set(e.id, e); });
   const note = found.length ? t('talk.savedList', { list: found.map(e => e.text).join(', ') }) : t('talk.nothingSaved');
-  c.innerHTML = `<p class="he-live" dir="${N.dir}" lang="${N.code}">${esc(he)}</p><div class="sent" data-target="${esc(en)}"><div class="line en" dir="${T.dir}"><span class="t big" lang="${T.code}">${esc(en)}</span><button class="ic" data-a="target" aria-label="${esc(t('talk.playPhrase'))}">▶</button><button class="ic" data-a="slow" aria-label="${esc(t('talk.slower'))}">🐢</button></div></div><p class="note">${esc(note + ' ' + t('talk.nowSay'))}</p>`;
+  c.innerHTML = `<p class="he-live" ${attrs(N)}>${esc(he)}</p><div class="sent" data-target="${esc(en)}"><div class="line en" ${attrs(T)}><span class="t big">${esc(en)}</span><button class="ic" data-a="target" aria-label="${esc(t('talk.playPhrase'))}">▶</button><button class="ic" data-a="slow" aria-label="${esc(t('talk.slower'))}">🐢</button></div></div><p class="note">${esc(note + ' ' + t('talk.nowSay'))}</p>`;
   $('#chat').scrollTop = 1e9; play(en, 'target');
 }
 /* Starting a session (spec 5.3): the tutor opens, using the learner profile. */
 function start() {
-  if (busy || rec) return;
+  if (isBusy() || rec) return;
   if (!ai.hasKey()) return needKey();
   stopAudio();
   const id = talkId;
@@ -177,33 +181,41 @@ export function endTalk(goHome) {
   stopAudio();
   if (rec) { rec.cancel(); rec = null; if (liveEl) liveEl.remove(); }
   const s = session, history = msgs;
-  session = null; msgs = []; talkId++;
+  session = null; msgs = [];
+  const endId = ++talkId;
   ui();
   if (!s || !s.turns || !ai.hasKey()) return goHome();
-  busy++; ui();
+  /* The summary is written while the conversation stays on screen, its buttons waiting. Tapping
+     back meanwhile goes home at once; the summary still arrives there, but never over a new
+     conversation or Drills. */
+  const stillHere = () => endId === talkId;
   setStatus(t('talk.summarizing'));
-  (async () => {
-    const sum = parseSummary(await ai.complete(summaryPrompt(pack, S), [{ role: 'user', content: transcriptText(pack, history) }]));
-    const now = Date.now();
-    for (const w of sum.weakSpots) await store.putNote({ id: 'n' + now + Math.random().toString(36).slice(2, 6), note: w.note, kind: w.kind, created: now, modified: now });
-    await store.trimNotes(MAX_NOTES);
-    /* Words the summary names are saved too, when the code finds them in the dictionary. */
-    for (const x of sum.words) { const e = link(x.d, x.m); if (e) { flag(e, { meaning: meaning(e), source: 'model-detected' }); s.flagged.set(e.id, e); } }
-    showSummary(sum, [...s.flagged.values()]);
-    setStatus(t('talk.ended'));
-  })().catch(e => { toast(e.message); setStatus(t('talk.stopped', { e: e.message })); })
-    .finally(() => { busy--; ui(); if (isOpen()) goHome(); });
+  run(async () => {
+    try {
+      const sum = parseSummary(await ai.complete(summaryPrompt(pack, S), [{ role: 'user', content: transcriptText(pack, history) }]));
+      const now = Date.now();
+      for (const w of sum.weakSpots) await store.putNote({ id: 'n' + now + Math.random().toString(36).slice(2, 6), note: w.note, kind: w.kind, created: now, modified: now });
+      await store.trimNotes(MAX_NOTES);
+      /* Words the summary names are saved too, when the code finds them in the dictionary. */
+      for (const x of sum.words) { const e = link(x.d, x.m); if (e) { flag(e, { meaning: meaning(e), source: 'model-detected' }); s.flagged.set(e.id, e); } }
+      if (stillHere() || document.body.dataset.view === 'home') { showSummary(sum, [...s.flagged.values()]); setStatus(t('talk.ended')); }
+    } catch (e) {
+      if (stillHere()) { toast(e.message); setStatus(t('talk.stopped', { e: e.message })); }
+    } finally {
+      if (stillHere() && isOpen()) goHome();
+    }
+  }, endId);
 }
 /* DEFAULT: how many weak-spot notes are kept; the oldest are dropped. */
-const MAX_NOTES = 30;
+export const MAX_NOTES = 30;
 
 function showSummary(sum, words) {
   const list = (title, items) => items.length ? `<h3>${esc(title)}</h3><ul>${items.join('')}</ul>` : '';
   $('#sum').innerHTML = `<h2>${esc(t('sum.title'))}</h2>` +
-    (sum.summary ? `<p dir="${T.dir}" lang="${T.code}">${esc(sum.summary)}</p>` : '') +
-    list(t('sum.words'), words.map(e => `<li><b lang="${T.code}" dir="${T.dir}">${esc(e.text)}</b> <span dir="${N.dir}" lang="${N.code}">${esc(meaning(e))}</span></li>`)) +
-    list(t('sum.better'), sum.corrections.map(c => `<li dir="${T.dir}" lang="${T.code}"><s>${esc(c.said)}</s><br><b>${esc(c.better)}</b></li>`)) +
-    list(t('sum.work'), sum.weakSpots.map(w => `<li><span dir="${T.dir}" lang="${T.code}">${esc(w.note)}</span> <small class="sc">(${esc(t(w.kind === 'speaking' ? 'sum.speaking' : 'sum.understanding'))})</small></li>`)) +
+    (sum.summary ? `<p ${attrs(T)}>${esc(sum.summary)}</p>` : '') +
+    list(t('sum.words'), words.map(e => `<li><b ${attrs(T)}>${esc(e.text)}</b> <span ${attrs(N)}>${esc(meaning(e))}</span></li>`)) +
+    list(t('sum.better'), sum.corrections.map(c => `<li ${attrs(T)}><s>${esc(c.said)}</s><br><b>${esc(c.better)}</b></li>`)) +
+    list(t('sum.work'), sum.weakSpots.map(w => `<li><span ${attrs(T)}>${esc(w.note)}</span> <small class="sc">(${esc(t(w.kind === 'speaking' ? 'sum.speaking' : 'sum.understanding'))})</small></li>`)) +
     `<button class="close" onclick="this.closest('dialog').close()">${esc(t('sum.done'))}</button>`;
   $('#sum').showModal();
 }

@@ -144,17 +144,20 @@ export function createSpeech(opts) {
   player.preservesPitch = true;
   let waiting = null; // ends the wait for the sound now playing
   const endWait = () => { const w = waiting; waiting = null; if (w) w(); };
-  player.addEventListener('ended', endWait);
-  /* A pause from an earlier sound can arrive after the next one has started; only a real pause counts. */
+  /* An "ended" or "pause" from an earlier sound can arrive after the next one has started, so only
+     one that matches the player's state counts. */
+  player.addEventListener('ended', () => { if (player.ended) endWait(); });
   player.addEventListener('pause', () => { if (player.paused) endWait(); });
   async function playUrl(url, rate) {
     endWait();
     player.src = url;
     player.defaultPlaybackRate = player.playbackRate = rate;
-    const ended = new Promise(r => { waiting = r; });
+    let done;
+    const ended = new Promise(r => { done = r; });
+    waiting = done;
     try { await player.play(); }
     catch (e) {
-      waiting = null;
+      if (waiting === done) waiting = null; // a newer sound may already be waiting; leave it alone
       if (e.name === 'AbortError') return; // stopped, or replaced by another sound, before it began
       throw e;
     }
@@ -235,18 +238,29 @@ export function createSpeech(opts) {
     }
     return P.voices.get(name);
   }
-  /* Generates a sentence once and keeps it, so replaying is instant. Requests run one at a time. */
-  function synth(P, text, voice) {
+  /* Generates a sentence once and keeps it, so replaying is instant. Requests run one at a time.
+     now: the sentence is about to be played. A sentence only prepared ahead is skipped when its
+     turn comes if the sound was stopped since (the learner moved on), so it does not hold up what
+     is needed next. */
+  function synth(P, text, voice, now) {
     const k = P.delta + '|' + voice + '|' + text;
-    if (!cache.has(k)) {
-      const p = q.then(() => P.tts.synthWav(text, voice ? { voice } : {})).then(b => URL.createObjectURL(b));
-      q = p.catch(() => {}); cache.set(k, p); p.catch(() => cache.delete(k));
+    let e = cache.get(k);
+    if (!e) {
+      e = { stops, now: false };
+      e.url = q.then(() => {
+        if (!e.now && e.stops !== stops) throw new Error('skipped');
+        return P.tts.synthWav(text, voice ? { voice } : {});
+      }).then(b => URL.createObjectURL(b));
+      q = e.url.catch(() => {});
+      cache.set(k, e);
+      e.url.catch(() => { if (cache.get(k) === e) cache.delete(k); });
       if (cache.size > KEEP_AUDIO) {
-        const [oldest, op] = cache.entries().next().value;
-        cache.delete(oldest); op.then(u => URL.revokeObjectURL(u), () => {});
+        const [oldest, o] = cache.entries().next().value;
+        cache.delete(oldest); o.url.then(u => URL.revokeObjectURL(u), () => {});
       }
     }
-    return cache.get(k);
+    if (now) e.now = true;
+    return e.url;
   }
   /* DEFAULT: the "slower" button plays a sentence at this share of the current speed. */
   const SLOWER = 0.75;
@@ -257,7 +271,7 @@ export function createSpeech(opts) {
     if (!P) return browserSpeak(text, lang, +S().speed * (slow ? SLOWER : 1));
     const voice = await useVoice(P, voiceName ?? S().voice);
     status(t('voice.generating'));
-    const url = await Promise.race([synth(P, text, voice), new Promise((_, rj) => setTimeout(() => rj(new Error(t('voice.tooSlow'))), 25000))]);
+    const url = await Promise.race([synth(P, text, voice, true), new Promise((_, rj) => setTimeout(() => rj(new Error(t('voice.tooSlow'))), 25000))]);
     status(speedNote(P));
     if (my !== stops) return;
     await playUrl(url, rateOf(P) * (slow ? SLOWER : 1));
@@ -274,7 +288,7 @@ export function createSpeech(opts) {
         const P = await phonon();
         if (!P) return;
         const voice = await useVoice(P, S().voice);
-        texts.forEach(x => synth(P, x, voice).catch(() => {}));
+        texts.forEach(x => synth(P, x, voice, false).catch(() => {}));
       },
     },
     browser: { speak: (text, lang, slow) => browserSpeak(text, lang, (lang === opts.target ? +S().speed : 1) * (slow ? SLOWER : 1)), load: () => {}, prepare: () => {} },
@@ -287,10 +301,11 @@ export function createSpeech(opts) {
     prepare(texts, lang) { return Promise.resolve(voiceOf(lang).prepare(texts)).catch(() => {}); },
     /* voice: a Phonon voice name to use instead of the one in the settings (to try a voice out). */
     async speak(text, lang, { slow = false, voice } = {}) {
+      const my = stops;
       try { await voiceOf(lang).speak(text, lang, slow, voice); }
       catch (e) {
         console.error(e);
-        if (lang.voice === 'browser') return;
+        if (lang.voice === 'browser' || my !== stops) return; // stopped meanwhile: say nothing
         toast(t('voice.problem', { e: e.message || e }));
         await browserSpeak(text, lang, +S().speed * (slow ? SLOWER : 1));
       }
