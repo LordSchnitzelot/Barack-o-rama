@@ -14,7 +14,7 @@ These lines are not in the dictionary yet. Fill in the nikkud by hand (spec: Dic
 - line 1493: doubt = פקפק / לפקפק — Wiktionary has no nikkud or past forms for it, so it was left out
 - line 1812: recover = החלים / להחלים — Wiktionary has no nikkud or past forms for it, so it was left out
 
-## Translation not confirmed by Wiktionary (160)
+## Translation not confirmed by Wiktionary (161)
 
 Wiktionary does not list this pair. Most are fine (Wiktionary is incomplete); check the meaning.
 
@@ -87,6 +87,7 @@ Wiktionary does not list this pair. Most are fine (Wiktionary is incomplete); ch
 - line 619: gentleman = אָדוֹן
 - line 623: stranger = זָר
 - line 680: criminal = פּוֹשֵׁעַ
+- line 711: foot = כַּף רֶגֶל
 - line 776: TV = טֶלֶוִיזְיָה
 - line 792: present = מַתָּנָה
 - line 796: weapon = נֶשֶׁק
@@ -179,7 +180,7 @@ Wiktionary does not list this pair. Most are fine (Wiktionary is incomplete); ch
 - line 1834: reservation = הַזְמָנָה
 - line 1843: fridge = מְקָרֵר
 
-## Nikkud put together word by word (6)
+## Nikkud put together word by word (7)
 
 Phrases not in Wiktionary as a whole. Check the nikkud of each word (for example construct forms like בֵּית).
 
@@ -187,6 +188,7 @@ Phrases not in Wiktionary as a whole. Check the nikkud of each word (for example
 - line 219: no problem = אין בעיה — nikkud put together word by word: אֵין בְּעָיָה
 - line 220: of course not = ממש לא — nikkud put together word by word: מַמָּשׁ לֹא
 - line 395: deserve = הגיע לו — nikkud put together word by word: הִגִּיעַ לוֹ
+- line 711: foot = כף רגל — nikkud put together word by word: כַּף רֶגֶל
 - line 924: earth = כדור הארץ — nikkud put together word by word: כַּדּוּר הָאָרֶץ
 - line 1794: someday = יום אחד — nikkud put together word by word: יוֹם אֶחָד
 
@@ -656,7 +658,7 @@ Wiktionary had no nikkud for these, so Claude wrote it. Check each one.
 - line 1827: cough = שִׁעוּל
 - line 1829: dentist = רוֹפֵא שִׁנַּיִם
 
-## Several Hebrew spellings to choose from (19)
+## Several Hebrew spellings to choose from (20)
 
 The build picked one; check it is the right word.
 
@@ -669,6 +671,7 @@ The build picked one; check it is the right word.
 - line 572: pay attention = שם — chose שָׂם from several spellings (שָׁם)
 - line 583: call back = חזר — chose חָזַר from several spellings (חִזֵּר)
 - line 623: stranger = זר — chose זָר from several spellings (זֵר)
+- line 711: foot = כף — chose כַּף from several spellings (כָּ״ף)
 - line 714: stomach = בטן — chose בֶּטֶן from several spellings (בֹּטֶן)
 - line 723: illness = מחלה — chose מַחֲלָה from several spellings (מְחִלָּה)
 - line 734: home = בית — chose בַּיִת from several spellings (בֵּי״ת)
