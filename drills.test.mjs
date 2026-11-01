@@ -206,7 +206,74 @@ test('selection mix: an empty bucket is filled from the others', () => {
   const got = [];
   let dr;
   while ((dr = D.nextDrill(s))) { got.push(dr.bucket); D.recordAnswer(s, dr, { correct: true }); }
-  assert.deepEqual(got, ['new', 'new', 'new', 'new', 'new']);
+  assert.equal(got.length, 5); // the session is still full, with no weak words to use
+  assert.ok(!got.includes('weak'));
+  assert.equal(got[0], 'new');
+});
+
+test('a word learned in one direction is not new again in the other', () => {
+  const d = sample(), p = fresh(), now = clock();
+  const s = D.startSession(d, p, { mode: 'words', rng: seeded(2), now });
+  const first = D.nextDrill(s);
+  D.recordAnswer(s, first, { correct: true });
+  const other = first.dir === 'say' ? 'understand' : 'say';
+  const c = D.candidates(D.startSession(d, p, { now }), other); // a new session: the word is not recent
+  assert.ok(!c.new.some(w => D.wordKey(w) === D.wordKey(first.item)));
+  assert.ok(c.known.some(w => D.wordKey(w) === D.wordKey(first.item)));
+});
+
+test('placement: common words are assumed known and come up only as quick checks', () => {
+  const d = sample(), p = fresh(), now = clock();
+  const s = D.startSession(d, p, { mode: 'comprehension', rng: always(0.9), now, placement: 10 });
+  const c = D.candidates(s, 'understand');
+  const texts = list => list.map(w => d.dicts.en[w.group][w.word].text);
+  assert.deepEqual(texts(c.assumed).sort(), ['big', 'book', 'dog', 'these', 'went']); // rank 10 or less
+  assert.ok(!texts(c.new).includes('dog'));
+  let dr;
+  while ((dr = D.nextDrill(s)) && dr.bucket !== 'new') D.recordAnswer(s, dr, { correct: true });
+  assert.equal(d.dicts.en[dr.item.group][dr.item.word].text, 'to go'); // new words start after rank 10
+  /* With no review due, the known slots check an assumed word, and a right answer makes it known. */
+  let check;
+  while ((check = D.nextDrill(s)) && !check.assumed) D.recordAnswer(s, check, { correct: true });
+  assert.ok(check && check.assumed && check.intro === false);
+  D.recordAnswer(s, check, { correct: true });
+  assert.equal(D.getRecord(p, check.item, 'understand').level, D.KNOWN_LEVEL);
+  assert.equal(D.getRecord(p, check.item, 'say').level, D.KNOWN_LEVEL);
+});
+
+test('placement: an assumed word that is missed becomes weak', () => {
+  const d = sample(), p = fresh(), now = clock();
+  const s = D.startSession(d, p, { mode: 'comprehension', rng: always(0.9), now, placement: 50 });
+  let dr;
+  while ((dr = D.nextDrill(s)) && !dr.assumed) D.recordAnswer(s, dr, { correct: true });
+  D.recordAnswer(s, dr, { correct: false });
+  assert.equal(D.getRecord(p, dr.item, 'understand').weak, true);
+});
+
+test('placement: sentences with assumed words are ready for drills', () => {
+  const d = sample(), p = fresh(), now = clock();
+  const dog = { group: '1', word: 0 };
+  let s = D.startSession(d, p, { now });
+  assert.equal(D.sentencesFor(s, dog, 'understand').length, 0);
+  s = D.startSession(d, p, { now, placement: 10 }); // dog (2) and big (5) are assumed known
+  assert.deepEqual(D.sentencesFor(s, dog, 'understand').map(x => x.id), ['en1', 'en2']); // these, dog, went, big
+});
+
+test('"I already know this word": both directions known, and the session keeps its length', () => {
+  const d = sample(), p = fresh(), now = clock();
+  const s = D.startSession(d, p, { mode: 'words', rng: always(0.9), now });
+  const dr = D.nextDrill(s);
+  assert.equal(dr.intro, true);
+  D.markKnown(p, dr.item, now());
+  D.skipDrill(s, dr);
+  assert.equal(s.history.length, 0);
+  assert.equal(s.used.new, 0);
+  for (const dir of ['understand', 'say']) {
+    const r = D.getRecord(p, dr.item, dir);
+    assert.equal(r.level, D.KNOWN_LEVEL);
+    assert.equal(r.due, D.INTERVALS[D.KNOWN_LEVEL]);
+  }
+  assert.notDeepEqual(D.nextDrill(s).item, dr.item); // the next drill is another word
 });
 
 test('new words come most common first, with an occasional less common one', () => {

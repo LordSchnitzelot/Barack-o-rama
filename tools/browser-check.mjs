@@ -218,11 +218,15 @@ async function main() {
   await page.click('[data-go="drills"]');
   await page.click('#dgo');
   await page.waitForSelector('#drills .card .kind', { timeout: 5000 });
-  let rounds = 0, intros = 0, words = 0, sentences = 0;
+  let rounds = 0, intros = 0, words = 0, sentences = 0, knowIt = '';
   while (rounds < 12) {
     const kind = await page.textContent('#drills .card .kind').catch(() => '');
     if (!kind) break;
-    if (/New word|מילה חדשה/.test(kind)) { intros++; if (intros === 1) await shot('08-drill-intro'); await page.click('#dnext'); continue; }
+    if (/New word|מילה חדשה/.test(kind)) {
+      intros++;
+      if (intros === 1) { await shot('08-drill-intro'); knowIt = await page.textContent('#drills .prompt'); await page.click('#dknow'); await page.waitForTimeout(150); continue; }
+      await page.click('#dnext'); continue;
+    }
     rounds++;
     const isSentence = /sentence|משפט/i.test(kind);
     if (isSentence) sentences++; else words++;
@@ -240,6 +244,8 @@ async function main() {
   }
   check('Drills: a session runs to the end', !!(await page.$('#dagain')), `${rounds} drills, ${intros} intros, ${words} word, ${sentences} sentence`);
   await shot('11-drill-done');
+  check('Drills: "I already know this word" skips the word and keeps 10 drills', !!knowIt && rounds === 10, knowIt);
+  check('Drills: the most common words are not taught as new (intermediate level)', !/^(you|I|me|to be|was)\b/.test(knowIt));
   check('Drills: the drill count is saved', await page.evaluate(async () => {
     const db = await new Promise(ok => { const r = indexedDB.open('speaking-app'); r.onsuccess = () => ok(r.result); });
     return new Promise(ok => { const q = db.transaction('meta').objectStore('meta').get('drills'); q.onsuccess = () => ok((q.result && q.result.value) > 0); });

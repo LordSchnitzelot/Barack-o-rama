@@ -37,7 +37,8 @@ async function start() {
   if (!files.target) return toast(t('drills.noDict'));
   if (!data) data = DD.toDrillsData(files);
   const profile = DD.progressFromWords(data, [...W.values()], await store.getMeta('drills', 0));
-  session = D.startSession(data, profile, { mode });
+  /* Drills start at the learner's level from Settings (D.PLACEMENT): more common words are assumed known. */
+  session = D.startSession(data, profile, { mode, placement: D.PLACEMENT[S.level] ?? D.PLACEMENT.intermediate });
   score = { right: 0, total: 0 }; missed = [];
   next();
 }
@@ -86,7 +87,7 @@ function promptLine() {
 }
 function kindText() {
   const to = langName(drill.prompt.lang === data.target ? data.native : data.target);
-  return t(drill.type === 'sentence' ? 'drills.saySentence' : 'drills.sayWord', { lang: to }) + (drill.bucket === 'weak' ? t('drills.weak') : drill.bucket === 'new' ? t('drills.new') : '');
+  return t(drill.type === 'sentence' ? 'drills.saySentence' : 'drills.sayWord', { lang: to }) + (drill.bucket === 'weak' ? t('drills.weak') : drill.bucket === 'new' ? t('drills.new') : drill.assumed ? t('drills.check') : '');
 }
 function playPrompt(slow) { stopAudio(); play(drill.prompt.speak || drill.prompt.text, side(drill.prompt.lang), slow); }
 
@@ -98,7 +99,7 @@ function showIntro() {
     <div class="center"><button class="ic" id="dp" aria-label="${esc(t('drills.play'))}">▶</button><button class="ic" id="ds" aria-label="${esc(t('talk.slower'))}">🐢</button></div>
     <p class="note">${esc(t('drills.listenRepeat'))}</p>
     <div class="center"><button class="mic" id="dmic">${esc(t('drills.repeat'))}</button></div><p class="verdict" id="dv" dir="auto"></p>
-    <div class="btns"><button class="pill" id="dnext">${esc(t('drills.testMe'))}</button></div></div>`;
+    <div class="btns"><button class="pill" id="dnext">${esc(t('drills.testMe'))}</button><button class="pill" id="dknow">${esc(t('drills.knowIt'))}</button></div></div>`;
   const say = () => { stopAudio(); play(e.sayAs || e.text, 'target'); };
   $('#dp').onclick = say; $('#ds').onclick = () => { stopAudio(); play(e.sayAs || e.text, 'target', true); };
   $('#dmic').onclick = () => record(pack.target, heard => {
@@ -107,6 +108,14 @@ function showIntro() {
     $('#dv').textContent = ok ? t('drills.good') : t('drills.heard', { t: heard || t('drills.nothing') });
   });
   $('#dnext').onclick = showDrill;
+  /* The learner already knows it: no test and no early reviews; the next drill takes its place. */
+  $('#dknow').onclick = async () => {
+    const now = Date.now(), s = session;
+    D.markKnown(s.profile, drill.item, now);
+    D.skipDrill(s, drill);
+    await saveProgress(s, now);
+    if (s === session) next();
+  };
   say();
 }
 
@@ -184,6 +193,13 @@ async function check(heard) {
     done(c.correct, { hinted, better: c.better, note: c.note });
   } catch (e) { if (asked !== drill || !session) return; res.innerHTML = ''; $('#dmic').disabled = false; toast(e.message); }
 }
+/* Saves to My words the words whose progress changed since now, and the drill count. */
+async function saveProgress(s, now) {
+  const keys = Object.keys(s.profile.progress).filter(k => Object.values(s.profile.progress[k]).some(r => r && r.modified >= now));
+  const meaningOf = e => partner(data.where[e.id].group).map(x => x.text)[0] || '';
+  for (const r of DD.wordsFromProgress(data, s.profile, W, keys, meaningOf, now)) await saveWord(r);
+  store.setMeta('drills', s.profile.count);
+}
 /* Likely misheard: the closest option and two buttons (spec 6.7). */
 function didYouMean(closest, heard) {
   $('#dres').innerHTML = `<p class="verdict maybe">${esc(t('drills.didYouMean', { w: closest }))}</p><div class="btns"><button class="pill" id="dyes">${esc(t('drills.yes'))}</button><button class="pill" id="dno">${esc(t('drills.retry'))}</button></div>`;
@@ -200,11 +216,7 @@ async function done(correct, info) {
   D.recordAnswer(s, d, Object.assign({ correct }, info));
   score.total++; if (correct) score.right++;
   if (!correct) missed.push(d.type === 'word' ? { text: target(d.item).text, lang: data.target } : { text: d.prompt.text, lang: d.prompt.lang });
-  /* Save the words whose progress changed to My words. */
-  const keys = Object.keys(s.profile.progress).filter(k => Object.values(s.profile.progress[k]).some(r => r && r.modified >= now));
-  const meaningOf = e => partner(data.where[e.id].group).map(x => x.text)[0] || '';
-  for (const r of DD.wordsFromProgress(data, s.profile, W, keys, meaningOf, now)) await saveWord(r);
-  store.setMeta('drills', s.profile.count);
+  await saveProgress(s, now);
   if (s !== session || d !== drill) return; // the learner left while the answer was saved
 
   const right = drill.type === 'word' ? answers() : [info.better].filter(Boolean);
