@@ -43,7 +43,7 @@ yours | pron | שֶׁלְּךָ, שלך, שלכם, שלכן | possessive
 myself | pron | עצמי
 yourself | pron | עצמך
 himself | pron | עצמו
-herself | pron | עצמה
+herself | pron | עַצְמָהּ
 ourselves | pron | עצמנו
 themselves | pron | עצמם
 this | pron | זה, זאת, זו
@@ -61,7 +61,7 @@ something | pron | משהו
 anything | pron | משהו | any thing
 everything | pron | הכל, הכול
 nothing | pron | כלום, שום דבר
-each other | pron | זה את זה
+each other | pron | זֶה אֶת זֶה
 other | adj | אחר
 another | det | עוד | one more
 all | det | כל
@@ -95,9 +95,9 @@ with | prep | עם
 from | prep | מִן, מ, מן
 without | prep | בלי
 for | prep | בשביל
-about | prep | על | a topic
+about | prep | על (נושא) | a topic
 about | adv | בערך | approximately
-on | prep | על | on top of
+on | prep | על (מקום) | on top of
 under | prep | מתחת
 before | prep | לפני (קודם)
 after | prep | אחרי
@@ -111,7 +111,7 @@ during | prep | במהלך, בזמן
 inside | adv | בפנים
 outside | adv | בחוץ
 around | prep | מסביב, סביב
-across | prep | מעבר
+across | prep | מֵעֵבֶר
 toward | prep | לכיוון, לעבר
 except | prep | חוץ מ
 like | prep | כמו | similar to
@@ -286,7 +286,7 @@ kill | v | הרג / להרוג
 turn | v | פנה / לפנות | change direction
 try | v | ניסה / לנסות
 move | v | זז / לזוז | change position
-move | v | עבר / לעבור | to a new home
+move | v | עבר / לעבור (דירה) | to a new home
 hold | v | החזיק / להחזיק
 play | v | שיחק / לשחק
 believe | v | האמין / להאמין
@@ -355,7 +355,7 @@ wear | v | לבש / ללבוש
 enjoy | v | נהנה / ליהנות
 return | v | חזר / לחזור (למקום)
 offer | v | הציע / להציע
-pass | v | עבר / לעבור | go past
+pass | v | עבר / לעבור (ליד) | go past
 clean | v | ניקה / לנקות
 sell | v | מכר / למכור
 grow | v | גדל / לגדול
@@ -373,7 +373,7 @@ spend | v | הוציא / להוציא | money
 push | v | דחף / לדחוף
 knock | v | דפק / לדפוק
 count | v | ספר / לספור
-mention | v | הזכיר / להזכיר
+mention | v | הזכיר / להזכיר (לציין)
 agree | v | הסכים / להסכים
 share | v | שיתף / לשתף
 grab | v | תפס / לתפוס
@@ -386,7 +386,7 @@ taste | v | טעם / לטעום
 serve | v | הגיש / להגיש
 accept | v | קיבל / לקבל (הסכמה)
 burn | v | שרף / לשרוף
-cost | v | עלה / לעלות | have a price
+cost | v | עלה / לעלות (מחיר) | have a price
 appreciate | v | העריך / להעריך
 owe | v | היה חייב / להיות חייב
 joke | v | צחק / לצחוק (בדיחה)
@@ -422,8 +422,8 @@ copy | v | העתיק / להעתיק
 lock | v | נעל / לנעול
 raise | v | הרים / להרים
 lift | v | הרים / להרים
-hire | v | שכר / לשכור
-rent | v | שכר / לשכור
+hire | v | שכר / לשכור (עובד)
+rent | v | שכר / לשכור (דירה)
 lay | v | הניח / להניח (לשים)
 seem | v | נראה / להיראות
 look like | v | נראה / להיראות
@@ -443,9 +443,9 @@ suppose | v | הניח / להניח (השערה)
 seem | v | נראה / להיראות
 fit | v | התאים / להתאים
 suit | v | התאים / להתאים
-order | v | הזמין / להזמין | in a restaurant
-invite | v | הזמין / להזמין
-book | v | הזמין / להזמין | reserve
+order | v | הזמין / להזמין (שירות) | in a restaurant
+invite | v | הזמין / להזמין (אורח)
+book | v | הזמין / להזמין (שירות) | reserve
 report | v | דיווח / לדווח
 record | v | הקליט / להקליט
 test | v | בדק / לבדוק
@@ -463,7 +463,7 @@ run away | v | ברח / לברוח
 suck | v | מצץ / למצוץ
 roll | v | גלגל / לגלגל
 apologize | v | התנצל / להתנצל
-remind | v | הזכיר / להזכיר
+remind | v | הזכיר / להזכיר (לעורר זיכרון)
 cross | v | חצה / לחצות
 recognize | v | זיהה / לזהות
 correct | v | תיקן / לתקן
@@ -584,8 +584,8 @@ call back | v | חזר / לחזור (בטלפון)
 
 # ---------- Nouns: people and family ----------
 man | n | איש, גבר
-woman | n | אישה
-wife | n | אישה
+woman | n | אישה (בוגרת)
+wife | n | אישה (בת זוג)
 husband | n | בעל
 person | n | אָדָם, אדם
 people | n | אנשים
@@ -594,9 +594,9 @@ kid | n | ילד
 boy | n | ילד
 girl | n | ילדה
 baby | n | תינוק
-friend | n | חבר
+friend | n | חבר (ידיד)
 girlfriend | n | חברה
-boyfriend | n | חבר
+boyfriend | n | חבר (בן זוג)
 family | n | משפחה
 father | n | אבא, אב
 dad | n | אבא
@@ -606,7 +606,7 @@ parent | n | הורה
 son | n | בן
 daughter | n | בת
 brother | n | אח
-sister | n | אחות
+sister | n | אחות (משפחה)
 uncle | n | דוד
 aunt | n | דודה
 cousin | n | בן דוד, בת דודה
@@ -631,12 +631,12 @@ group | n | קבוצה
 couple | n | זוג
 pair | n | זוג
 partner | n | שותף
-member | n | חבר | of a group
+member | n | חבר (בקבוצה) | of a group
 human | n | בן אדם
 
 # ---------- Nouns: jobs ----------
 doctor | n | רופא
-nurse | n | אחות | in a hospital
+nurse | n | אחות (בית חולים) | in a hospital
 teacher | n | מורה
 student | n | תלמיד | at school
 student | n | סטודנט | at university
@@ -664,8 +664,8 @@ writer | n | סופר
 author | n | סופר
 artist | n | אמן
 singer | n | זמר
-actor | n | שחקן
-player | n | שחקן
+actor | n | שחקן (תיאטרון)
+player | n | שחקן (משחק)
 farmer | n | חקלאי
 engineer | n | מהנדס
 scientist | n | מדען
@@ -699,7 +699,7 @@ nose | n | אף
 mouth | n | פה
 tooth | n | שן
 tongue | n | לשון
-lip | n | שפה | of the mouth
+lip | n | שפה (בפה) | of the mouth
 hair | n | שיער
 neck | n | צוואר
 throat | n | גרון
@@ -708,7 +708,7 @@ arm | n | זרוע
 hand | n | יד
 finger | n | אצבע
 leg | n | רגל
-foot | n | רגל, כף רגל
+foot | n | כף רגל, רגל
 knee | n | ברך
 back | n | גב
 stomach | n | בטן
@@ -768,8 +768,8 @@ spoon | n | כף
 picture | n | תמונה
 photo | n | תמונה
 mirror | n | מראה
-clock | n | שעון
-watch | n | שעון | on the wrist
+clock | n | שעון (קיר)
+watch | n | שעון (יד) | on the wrist
 phone | n | טלפון
 computer | n | מחשב
 television | n | טלוויזיה
@@ -784,8 +784,8 @@ pencil | n | עיפרון
 book | n | ספר
 letter | n | מכתב | a message
 letter | n | אות | of the alphabet
-card | n | כרטיס
-ticket | n | כרטיס
+card | n | כרטיס (אשראי)
+ticket | n | כרטיס (כניסה)
 newspaper | n | עיתון
 magazine | n | מגזין
 gift | n | מתנה
@@ -799,7 +799,7 @@ money | n | כסף (תשלום)
 cash | n | מזומן
 dollar | n | דולר
 price | n | מחיר
-bill | n | חשבון
+bill | n | חשבון (לתשלום)
 clothes | n | בגדים
 shirt | n | חולצה
 dress | n | שמלה
@@ -858,7 +858,7 @@ restaurant | n | מסעדה
 menu | n | תפריט
 
 # ---------- Nouns: places ----------
-place | n | מקום
+place | n | מקום (אתר)
 world | n | עולם
 country | n | ארץ, מדינה
 state | n | מדינה
@@ -914,7 +914,7 @@ center | n | מרכז
 front | n | חזית
 top | n | חֵלֶק עֶלְיוֹן, חלק עליון
 bottom | n | תחתית
-inside | n | פנים | the inner part
+inside | n | פְּנִים | the inner part
 edge | n | קצה
 end | n | סוף
 north | n | צפון
@@ -925,7 +925,7 @@ earth | n | כדור הארץ
 land | n | אדמה
 ground | n | קרקע
 space | n | חלל | outer space
-space | n | מקום | room for something
+space | n | מקום (פנוי) | room for something
 sky | n | שמיים
 sun | n | שמש
 moon | n | ירח
@@ -935,18 +935,18 @@ fire | n | אש
 ice | n | קרח
 snow | n | שלג
 rain | n | גשם
-wind | n | רוח
+wind | n | רוח (אוויר)
 weather | n | מזג אוויר
 cloud | n | ענן
 storm | n | סערה
 stone | n | אבן
 rock | n | סלע
-tree | n | עץ
+tree | n | עץ (צמח)
 flower | n | פרח
 grass | n | דשא
 plant | n | צמח
 leaf | n | עלה
-wood | n | עץ | material
+wood | n | עץ (חומר) | material
 gold | n | זהב
 silver | n | כסף (מתכת) | metal
 iron | n | ברזל
@@ -1034,7 +1034,7 @@ thing | n | דבר
 stuff | n | דברים
 word | n | מילה
 name | n | שם
-language | n | שפה | spoken language
+language | n | שפה (לשון) | spoken language
 English | n | אנגלית
 Hebrew | n | עברית
 question | n | שאלה
@@ -1089,7 +1089,7 @@ travel | n | נסיעה
 job | n | עבודה
 work | n | עבודה
 business | n | עסק
-company | n | חברה | business
+company | n | חברה (עסק) | business
 money | n | כסף (תשלום)
 price | n | מחיר
 cost | n | עלות
@@ -1117,7 +1117,7 @@ half | n | חצי
 number | n | מספר
 list | n | רשימה
 line | n | שורה | of text
-line | n | תור | waiting people
+line | n | תור (המתנה) | waiting people
 page | n | עמוד
 test | n | מבחן
 exam | n | מבחן
@@ -1133,12 +1133,12 @@ energy | n | אנרגיה
 health | n | בריאות
 mind | n | שכל
 soul | n | נשמה
-spirit | n | רוח | soul
+spirit | n | רוח (נפש) | soul
 heart | n | לב
 feeling | n | הרגשה
 sense | n | היגיון
 memory | n | זיכרון
-experience | n | ניסיון
+experience | n | ניסיון (ידע)
 knowledge | n | ידע
 education | n | חינוך
 science | n | מדע
@@ -1165,8 +1165,8 @@ goal | n | מטרה
 purpose | n | מטרה
 reason | n | סיבה
 attention | n | תשומת לב
-interest | n | עניין
-matter | n | עניין
+interest | n | עניין (התעניינות)
+matter | n | עניין (נושא)
 subject | n | נושא
 topic | n | נושא
 situation | n | מצב
@@ -1253,8 +1253,8 @@ thick | adj | עבה
 thin | adj | רזה | person
 fat | adj | שמן
 heavy | adj | כבד
-light | adj | קל | not heavy
-easy | adj | קל
+light | adj | קל (משקל) | not heavy
+easy | adj | קל (לא קשה)
 hard | adj | קשה
 difficult | adj | קשה
 simple | adj | פשוט
@@ -1281,9 +1281,9 @@ fake | adj | מזויף
 free | adj | חופשי | not held
 free | adv | חינם | costs nothing
 busy | adj | עסוק
-ready | adj | מוכן
-sure | adj | בטוח | certain
-safe | adj | בטוח | not in danger
+ready | adj | מוכן (ערוך)
+sure | adj | בטוח (ודאי) | certain
+safe | adj | בטוח (מוגן) | not in danger
 dangerous | adj | מסוכן
 important | adj | חשוב
 possible | adj | אפשרי
@@ -1332,8 +1332,8 @@ dead | adj | מת
 rich | adj | עשיר
 poor | adj | עני
 cheap | adj | זול
-expensive | adj | יקר
-dear | adj | יקר | loved
+expensive | adj | יקר (מחיר)
+dear | adj | יקר (אהוב) | loved
 strong | adj | חזק
 weak | adj | חלש
 fast | adj | מהיר
@@ -1354,7 +1354,7 @@ horrible | adj | נורא
 excellent | adj | מצוין
 lucky | adj | בר מזל, בת מזל, בני מזל, בנות מזל
 proud | adj | גאה
-honest | adj | ישר, כן
+honest | adj | ישר, כן (הגון)
 polite | adj | מנומס
 rude | adj | גס רוח, גסת רוח, גסי רוח, גסות רוח
 lazy | adj | עצלן
@@ -1388,7 +1388,7 @@ hard | adj | קשה | not soft
 sharp | adj | חד
 flat | adj | שטוח
 round | adj | עגול
-straight | adj | ישר | not curved
+straight | adj | ישר (קו) | not curved
 close | adj | קרוב
 near | adj | קרוב
 far | adj | רחוק
@@ -1407,7 +1407,7 @@ favorite | adj | אהוב
 available | adj | פנוי
 missing | adj | חסר
 extra | adj | נוסף
-certain | adj | בטוח | sure
+certain | adj | בטוח (ודאי) | sure
 clear | adj | ברור
 obvious | adj | ברור
 quick | adj | מהיר
@@ -1472,7 +1472,7 @@ worst | adj | הכי גרוע
 ever | adv | אי פעם
 through | prep | דרך | from one side to the other
 else | adv | אחר | other
-while | conj | בזמן ש, כש
+while | conj | בִּזְמַן שֶׁ, כש
 walk | n | הליכה
 control | n | שליטה
 control | v | שלט / לשלוט
@@ -1509,7 +1509,7 @@ stuck | adj | תקוע
 magic | n | קסם
 suspect | n | חשוד
 battle | n | קרב
-account | n | חשבון
+account | n | חשבון (בבנק)
 stage | n | במה
 conversation | n | שיחה
 department | n | מחלקה
@@ -1531,18 +1531,18 @@ devil | n | שטן
 beauty | n | יופי
 event | n | אירוע
 apparently | adv | כנראה | it seems
-trial | n | משפט
+trial | n | משפט (בבית משפט)
 ridiculous | adj | מגוחך
 simply | adv | פשוט
 challenge | n | אתגר
 tight | adj | צמוד
-asleep | adj | ישן | sleeping
+asleep | adj | יָשֵׁן, ישנה, ישנים, ישנות | sleeping
 claim | v | טען / לטעון
 remain | v | נשאר / להישאר
 discuss | v | דן / לדון
 target | n | מטרה | something to hit
 faith | n | אמונה
-willing | adj | מוכן | ready to
+willing | adj | מוכן (מסכים) | ready to
 responsible | adj | אחראי
 justice | n | צדק
 military | adj | צבאי
@@ -1591,7 +1591,7 @@ dumb | adj | טיפש
 regret | v | התחרט / להתחרט
 honestly | adv | בכנות
 image | n | תמונה
-society | n | חברה | people living together
+society | n | חברה (ציבור) | people living together
 path | n | שביל
 owner | n | בעלים
 universe | n | יקום
@@ -1608,7 +1608,7 @@ pool | n | בריכה
 distance | n | מרחק
 unfortunately | adv | לצערי, למרבה הצער
 speech | n | נאום
-heat | n | חום
+heat | n | חום (חמימות)
 wave | n | גל
 usual | adj | רגיל
 cigarette | n | סיגריה
@@ -1634,7 +1634,7 @@ journey | n | מסע
 avoid | v | נמנע / להימנע
 divorce | n | גירושים
 degree | n | תואר | university
-rise | v | עלה / לעלות | go up
+rise | v | עלה / לעלות (למעלה) | go up
 value | n | ערך
 easily | adv | בקלות
 insane | adj | משוגע
@@ -1662,7 +1662,7 @@ shadow | n | צל
 cure | n | תרופה | for a disease
 rescue | v | חילץ / לחלץ
 period | n | תקופה
-sentence | n | משפט | words
+sentence | n | משפט (דקדוק) | words
 effort | n | מאמץ
 winner | n | מנצח
 option | n | אפשרות
@@ -1688,7 +1688,7 @@ clue | n | רמז
 deliver | v | מסר / למסור
 romantic | adj | רומנטי
 awake | adj | ער
-appointment | n | תור | at a doctor
+appointment | n | תור (פגישה) | at a doctor
 complicated | adj | מסובך
 factory | n | מפעל
 familiar | adj | מוכר
@@ -1706,7 +1706,7 @@ bath | n | אמבטיה
 debt | n | חוב
 circle | n | עיגול
 chase | v | רדף / לרדוף
-attempt | n | ניסיון | try
+attempt | n | ניסיון (מאמץ) | try
 eventually | adv | בסופו של דבר
 positive | adj | חיובי
 ashamed | adj | מתבייש
@@ -1720,7 +1720,7 @@ replace | v | החליף / להחליף
 odd | adj | מוזר
 nightmare | n | סיוט
 grave | n | קבר
-movement | n | תנועה
+movement | n | תנועה (תזוזה)
 neighborhood | n | שכונה
 tower | n | מגדל
 punch | n | אגרוף
@@ -1737,7 +1737,7 @@ mystery | n | תעלומה
 interrupt | v | הפריע / להפריע
 license | n | רישיון
 tax | n | מס
-traffic | n | תנועה | cars on the road
+traffic | n | תנועה (כבישים) | cars on the road
 courage | n | אומץ
 wire | n | חוט
 physical | adj | פיזי + פיסי
@@ -1823,7 +1823,7 @@ coin | n | מטבע
 smell | n | ריח
 taste | n | טעם
 temperature | n | טמפרטורה
-fever | n | חום | when sick
+fever | n | חום (מחלה) | when sick
 cough | n | שיעול
 cold | n | הצטננות | illness
 dentist | n | רופא שיניים
@@ -1836,7 +1836,7 @@ receipt | n | קבלה
 discount | n | הנחה
 change | n | עודף | money back
 waiter | n | מלצר
-bill | n | חשבון | in a restaurant
+bill | n | חשבון (לתשלום) | in a restaurant
 tip | n | טיפ | for a waiter
 recipe | n | מתכון
 oven | n | תנור

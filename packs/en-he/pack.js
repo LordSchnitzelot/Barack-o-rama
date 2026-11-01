@@ -13,6 +13,41 @@ export default {
     /* The small words that finish a phrasal verb ("give up", "find out"). Used to join a phrase
        the AI split in two by mistake (see joinSplitPhrases in tutor.js). */
     particles: ['up', 'down', 'out', 'off', 'on', 'in', 'away', 'back', 'over', 'through', 'along', 'around', 'about', 'by', 'for', 'with', 'into', 'after', 'across', 'apart', 'ahead', 'forward', 'together'],
+    /* The tutor voices to choose from in Settings (spec 9): Phonon's US and UK English voices,
+       from its voice catalog (Apache 2.0), pinned to one version of the catalog (spec 12, risk 3).
+       A voice file is about 250 KB and is downloaded the first time the voice is used. */
+    voices: {
+      base: 'https://huggingface.co/gradium/phonon-voices/resolve/0ee17205f254b5abc43b266c8a0f215565c352f7/',
+      list: [
+        { name: 'Harper', accent: 'US', gender: 'female', file: 'voices/4SZHfMpw-p46Ywgs.safetensors' },
+        { name: 'Zoey', accent: 'US', gender: 'female', file: 'voices/NbpkqMVS3CJeq2j8.safetensors' },
+        { name: 'Juniper', accent: 'US', gender: 'female', file: 'voices/NIWIOv5vTi5eRMj8.safetensors' },
+        { name: 'Everly', accent: 'US', gender: 'female', file: 'voices/vjFyp2BcCyTlUmYb.safetensors' },
+        { name: 'Hadley', accent: 'US', gender: 'female', file: 'voices/bXwrkHhURL1VFJdG.safetensors' },
+        { name: 'Delia', accent: 'US', gender: 'female', file: 'voices/nGzMHMPAWGaJFHOo.safetensors' },
+        { name: 'Easton', accent: 'US', gender: 'male', file: 'voices/LMDIYE0Oa377Qh6Z.safetensors' },
+        { name: 'Micah', accent: 'US', gender: 'male', file: 'voices/40QrMVgAxFiUnP9f.safetensors' },
+        { name: 'Trevor', accent: 'US', gender: 'male', file: 'voices/0zLApsZfVLLNaEGl.safetensors' },
+        { name: 'Russell', accent: 'US', gender: 'male', file: 'voices/_6Aslh2DxfmnRLmP.safetensors' },
+        { name: 'Preston', accent: 'US', gender: 'male', file: 'voices/qIxlZ7Ei8KvWlyQH.safetensors' },
+        { name: 'Miles', accent: 'US', gender: 'male', file: 'voices/d9XCyhjo4JhkHF1d.safetensors' },
+        { name: 'Maeve', accent: 'UK', gender: 'female', file: 'voices/6PWnV0Nq4wu7RVBT.safetensors' },
+        { name: 'Freya', accent: 'UK', gender: 'female', file: 'voices/GgfEkEJtxZR7gnpy.safetensors' },
+        { name: 'Pippa', accent: 'UK', gender: 'female', file: 'voices/uem82D50GRv2Dwma.safetensors' },
+        { name: 'Elodie-Rose', accent: 'UK', gender: 'female', file: 'voices/y9bQqIDnyxwqK01t.safetensors' },
+        { name: 'Imogen', accent: 'UK', gender: 'female', file: 'voices/gDT1nz7Ie36ZhL-C.safetensors' },
+        { name: 'Lottie', accent: 'UK', gender: 'female', file: 'voices/m9MxpY6IUGXtWp76.safetensors' },
+        { name: 'Bryony', accent: 'UK', gender: 'female', file: 'voices/gfP44RlHwr2kEwk7.safetensors' },
+        { name: 'Alfie', accent: 'UK', gender: 'male', file: 'voices/X6NceqF285Gr04gb.safetensors' },
+        { name: 'Hugh', accent: 'UK', gender: 'male', file: 'voices/YyKcxPG7iIgS3jsK.safetensors' },
+        { name: 'Edwin', accent: 'UK', gender: 'male', file: 'voices/zUCxzrOrugTSis03.safetensors' },
+        { name: 'Spencer', accent: 'UK', gender: 'male', file: 'voices/JOW0vchyswkQUMDS.safetensors' },
+        { name: 'Toby', accent: 'UK', gender: 'male', file: 'voices/dME3IWyZBvmh1n1q.safetensors' },
+        { name: 'Teddy', accent: 'UK', gender: 'male', file: 'voices/Zn7g6NxLqXlJb7Qi.safetensors' },
+      ],
+      /* Played by "Try this voice" in Settings. */
+      sample: 'Hi! I am your English tutor. Shall we talk for a few minutes?',
+    },
   },
   native: {
     code: 'he', name: 'Hebrew', speech: 'he-IL', dir: 'rtl',
@@ -53,7 +88,7 @@ export default {
     },
     /* How words are written in the "d" field of a reply, so the app can find them in the
        dictionary (spec 3.3: Dictionary forms, Phrases, Verbs). */
-    dictionaryForm: 'nouns singular ("cigarette"); adjectives and adverbs plain ("last"); a verb in the simple past stays in the simple past ("gave", "gave up"); every other verb form becomes "to" + the base form ("runs", "running" and "run" all become "to run"; "giving up" becomes "to give up"). ' +
+    dictionaryForm: 'nouns singular ("cigarette"); adjectives and adverbs plain ("last"), also when the sentence compares ("heavier", "heaviest" and "more expensive" become "heavy" and "expensive"; never add "to be" to an adjective); a verb in the simple past stays in the simple past ("gave", "gave up"); every other verb form becomes "to" + the base form ("runs", "running" and "run" all become "to run"; "giving up" becomes "to give up"). ' +
       'The Hebrew meaning follows the same rule: a noun in the singular without ה or other attached letters, a past verb in the masculine singular past (וִיתֵּר), any other verb as an infinitive (לְוַתֵּר).',
     /* A worked example of one sentence in a reply. Models follow an example more reliably than a
        rule: phrases stay one item, even when split by another word ("give it up"). */
@@ -61,14 +96,14 @@ export default {
       en: 'My friend gave up smoking last year, but now she wants to give it up again.',
       he: 'חברה שלי הפסיקה לעשן בשנה שעברה, אבל עכשיו היא רוצה לוותר על זה שוב.',
       words: [
-        { w: 'friend', d: 'friend', m: 'חָבֵר' },
-        { w: 'gave up', d: 'gave up', m: 'וִיתֵּר' },
-        { w: 'smoking', d: 'to smoke', m: 'לְעַשֵּׁן' },
-        { w: 'last', d: 'last', m: 'שֶׁעָבַר' },
-        { w: 'year', d: 'year', m: 'שָׁנָה' },
-        { w: 'wants', d: 'to want', m: 'לִרְצוֹת' },
-        { w: 'give it up', d: 'to give up', m: 'לְוַתֵּר' },
-        { w: 'again', d: 'again', m: 'שׁוּב' },
+        { w: 'friend', t: 'חברה', d: 'friend', m: 'חָבֵר' },
+        { w: 'gave up', t: 'הפסיקה', d: 'gave up', m: 'וִיתֵּר' },
+        { w: 'smoking', t: 'לעשן', d: 'to smoke', m: 'לְעַשֵּׁן' },
+        { w: 'last', t: 'שעברה', d: 'last', m: 'שֶׁעָבַר' },
+        { w: 'year', t: 'שנה', d: 'year', m: 'שָׁנָה' },
+        { w: 'wants', t: 'רוצה', d: 'to want', m: 'לִרְצוֹת' },
+        { w: 'give it up', t: 'לוותר על זה', d: 'to give up', m: 'לְוַתֵּר' },
+        { w: 'again', t: 'שוב', d: 'again', m: 'שׁוּב' },
       ],
     },
     /* The opening line when the learner starts a session without saying anything yet. */

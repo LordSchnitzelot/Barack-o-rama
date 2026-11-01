@@ -163,16 +163,18 @@ def en_forms(en, word, pos):
     first word of a phrase ("give back" -> "gave back")."""
     out = collections.defaultdict(list)
     for e in en.get(word.lower(), []):
-        if e['pos'] != ('verb' if pos == 'verb' else 'noun'): continue
+        if e['pos'] != {'verb': 'verb', 'adjective': 'adj'}.get(pos, 'noun'): continue
         for f in e['forms']:
             t = set(f['tags']); form = f['form']
-            if not form or t & BAD_TAGS: continue
+            # A form with a note in brackets is not a word: "costed (see usage note)".
+            if not form or t & BAD_TAGS or '(' in form: continue
             if form.lower() == word.lower() and not (pos == 'verb' and 'past' in t): continue
             if pos == 'verb':
                 if 'past' in t and 'participle' not in t: out['past'].append(form)
                 elif 'past' in t: out['pp'].append(form)
                 elif 'third-person' in t or 'present' in t: out['other'].append(form)
             elif t == {'plural'}: out['plural'].append(form)
+            elif pos == 'adjective' and t & {'comparative', 'superlative'}: out['degree'].append(form)
         if out: break
     if pos == 'verb' and not out.get('past') and ' ' in word:
         head, rest = word.split(' ', 1)
@@ -184,10 +186,12 @@ def en_forms(en, word, pos):
 # ---------- Hebrew: finding the pointed word and its forms ----------
 review = collections.defaultdict(list)
 
-def find_he(he, word, pos, english, line):
-    if all(has_nikkud(w) for w in word.split(' ')): word = normalize(word)
+def find_he(he, word, pos, english, line, part=False):
     """The Wiktionary entry for an unpointed Hebrew word, preferring our part of speech and an
-    English gloss that mentions our English word."""
+    English gloss that mentions our English word. part: one word of a phrase put together word by
+    word, which has its own review section."""
+    pointed = all(has_nikkud(w) for w in word.split(' '))   # written with nikkud: that nikkud is used
+    if pointed: word = normalize(word)
     cands = he.get(normalize(word), [])
     if not cands: return None
     wanted = WIKI_POS[pos]
@@ -195,9 +199,16 @@ def find_he(he, word, pos, english, line):
                                           not re.search(r'\b' + re.escape(english.split(' ')[-1].lower()) + r'\b', e['glosses'])))
     best = ranked[0]
     if best['pos'] not in wanted and pos not in ('adverb', 'interjection', 'determiner', 'pronoun', 'question', 'preposition', 'conjunction', 'modal'): return None
+    if best['pos'] not in wanted and not pointed and not part:
+        # Small words are often filed under another part of speech in Wiktionary (שֶׁלִּי as a
+        # preposition), but the same letters can also be another word: מְעֻבָּר ("pregnant") for
+        # "across" (מֵעֵבֶר), עׇצְמָה ("power") for "herself" (עַצְמָהּ). So a person checks these.
+        note = 'line %d: %s = %s — Wiktionary has it as a %s: "%s"' % (line, english, best['canon'], best['pos'], best['glosses'][:70])
+        if note not in review['otherpos']: review['otherpos'].append(note)
     same = [e for e in ranked if e['pos'] == best['pos'] and normalize(e['canon']) == normalize(best['canon']) and e['canon'] != best['canon']]
-    if same and not re.search(r'\b' + re.escape(english.lower()) + r'\b', best['glosses']):
-        review['choice'].append('line %d: %s = %s — chose %s from several spellings (%s)' % (line, english, word, best['canon'], ', '.join(e['canon'] for e in same)))
+    if same and not pointed and not re.search(r'\b' + re.escape(english.lower()) + r'\b', best['glosses']):
+        note = 'line %d: %s = %s — chose %s from several spellings (%s)' % (line, english, word, best['canon'], ', '.join(e['canon'] for e in same))
+        if note not in review['choice']: review['choice'].append(note)
     return best
 
 HAND = {}   # words.txt spelling -> nikkud written by hand in nikkud.txt (listed for review)
@@ -255,7 +266,7 @@ def point_phrase(he, text, pos, english, line):
     if ' ' not in text: return None
     parts = []
     for w in text.split(' '):
-        e = find_he(he, w, 'adverb', english, line) or find_he(he, w, 'noun', english, line)
+        e = find_he(he, w, 'adverb', english, line, True) or find_he(he, w, 'noun', english, line, True)
         if not e: return None
         parts.append(e['canon'])
     review['assembled'].append('line %d: %s = %s — nikkud put together word by word: %s' % (line, english, text, ' '.join(parts)))
@@ -269,7 +280,7 @@ def he_verb(he, to_inf, past_text, inf_text, english, line):
     of each. Multi-word verbs ("שם לב") conjugate the first word and keep the rest."""
     first, _, rest = past_text.partition(' ')
     inf_first, _, inf_rest = inf_text.partition(' ')
-    e = find_he(he, first, 'verb', english, line)
+    e = find_he(he, first, 'verb', english, line, bool(rest))
     if not e or e['pos'] != 'verb': return None
     tail = ''
     if rest:
@@ -304,6 +315,11 @@ def he_word(he, text, extras, pos, english, line):
     pointed = point_phrase(he, text, pos, english, line)
     if not pointed: return None
     e = find_he(he, text, pos, english, line)
+    if e and all(has_nikkud(w) for w in text.split(' ')) and nfc(e['canon']) != nfc(text):
+        # Written with nikkud in words.txt, and Wiktionary's word with these letters is another word
+        # (פָּנִים "face" for פְּנִים "inside"): its forms and meanings are not used.
+        review['homograph'].append('line %d: %s = %s — Wiktionary\'s %s is another word: "%s"' % (line, english, nfc(text), e['canon'], e['glosses'][:60]))
+        e = None
     forms = [pointed]
     if e and pos == 'adjective': forms += he_forms(e, lambda t: bool(t & {'feminine', 'plural'}))
     if e and pos == 'noun': forms += he_forms(e, lambda t: 'plural' in t)
@@ -328,6 +344,13 @@ def confirmed(en, e, english, he_text):
     return bool(e) and bool(re.search(r'\b' + re.escape(english.lower()) + r'\b', e['glosses']))
 
 # ---------- Building ----------
+def shown_past(forms, freq):
+    """The past form shown on screen when Wiktionary gives several: the first listed, which is the
+    usual one, unless it never appears in the subtitles and another does ("fixt" and "blest", old
+    spellings Wiktionary lists before "fixed" and "blessed"). All of them are still accepted."""
+    seen = [f for f in forms if freq['en'].get(normalize(f).split(' ')[0], 0)]
+    return forms[0] if not seen or seen[0] == forms[0] else seen[0]
+
 def build(data):
     freq, he, to_inf, en = load(data)
     load_hand(); load_forms()
@@ -348,7 +371,7 @@ def build(data):
             f = en_forms(en, word, 'verb')
             if not pointed or not f.get('past'):
                 review['missing'].append('line %d: %s = %s — no nikkud or English past form, so it was left out' % (L['line'], word, past_he)); continue
-            entries.append(dict(en_text=f['past'][0], en_acc=sorted({normalize(x) for x in f['past']}), label=L['label'], pos='verb', verbForm='past',
+            entries.append(dict(en_text=shown_past(f['past'], freq), en_acc=sorted({normalize(x) for x in f['past']}), label=L['label'], pos='verb', verbForm='past',
                                 he_text=nfc(pointed), he_acc=sorted({normalize(past_he)} | {normalize(x) for x in extras}), he_label=he_label,
                                 line=L['line'], pair=None, base=word, verb=(pointed, None)))
         elif L['pos'] == 'verb':
@@ -366,7 +389,7 @@ def build(data):
             pair = len(entries)
             verb = (v['past'], v['inf'])
             entries.append(dict(en_text='to ' + word, en_acc=inf_acc, label=L['label'], pos='verb', verbForm='infinitive', he_text=v['inf'], he_acc=v['inf_acc'], he_seen=v['seen_as'], he_label=he_label, line=L['line'], pair=pair + 1, base=word, verb=verb))
-            entries.append(dict(en_text=f['past'][0], en_acc=past_acc, label=L['label'], pos='verb', verbForm='past', he_text=v['past'], he_acc=v['past_acc'], he_label=he_label, line=L['line'], pair=pair, base=word, verb=verb))
+            entries.append(dict(en_text=shown_past(f['past'], freq), en_acc=past_acc, label=L['label'], pos='verb', verbForm='past', he_text=v['past'], he_acc=v['past_acc'], he_label=he_label, line=L['line'], pair=pair, base=word, verb=verb))
         else:
             # Hebrew synonyms in one group: "כועס + עצבני" (spec 3.3, Groups).
             main, *more = [x.strip() for x in main.split('+')]
@@ -379,8 +402,11 @@ def build(data):
                 review['missing'].append('line %d: %s = %s — Wiktionary has no nikkud (or forms) for it, so it was left out' % (L['line'], word, main)); continue
             acc = {normalize(word)}
             if L['pos'] == 'noun' and ' ' not in word: acc |= {normalize(x) for x in en_forms(en, word, 'noun').get('plural', [])}
+            # Comparatives and superlatives ("heavier", "most expensive") point at the adjective when
+            # they appear in the chat, but are not accepted as drill answers: "seenAs".
+            seen = {normalize(x) for x in en_forms(en, word, 'adjective').get('degree', [])} if L['pos'] == 'adjective' and ' ' not in word else set()
             if not confirmed(en, h['entry'], word, h['text']): review['unconfirmed'].append('line %d: %s = %s' % (L['line'], word, h['text']))
-            entries.append(dict(en_text=word, en_acc=sorted(acc), label=L['label'], pos=L['pos'], verbForm=None, he_text=h['text'], he_acc=h['acc'], he_label=he_label, line=L['line'], pair=None, base=word, he_more=syn))
+            entries.append(dict(en_text=word, en_acc=sorted(acc), en_seen=seen, label=L['label'], pos=L['pos'], verbForm=None, he_text=h['text'], he_acc=h['acc'], he_label=he_label, line=L['line'], pair=None, base=word, he_more=syn))
 
     # Groups: English words with the same Hebrew word (and meaning) are synonyms (spec 3.3).
     groups = collections.OrderedDict()
@@ -480,6 +506,8 @@ def build(data):
         i = '%s%d' % (lang, next_id[lang]); next_id[lang] += 1; taken.add(i); return i
 
     out = {'en': [], 'he': []}
+    # A comparative that is an entry of its own ("better", "best") points only at that entry.
+    en_accepted = set().union(*[set(e['en_acc']) for e in entries])
     for k in keys:
         idx = groups[k]; first = entries[idx[0]]
         g = {'id': gnum[k], 'pos': first['pos']}
@@ -492,6 +520,8 @@ def build(data):
             text = x['en_text'] + (' (%s)' % x['en_label'] if x['en_label'] else '')
             w = {'id': word_id('en', text), 'text': text, 'rank': order['en'][i], 'accepted': x['en_acc']}
             if x['en_text'] == 'read' and x['verbForm'] == 'past': w['sayAs'] = 'red (past tense)'
+            seen_en = sorted(x.get('en_seen', set()) - en_accepted)
+            if seen_en: w['seenAs'] = seen_en
             en_words.append(w)
         out['en'].append(dict(g, words=en_words))
         htext = he_text[k] + (' (%s)' % he_lab[k] if he_lab.get(k) else '')
@@ -533,6 +563,8 @@ def write_review(n):
                 ('forms', 'Adjective forms from forms.txt', 'Feminine and plural forms given by the owner; the masculine plurals there were added by Claude.'),
                 ('hand', 'Nikkud written by hand (nikkud.txt)', 'Wiktionary had no nikkud for these, so Claude wrote it. Check each one.'),
                 ('choice', 'Several Hebrew spellings to choose from', 'The build picked one; check it is the right word.'),
+                ('homograph', 'Another word with the same letters', 'Written with nikkud in words.txt because Wiktionary\'s word with the same letters is a different word, so none of its forms are used. Check the nikkud, and that the forms written in words.txt are complete.'),
+                ('otherpos', 'Nikkud from another part of speech', 'Wiktionary has these letters only as another part of speech, so the nikkud comes from there. Usually the same word (שֶׁלִּי is filed as a preposition); check it is not a different word with the same letters. To fix one, write the Hebrew with nikkud in words.txt.'),
                 ('labels', 'Labels to improve', '')]
     for key, title, note in sections:
         items = review.get(key, [])
