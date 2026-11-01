@@ -88,7 +88,7 @@ export default {
     },
     /* How words are written in the "d" field of a reply, so the app can find them in the
        dictionary (spec 3.3: Dictionary forms, Phrases, Verbs). */
-    dictionaryForm: 'nouns singular ("cigarette"); adjectives and adverbs plain ("last"); a verb in the simple past stays in the simple past ("gave", "gave up"); every other verb form becomes "to" + the base form ("runs", "running" and "run" all become "to run"; "giving up" becomes "to give up"). ' +
+    dictionaryForm: 'nouns singular ("cigarette"); adjectives and adverbs plain ("last"), also when the sentence compares ("heavier", "heaviest" and "more expensive" become "heavy" and "expensive"; never add "to be" to an adjective); a verb in the simple past stays in the simple past ("gave", "gave up"); every other verb form becomes "to" + the base form ("runs", "running" and "run" all become "to run"; "giving up" becomes "to give up"). ' +
       'The Hebrew meaning follows the same rule: a noun in the singular without ה or other attached letters, a past verb in the masculine singular past (וִיתֵּר), any other verb as an infinitive (לְוַתֵּר).',
     /* A worked example of one sentence in a reply. Models follow an example more reliably than a
        rule: phrases stay one item, even when split by another word ("give it up"). */
@@ -96,14 +96,14 @@ export default {
       en: 'My friend gave up smoking last year, but now she wants to give it up again.',
       he: 'חברה שלי הפסיקה לעשן בשנה שעברה, אבל עכשיו היא רוצה לוותר על זה שוב.',
       words: [
-        { w: 'friend', d: 'friend', m: 'חָבֵר' },
-        { w: 'gave up', d: 'gave up', m: 'וִיתֵּר' },
-        { w: 'smoking', d: 'to smoke', m: 'לְעַשֵּׁן' },
-        { w: 'last', d: 'last', m: 'שֶׁעָבַר' },
-        { w: 'year', d: 'year', m: 'שָׁנָה' },
-        { w: 'wants', d: 'to want', m: 'לִרְצוֹת' },
-        { w: 'give it up', d: 'to give up', m: 'לְוַתֵּר' },
-        { w: 'again', d: 'again', m: 'שׁוּב' },
+        { w: 'friend', t: 'חברה', d: 'friend', m: 'חָבֵר' },
+        { w: 'gave up', t: 'הפסיקה', d: 'gave up', m: 'וִיתֵּר' },
+        { w: 'smoking', t: 'לעשן', d: 'to smoke', m: 'לְעַשֵּׁן' },
+        { w: 'last', t: 'שעברה', d: 'last', m: 'שֶׁעָבַר' },
+        { w: 'year', t: 'שנה', d: 'year', m: 'שָׁנָה' },
+        { w: 'wants', t: 'רוצה', d: 'to want', m: 'לִרְצוֹת' },
+        { w: 'give it up', t: 'לוותר על זה', d: 'to give up', m: 'לְוַתֵּר' },
+        { w: 'again', t: 'שוב', d: 'again', m: 'שׁוּב' },
       ],
     },
     /* The opening line when the learner starts a session without saying anything yet. */

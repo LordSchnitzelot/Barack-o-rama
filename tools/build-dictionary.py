@@ -163,7 +163,7 @@ def en_forms(en, word, pos):
     first word of a phrase ("give back" -> "gave back")."""
     out = collections.defaultdict(list)
     for e in en.get(word.lower(), []):
-        if e['pos'] != ('verb' if pos == 'verb' else 'noun'): continue
+        if e['pos'] != {'verb': 'verb', 'adjective': 'adj'}.get(pos, 'noun'): continue
         for f in e['forms']:
             t = set(f['tags']); form = f['form']
             # A form with a note in brackets is not a word: "costed (see usage note)".
@@ -174,6 +174,7 @@ def en_forms(en, word, pos):
                 elif 'past' in t: out['pp'].append(form)
                 elif 'third-person' in t or 'present' in t: out['other'].append(form)
             elif t == {'plural'}: out['plural'].append(form)
+            elif pos == 'adjective' and t & {'comparative', 'superlative'}: out['degree'].append(form)
         if out: break
     if pos == 'verb' and not out.get('past') and ' ' in word:
         head, rest = word.split(' ', 1)
@@ -401,8 +402,11 @@ def build(data):
                 review['missing'].append('line %d: %s = %s — Wiktionary has no nikkud (or forms) for it, so it was left out' % (L['line'], word, main)); continue
             acc = {normalize(word)}
             if L['pos'] == 'noun' and ' ' not in word: acc |= {normalize(x) for x in en_forms(en, word, 'noun').get('plural', [])}
+            # Comparatives and superlatives ("heavier", "most expensive") point at the adjective when
+            # they appear in the chat, but are not accepted as drill answers: "seenAs".
+            seen = {normalize(x) for x in en_forms(en, word, 'adjective').get('degree', [])} if L['pos'] == 'adjective' and ' ' not in word else set()
             if not confirmed(en, h['entry'], word, h['text']): review['unconfirmed'].append('line %d: %s = %s' % (L['line'], word, h['text']))
-            entries.append(dict(en_text=word, en_acc=sorted(acc), label=L['label'], pos=L['pos'], verbForm=None, he_text=h['text'], he_acc=h['acc'], he_label=he_label, line=L['line'], pair=None, base=word, he_more=syn))
+            entries.append(dict(en_text=word, en_acc=sorted(acc), en_seen=seen, label=L['label'], pos=L['pos'], verbForm=None, he_text=h['text'], he_acc=h['acc'], he_label=he_label, line=L['line'], pair=None, base=word, he_more=syn))
 
     # Groups: English words with the same Hebrew word (and meaning) are synonyms (spec 3.3).
     groups = collections.OrderedDict()
@@ -502,6 +506,8 @@ def build(data):
         i = '%s%d' % (lang, next_id[lang]); next_id[lang] += 1; taken.add(i); return i
 
     out = {'en': [], 'he': []}
+    # A comparative that is an entry of its own ("better", "best") points only at that entry.
+    en_accepted = set().union(*[set(e['en_acc']) for e in entries])
     for k in keys:
         idx = groups[k]; first = entries[idx[0]]
         g = {'id': gnum[k], 'pos': first['pos']}
@@ -514,6 +520,8 @@ def build(data):
             text = x['en_text'] + (' (%s)' % x['en_label'] if x['en_label'] else '')
             w = {'id': word_id('en', text), 'text': text, 'rank': order['en'][i], 'accepted': x['en_acc']}
             if x['en_text'] == 'read' and x['verbForm'] == 'past': w['sayAs'] = 'red (past tense)'
+            seen_en = sorted(x.get('en_seen', set()) - en_accepted)
+            if seen_en: w['seenAs'] = seen_en
             en_words.append(w)
         out['en'].append(dict(g, words=en_words))
         htext = he_text[k] + (' (%s)' % he_lab[k] if he_lab.get(k) else '')

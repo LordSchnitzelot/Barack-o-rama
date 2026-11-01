@@ -12,9 +12,10 @@
    A tutor reply comes back as data (spec 3.2, Structured model replies). The JSON keys are the
    pack's language codes, so for English-for-Hebrew-speakers a sentence is {"en", "he", "words"}.
    parseReply turns it into the same shape for every pack:
-     { sentences: [ { target, native, words: [ { w, d, m } ] } ], struggled: [ { w, d, m } ] }
-   w is the word or phrase as written ("gave up"), d its dictionary form ("gave up"; "to run" for
-   "runs") and m its meaning in that same form. The app links d and m to a dictionary entry in
+     { sentences: [ { target, native, words: [ { w, t, d, m } ] } ], struggled: [ { w, d, m } ] }
+   w is the word or phrase as written ("heavier"), t its translation as used in the sentence
+   ("כבד יותר"), d its dictionary form ("heavy"; "to run" for "runs") and m its meaning in that same
+   form ("כָּבֵד"). The app links d and m to a dictionary entry in
    code (spec 3.2, Linking chat words to the dictionary; see dictionary.js). */
 import { t as uiText } from './strings.js';
 
@@ -45,7 +46,7 @@ export function tutorPrompt(pack, profile = {}, settings = {}, mode = 'chat') {
 function replyFormat(pack) {
   const t = pack.target, n = pack.native;
   return `Reply ONLY with JSON, no other text:
-{"sentences":[{"${t.code}":"one sentence in ${t.name}","${n.code}":"its natural ${n.name} translation","words":[{"w":"word or phrase exactly as written in the sentence","d":"its dictionary form","m":"its ${n.name} meaning in this sentence, in dictionary form"}]}],"struggled":[{"w":"${t.name} word or phrase","d":"its dictionary form","m":"${n.name} meaning, in dictionary form"}]}
+{"sentences":[{"${t.code}":"one sentence in ${t.name}","${n.code}":"its natural ${n.name} translation","words":[{"w":"word or phrase exactly as written in the sentence","t":"its ${n.name} translation exactly as used in this sentence","d":"its dictionary form","m":"its ${n.name} meaning in this sentence, in dictionary form"}]}],"struggled":[{"w":"${t.name} word or phrase","d":"its dictionary form","m":"${n.name} meaning, in dictionary form"}]}
 - One item in "sentences" per sentence you say.
 - In "words", list every content word of the sentence (skip words like a, the, is, and, to). Write ${n.name} meanings with nikkud if the language uses it.
 - A phrase whose meaning is more than its words (such as a phrasal verb or an idiom) is ONE item: never list its parts ("gave", "up") as separate items. If other words sit inside the phrase ("give it up"), "w" is the whole stretch exactly as written. A phrase whose meaning is just its words ("last year") is split into its words.
@@ -82,7 +83,7 @@ export function extractJSON(text) {
 
 const str = v => typeof v === 'string' ? v.trim() : '';
 const wordList = a => (Array.isArray(a) ? a : [])
-  .map(x => ({ w: str(x && x.w), d: str(x && x.d) || str(x && x.w), m: str(x && x.m) }))
+  .map(x => Object.assign({ w: str(x && x.w), d: str(x && x.d) || str(x && x.w), m: str(x && x.m) }, str(x && x.t) ? { t: str(x.t) } : {}))
   .filter(x => x.w);
 
 /* Checks a tutor reply and returns it in the shared shape. Throws if there is nothing to say. */
@@ -146,7 +147,7 @@ export function joinSplitPhrases(text, words, particles = []) {
       const head = single.get(low(tokens[j][0]));
       if (!head || head === part || P.has(low(head.w)) || head.m !== part.m) continue;
       const w = text.slice(tokens[j].index, tk.index + tk[0].length);
-      if (!joined.some(x => x.w === w)) joined.push({ w, d: head.d + ' ' + low(part.w), m: head.m });
+      if (!joined.some(x => x.w === w)) joined.push(Object.assign({ w, d: head.d + ' ' + low(part.w), m: head.m }, head.t ? { t: head.t } : {}));
       used.add(part);
       break;
     }

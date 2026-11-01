@@ -43,7 +43,8 @@ const tutorReply = {
   sentences: [
     { en: 'Hello! It is nice to meet you.', he: 'שלום! נעים להכיר אותך.', words: [{ w: 'nice', d: 'nice', m: 'נֶחְמָד' }, { w: 'meet', d: 'to meet', m: 'לִפְגּוֹשׁ' }] },
     { en: 'Did you give up coffee?', he: 'ויתרת על קפה?', words: [{ w: 'give', d: 'to give', m: 'לְוַתֵּר' }, { w: 'up', d: 'up', m: 'לְוַתֵּר' }, { w: 'coffee', d: 'coffee', m: 'קָפֶה' }] },
-    { en: 'What do you drink now?', he: 'מה אתה שותה עכשיו?', words: [{ w: 'drink', d: 'to drink', m: 'לִשְׁתּוֹת' }, { w: 'now', d: 'now', m: 'עַכְשָׁו' }] },
+    /* "to be heavy" is the mistake a real model made for "heavier": the code must still find "heavy". */
+    { en: 'Your bag is heavier now.', he: 'התיק שלך כבד יותר עכשיו.', words: [{ w: 'bag', t: 'התיק', d: 'bag', m: 'תִּיק' }, { w: 'heavier', t: 'כבד יותר', d: 'to be heavy', m: 'כבד' }, { w: 'now', d: 'now', m: 'עַכְשָׁו' }] },
   ],
   struggled: [{ w: 'water', d: 'water', m: 'מַיִם' }],
 };
@@ -181,6 +182,13 @@ async function main() {
   await page.click('#wy');
   await page.waitForTimeout(200);
   check('Chat: tapping a word shows its translation and saves it', /Saved to My words|נשמר/.test(await page.textContent('#wd')), await page.textContent('#wd .mean'));
+  await page.click('#wd .close');
+  await page.click('.w[data-w="heavier"]');
+  await page.click('#wy');
+  await page.waitForTimeout(200);
+  const heavier = await page.textContent('#wd');
+  check('Chat: "heavier" shows as written, with its meaning there and its dictionary entry', /heavier/.test(heavier) && heavier.includes('כבד יותר') && /heavy = כָּבֵד/.test(heavier) && /Saved to My words/.test(heavier), heavier.replace(/\s+/g, ' ').slice(0, 90));
+  await shot('03b-heavier');
   await page.click('#wd .close');
   await speak('I goed home yesterday', '#mic');
   await page.waitForFunction(() => document.querySelectorAll('.msg.tutor').length === 2, null, { timeout: 5000 });

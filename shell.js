@@ -136,10 +136,12 @@ function keepData() {
   navigator.storage.persisted().then(yes => yes || navigator.storage.persist()).catch(() => {});
 }
 
-/* Tapping a word (spec 5.8, 6.6): asks "Show translation?" first; on yes, shows the meaning and a
-   pronunciation button, and flags the word for practice if it is in the dictionary. The code finds
-   the entry; only if several entries fit and the code cannot tell which is meant, the AI is asked,
-   for this word only. info = { text, form, meaning, example }. onFlag(entry) is called once saved. */
+/* Tapping a word (spec 5.8, 6.6): asks "Show translation?" first; on yes, shows the word as written
+   with its translation in the sentence (from the tutor's reply: "heavier" = "כבד יותר"), and below
+   it the dictionary entry the code found ("heavy" = "כָּבֵד"), which is saved for practice. The
+   code looks the word up by its dictionary form, and if that fails by the word as written; only if
+   several entries fit and the code cannot tell which is meant, the AI is asked, for this word only.
+   info = { text (as written), inContext, form, meaning, example }. onFlag(entry) is called once saved. */
 export function openWord(info, onFlag) {
   const box = $('#wd');
   box.innerHTML = `<h3 ${attrs(pack.target)}>${esc(info.text)}</h3><p class="note">${t('word.ask')}</p><div class="btns"><button class="pill" id="wy">${t('word.show')}</button><button class="pill" id="wnx">${t('word.notNow')}</button></div>`;
@@ -149,19 +151,23 @@ export function openWord(info, onFlag) {
 }
 async function reveal(info, onFlag) {
   const box = $('#wd');
-  const found = lookup(dict, info.form || info.text, info.meaning);
-  const show = (title, shown, note) => {
-    box.innerHTML = `<h3 ${attrs(pack.target)}>${esc(title)}</h3><p ${attrs(pack.native)} class="mean">${esc(shown)}</p><button class="pill" id="wp">${t('common.hear')}</button><p class="note" id="wn" style="margin-top:12px">${esc(note)}</p><button class="close" onclick="this.closest('dialog').close()">${t('common.close')}</button>`;
-    $('#wp').onclick = () => { stopAudio(); play(title, 'target'); };
+  let found = lookup(dict, info.form || info.text, info.meaning);
+  /* The AI's dictionary form may be wrong ("to be heavy" for "heavier"): then the word as written. */
+  if (!found.entry && !found.candidates.length && info.form && info.form !== info.text) found = lookup(dict, info.text, info.meaning);
+  const show = (dictLine, note) => {
+    box.innerHTML = `<h3 ${attrs(pack.target)}>${esc(info.text)}</h3><p ${attrs(pack.native)} class="mean">${esc(info.inContext || info.meaning)}</p>` +
+      (dictLine ? `<p class="note">${esc(t('word.inDict'))} ${dictLine}</p>` : '') +
+      `<button class="pill" id="wp" style="margin-top:10px">${t('common.hear')}</button><p class="note" id="wn" style="margin-top:12px">${esc(note)}</p><button class="close" onclick="this.closest('dialog').close()">${t('common.close')}</button>`;
+    $('#wp').onclick = () => { stopAudio(); play(info.text, 'target'); };
   };
   const save = entry => {
     /* The dictionary's translations: every word of the partner group ("ללכת" for "will go"). */
-    show(entry.text, meaningOf(dict, entry) || info.meaning, t('word.saved'));
+    show(`<b ${attrs(pack.target)}>${esc(entry.text)}</b> = <span ${attrs(pack.native)}>${esc(meaningOf(dict, entry))}</span>`, t('word.saved'));
     flag(entry, { meaning: meaningOf(dict, entry), example: info.example, source: 'tapped' });
     if (onFlag) onFlag(entry);
   };
   if (found.entry) return save(found.entry);
-  show(info.text, info.meaning, found.candidates.length ? t('word.checking') : t('word.notInDict'));
+  show('', found.candidates.length ? t('word.checking') : t('word.notInDict'));
   if (!found.candidates.length) return;
   try {
     const opts = found.candidates.map(e => ({ text: e.text, meaning: meaningOf(dict, e) }));

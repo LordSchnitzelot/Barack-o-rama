@@ -46,7 +46,7 @@ function add(el) { const e = $('#empty'); if (e) e.remove(); $('#chat').appendCh
 function addUser(text, live) { const d = document.createElement('div'); d.className = 'msg user' + (live ? ' live' : ''); d.dir = 'auto'; d.lang = T.code; d.textContent = text; return add(d); }
 function wrap(text, words) {
   return markWords(text, words).map(p => p.word
-    ? `<span class="w" data-w="${esc(p.text)}" data-d="${esc(p.word.d)}" data-m="${esc(p.word.m)}">${esc(p.text)}</span>`
+    ? `<span class="w" data-w="${esc(p.text)}" data-tr="${esc(p.word.t || '')}" data-d="${esc(p.word.d)}" data-m="${esc(p.word.m)}">${esc(p.text)}</span>`
     : esc(p.text)).join('');
 }
 function addTutor(reply) {
@@ -72,7 +72,9 @@ $('#chat').addEventListener('click', e => {
   /* A hidden subtitle is revealed by tapping it (spec 5.6). */
   if (l.classList.contains('hide') && !l.classList.contains('shown')) { l.classList.add('shown'); return; }
   const w = e.target.closest('.w');
-  if (w) { const s = session; openWord({ text: w.dataset.d, form: w.dataset.d, meaning: w.dataset.m, example: w.closest('.sent').dataset.target }, entry => s && s.flagged.set(entry.id, entry)); }
+  /* The word as written ("heavier") and its translation there come from the tutor's reply; the code
+     then finds its dictionary entry ("heavy") from the dictionary form, or from the word itself. */
+  if (w) { const s = session; openWord({ text: w.dataset.w, inContext: w.dataset.tr, form: w.dataset.d, meaning: w.dataset.m, example: w.closest('.sent').dataset.target }, entry => s && s.flagged.set(entry.id, entry)); }
 });
 
 /* ---------- Talking with the tutor ---------- */

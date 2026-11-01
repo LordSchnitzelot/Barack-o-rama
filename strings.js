@@ -83,7 +83,8 @@ export const STRINGS = {
     'word.notNow': 'Not now',
     'word.saved': 'Saved to My words for practice.',
     'word.checking': 'Checking which meaning this is…',
-    'word.notInDict': 'Not in the dictionary, so it is not saved.',
+    'word.notInDict': 'Translation from the tutor. This word is not in the dictionary, so it is not saved.',
+    'word.inDict': 'In the dictionary:',
     'word.meaningNotInDict': 'This meaning is not in the dictionary, so it is not saved.',
     'word.checkFailed': 'Could not check the meaning ({e}). Not saved.',
 
@@ -300,7 +301,8 @@ export const STRINGS = {
     'word.notNow': 'לא עכשיו',
     'word.saved': 'נשמרה ב"המילים שלי" לתרגול.',
     'word.checking': 'בודקים לאיזו משמעות הכוונה…',
-    'word.notInDict': 'המילה לא נמצאת במילון, ולכן לא נשמרה.',
+    'word.notInDict': 'התרגום מהמורה. המילה לא נמצאת במילון, ולכן לא נשמרה.',
+    'word.inDict': 'במילון:',
     'word.meaningNotInDict': 'המשמעות הזאת לא נמצאת במילון, ולכן המילה לא נשמרה.',
     'word.checkFailed': 'לא הצלחנו לבדוק את המשמעות ({e}). המילה לא נשמרה.',
 

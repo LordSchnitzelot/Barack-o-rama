@@ -52,7 +52,7 @@ same number**. That is how a group "points at" its partner: group 151 in the Eng
 | `rank` | The frequency rank: 1 is the most common. New words are taught from rank 1 down. |
 | `accepted` | Every answer that counts as correct for this word, already **normalized** (lowercase, no punctuation, no nikkud), because that is how spoken answers are compared. |
 | `sayAs` | Optional. Only for words spelled alike but pronounced differently. The app speaks this instead of `text`. Example: `read (past tense)` has `"sayAs": "red (past tense)"`. |
-| `seenAs` | Optional, Hebrew infinitives. Spellings that point at this entry when they appear in a sentence or in the chat, but are not accepted answers: the future and command forms (אֵלֵךְ and לֵךְ point at לָלֶכֶת). Stored normalized. |
+| `seenAs` | Optional. Spellings that point at this entry when they appear in a sentence or in the chat, but are not accepted answers: for Hebrew infinitives the future and command forms (אֵלֵךְ and לֵךְ point at לָלֶכֶת); for English adjectives the comparative and superlative ("heavier", "most expensive" point at "heavy", "expensive"), unless that form is an entry of its own ("better"). Stored normalized. |
 
 ### How a drill uses this
 
