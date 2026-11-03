@@ -42,13 +42,13 @@ export const available = () => open().then(d => !!d);
 
 /* My words (words.js describes a record). */
 export const allWords = () => getAll(WORDS);
-export const putWord = w => putAll(WORDS, [w]);
 export const putWords = ws => putAll(WORDS, ws);
 export const deleteWords = ids => deleteAll(WORDS, ids);
 
 /* Weak-spot notes (spec 8): { id, note, kind: 'understanding' | 'speaking', created, modified }. */
 export const allNotes = () => getAll(NOTES);
 export const putNote = n => putAll(NOTES, [n]);
+export const putNotes = ns => putAll(NOTES, ns);
 /* Keeps only the newest max notes. */
 export async function trimNotes(max) {
   const old = (await allNotes()).sort((a, b) => b.created - a.created).slice(max).map(n => n.id);
@@ -61,3 +61,6 @@ export async function getMeta(id, fallback) {
   return r ? r.value : fallback;
 }
 export const setMeta = (id, value) => putAll(META, [{ id, value, modified: Date.now() }]);
+/* All single values as stored ({ id, value, modified }), and saving several: for backups. */
+export const allMeta = () => getAll(META);
+export const putMetas = rs => putAll(META, rs);

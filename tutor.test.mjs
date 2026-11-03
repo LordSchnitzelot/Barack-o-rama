@@ -60,6 +60,9 @@ test('replies with nothing to say are refused', () => {
 });
 
 test('a reply survives the round trip into the conversation history', () => {
+  const c = T.parseReply(pack, '{"sentences":[{"en":"It is heavier.","he":"זה כבד יותר.","words":[{"w":"heavier","t":"כבד יותר","d":"heavy","m":"כָּבֵד"}]}]}');
+  assert.deepEqual(c.sentences[0].words, [{ w: 'heavier', t: 'כבד יותר', d: 'heavy', m: 'כָּבֵד' }]); // t: the translation as used
+  assert.match(T.tutorPrompt(pack), /"heavier".*become "heavy"/); // comparatives use the plain adjective
   const r = T.parseReply(pack, '{"sentences":[{"en":"Hi.","he":"היי.","words":[{"w":"Hi","d":"hi","m":"היי"}]}]}');
   assert.deepEqual(T.parseReply(pack, T.replyToHistory(pack, r)), r);
 });

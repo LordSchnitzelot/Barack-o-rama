@@ -116,6 +116,16 @@ export const INTERVALS = [0, 3, 10, 30, 100, 300, 1000];
 /* DEFAULT: a weak word stops being weak after this many right answers in a row. */
 export const WEAK_EXIT_STREAK = 2;
 
+/* DEFAULT (not in the spec; the owner asked that Drills not start from zero): where Drills start,
+   by the learner's level in Settings. Words more common than this frequency rank are assumed
+   known: they are not taught as new words, and only come up now and then as a quick check. A
+   miss makes the word weak, like any other. */
+export const PLACEMENT = { beginner: 100, intermediate: 400, advanced: 1000 };
+/* DEFAULT: a word the learner already knows (an assumed word answered right, or "I already know
+   this word") goes straight to this level of the review ladder, so it next comes back after
+   INTERVALS[KNOWN_LEVEL] drills instead of 3 and then 10. */
+export const KNOWN_LEVEL = 4;
+
 export const wordKey = ref => ref.group + ':' + ref.word;
 
 /* now is the time (for "modified", so sync can be added later); due is a drill count. */
@@ -176,8 +186,22 @@ export function flagWord(profile, ref, source, now) {
    direction (spec 6.5: a new word is tested alone first). */
 export function isReady(profile, ref) {
   const p = profile.progress[wordKey(ref)];
-  return !!p && ((p.understand && p.understand.right > 0) || (p.say && p.say.right > 0));
+  const started = r => !!r && (r.right > 0 || r.level > 0);
+  return !!p && (started(p.understand) || started(p.say));
 }
+
+/* The target-language entry at a { group, word } reference. */
+export const entryAt = (data, ref) => (data.dicts[data.target][ref.group] || [])[ref.word];
+
+/* Within the placement (see PLACEMENT): more common than the session's starting rank. */
+function placed(s, ref) {
+  const e = entryAt(s.data, ref);
+  return !!s.placement && !!e && (e.rank ?? Infinity) <= s.placement;
+}
+/* Assumed known: within the placement and never drilled in either direction. */
+const isAssumed = (s, ref) => placed(s, ref) && !s.profile.progress[wordKey(ref)];
+/* Ready for sentences (spec 6.5): answered right once, or assumed known. */
+const readyIn = (s, ref) => isReady(s.profile, ref) || isAssumed(s, ref);
 
 export function targetWords(data) {
   const out = [];
@@ -203,11 +227,12 @@ export const MODES = ['mixed', 'words', 'sentences', 'comprehension', 'speaking'
 /* rng: a function returning numbers in [0, 1), like Math.random (tests pass a fixed one).
    now: a function returning the time in milliseconds (kept as "modified" on each record).
    profile.count: the number of drills answered so far; recordAnswer adds one. */
-export function startSession(data, profile, { mode = 'mixed', size = SESSION_SIZE, rng = Math.random, now = Date.now } = {}) {
+/* placement: the frequency rank up to which words are assumed known (PLACEMENT), or 0. */
+export function startSession(data, profile, { mode = 'mixed', size = SESSION_SIZE, rng = Math.random, now = Date.now, placement = 0 } = {}) {
   if (!MODES.includes(mode)) throw new Error('Unknown mode: ' + mode);
   const quota = { new: Math.round(size * MIX.new), weak: Math.round(size * MIX.weak) };
   quota.known = size - quota.new - quota.weak;
-  return { data, profile, mode, size, rng, now, quota, used: { new: 0, weak: 0, known: 0 }, history: [] };
+  return { data, profile, mode, size, rng, now, placement, quota, used: { new: 0, weak: 0, known: 0 }, history: [] };
 }
 
 const pick = (list, rng) => list[Math.floor(rng() * list.length)];
@@ -216,21 +241,24 @@ function recentKeys(s) {
   return new Set(s.history.slice(-REPEAT_GAP).map(d => wordKey(d.item)));
 }
 
-/* Words in each bucket for one direction, best first. */
+/* Words in each bucket for one direction, best first. "assumed" are the words the placement
+   assumes known; they fill the known bucket's quick checks when no review is due. */
 export function candidates(s, dir) {
   const { data, profile } = s, count = profile.count || 0, recent = recentKeys(s);
   const all = targetWords(data).filter(w => !recent.has(wordKey(w)));
-  const fresh = [], weak = [], known = [];
+  const fresh = [], weak = [], known = [], assumed = [], other = [];
   for (const w of all) {
     const r = getRecord(profile, w, dir);
-    if (!r) fresh.push(w);
+    /* Not drilled in this direction: assumed known within the placement; started only in the
+       other direction: not new again (no second intro), just due here; otherwise new. */
+    if (!r) (placed(s, w) ? assumed : profile.progress[wordKey(w)] ? other : fresh).push(w);
     else if (r.weak) weak.push(w); // weak words come up whether due or not, until fixed
     else if (r.due <= count) known.push(w);
   }
   const lvl = w => getRecord(profile, w, dir);
   weak.sort((a, b) => lvl(a).level - lvl(b).level || lvl(a).due - lvl(b).due);
   known.sort((a, b) => lvl(a).due - lvl(b).due); // most overdue first
-  return { new: fresh, weak, known };
+  return { new: fresh, weak, known: known.concat(other), assumed };
 }
 
 function pickNew(list, rng) {
@@ -245,17 +273,35 @@ function tagTargets(data, sentence, tag) {
   return (data.dicts[data.target][tag.group] || []).map((_, word) => ({ group: tag.group, word }));
 }
 
+/* The stored sentences by language and word, easiest first, built once per data: 'lang|word key'
+   -> [{ x: the sentence, tags: the target words each tag stands for }]. Picking a drill asks for
+   a word's sentences many times, so they are looked up instead of searched for. */
+const sentenceIndexes = new WeakMap();
+function sentenceIndex(data) {
+  let ix = sentenceIndexes.get(data);
+  if (ix) return ix;
+  ix = new Map();
+  for (const x of [...data.sentences].sort((a, b) => (a.difficulty ?? 0) - (b.difficulty ?? 0))) {
+    const tags = x.tags.map(tag => tagTargets(data, x, tag));
+    for (const k of new Set(tags.flat().map(wordKey))) {
+      const id = x.lang + '|' + k;
+      if (!ix.has(id)) ix.set(id, []);
+      ix.get(id).push({ x, tags });
+    }
+  }
+  sentenceIndexes.set(data, ix);
+  return ix;
+}
+
 /* Stored sentences that can drill this word in this direction (spec 6.5): in the right
    language, containing the word, and with every other word already ready. */
 export function sentencesFor(s, ref, dir) {
-  const { data, profile } = s;
+  const { data } = s;
   const lang = dir === 'understand' ? data.target : data.native;
   const asked = new Set(s.history.filter(d => d.sentence).map(d => d.sentence.id));
-  return data.sentences
-    .filter(x => x.lang === lang && !asked.has(x.id))
-    .filter(x => x.tags.some(tag => tagTargets(data, x, tag).some(r => wordKey(r) === wordKey(ref))))
-    .filter(x => x.tags.every(tag => tagTargets(data, x, tag).some(r => isReady(profile, r))))
-    .sort((a, b) => (a.difficulty ?? 0) - (b.difficulty ?? 0));
+  return (sentenceIndex(data).get(lang + '|' + wordKey(ref)) || [])
+    .filter(({ x, tags }) => !asked.has(x.id) && tags.every(refs => refs.some(r => readyIn(s, r))))
+    .map(({ x }) => x);
 }
 
 /* Picks the next drill, or returns null when the session is over.
@@ -273,8 +319,9 @@ export function nextDrill(s) {
      are used up or the buckets are empty, any bucket with words is used, so the session
      still has its full length. New words are tested alone first, so they never go
      straight into a sentence. */
+  const pool = b => b === 'known' && !c.known.length ? c.assumed : c[b];
   const bucketsFor = sentence => {
-    const ok = b => c[b].some(w => !sentence || sentencesFor(s, w, dir).length);
+    const ok = b => pool(b).some(w => !sentence || sentencesFor(s, w, dir).length);
     const open = ['new', 'weak', 'known'].filter(b => (!sentence || b !== 'new') && ok(b));
     const left = open.filter(b => s.used[b] < s.quota[b]);
     return left.length ? left : open;
@@ -289,12 +336,14 @@ export function nextDrill(s) {
   let r = rng() * weights.reduce((a, b) => a + b, 0), bucket = buckets[0];
   for (let i = 0; i < buckets.length; i++) if ((r -= weights[i]) < 0) { bucket = buckets[i]; break; }
 
-  let list = c[bucket];
+  let list = pool(bucket);
+  const assumed = list === c.assumed;
   if (sentence) list = list.filter(w => sentencesFor(s, w, dir).length);
-  const item = bucket === 'new' ? pickNew(list, rng) : list[0];
+  /* Quick checks of assumed words are picked at random, so they are not always "I" and "you". */
+  const item = bucket === 'new' ? pickNew(list, rng) : assumed ? pick(list, rng) : list[0];
   const { group, word } = item, ref = { group, word };
 
-  const drill = { type: sentence ? 'sentence' : 'word', dir, bucket, item: ref, intro: false };
+  const drill = { type: sentence ? 'sentence' : 'word', dir, bucket, item: ref, intro: false, assumed };
   if (sentence) {
     drill.sentence = sentencesFor(s, ref, dir)[0];
     drill.prompt = { lang: drill.sentence.lang, text: drill.sentence.text, speak: drill.sentence.text };
@@ -331,6 +380,8 @@ export function nextDrill(s) {
 export function recordAnswer(s, drill, { correct, matched = null, hinted = [] }) {
   const { data, profile } = s, t = s.now(), dir = drill.dir;
   const count = profile.count = (profile.count || 0) + 1;
+  /* An assumed word answered right is known in both directions (KNOWN_LEVEL). */
+  if (drill.assumed && correct && drill.type === 'word') return markKnown(profile, drill.item, t, count);
   if (drill.type === 'word') {
     review(ensureRecord(profile, drill.item, dir, t), !!correct, t, count);
     if (correct && matched && drill.dir === 'say' && wordKey(matched) !== wordKey(drill.item))
@@ -347,7 +398,30 @@ export function recordAnswer(s, drill, { correct, matched = null, hinted = [] })
       const started = getRecord(profile, ref, dir) || k === wordKey(drill.item) || drill.sentence.lang === data.target;
       if (!started) continue;
       done.add(k);
+      /* A common word the placement assumes known, said right inside a sentence: known. */
+      if (correct && !hintedKeys.has(k) && !getRecord(profile, ref, dir) && placed(s, ref)) { markKnown(profile, ref, t, count); continue; }
       review(ensureRecord(profile, ref, dir, t), !!correct && !hintedKeys.has(k), t, count);
     }
   }
+}
+
+/* The learner already knows this word (an assumed word answered right, or "I already know this
+   word" on a new word's intro): both directions go to KNOWN_LEVEL, so it comes back only as a
+   rare check, after INTERVALS[KNOWN_LEVEL] drills. A direction where the word is weak (missed
+   before) stays weak: a right answer the other way does not fix it. */
+export function markKnown(profile, ref, now, count = profile.count || 0) {
+  for (const dir of ['understand', 'say']) {
+    const r = ensureRecord(profile, ref, dir, now);
+    if (r.level >= KNOWN_LEVEL || r.weak) continue;
+    r.level = KNOWN_LEVEL; r.due = count + INTERVALS[KNOWN_LEVEL]; r.modified = now;
+  }
+}
+
+/* Takes back a drill that was shown but not done ("I already know this word"), so the session
+   still has its full number of drills. */
+export function skipDrill(s, drill) {
+  const i = s.history.lastIndexOf(drill);
+  if (i < 0) return;
+  s.history.splice(i, 1);
+  s.used[drill.bucket]--;
 }

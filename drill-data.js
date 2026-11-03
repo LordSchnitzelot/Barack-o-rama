@@ -3,7 +3,7 @@
    - Progress lives in the My words records (words.js), one per target-language entry, so a word
      flagged in Chat comes up in Drills as a weak word, and Drills scores show in My words.
    Plain code with no screen, tested by drill-data.test.mjs. */
-import { wordKey } from './drills.js';
+import { wordKey, entryAt } from './drills.js';
 
 /* files = { target, native, sentences } as stored; target and native are the dictionary files. */
 export function toDrillsData(files) {
@@ -24,8 +24,7 @@ export function toDrillsData(files) {
   return { target: T, native: N, dicts, sentences, where };
 }
 
-/* The target-language entry at a { group, word } reference. */
-export const entryAt = (data, ref) => (data.dicts[data.target][ref.group] || [])[ref.word];
+export { entryAt };
 
 /* Records saved before Drills counted in drills stored "due" as a time; those are due now. */
 const countBased = rec => rec.due > 1e9 ? Object.assign({}, rec, { due: 0 }) : rec;

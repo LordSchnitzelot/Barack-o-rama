@@ -52,7 +52,7 @@ same number**. That is how a group "points at" its partner: group 151 in the Eng
 | `rank` | The frequency rank: 1 is the most common. New words are taught from rank 1 down. |
 | `accepted` | Every answer that counts as correct for this word, already **normalized** (lowercase, no punctuation, no nikkud), because that is how spoken answers are compared. |
 | `sayAs` | Optional. Only for words spelled alike but pronounced differently. The app speaks this instead of `text`. Example: `read (past tense)` has `"sayAs": "red (past tense)"`. |
-| `seenAs` | Optional, Hebrew infinitives. Spellings that point at this entry when they appear in a sentence or in the chat, but are not accepted answers: the future and command forms (אֵלֵךְ and לֵךְ point at לָלֶכֶת). Stored normalized. |
+| `seenAs` | Optional. Spellings that point at this entry when they appear in a sentence or in the chat, but are not accepted answers: for Hebrew infinitives the future and command forms (אֵלֵךְ and לֵךְ point at לָלֶכֶת); for English adjectives the comparative and superlative ("heavier", "most expensive" point at "heavy", "expensive"), unless that form is an entry of its own ("better"). Stored normalized. |
 
 ### How a drill uses this
 
@@ -176,7 +176,7 @@ need a person's judgment live in plain text files that anyone can read and corre
 | `packs/en-he/drills/source/words.txt` | One meaning per line: the English word, its part of speech, the Hebrew word, and a label when needed. Verbs give the Hebrew past and infinitive ("הלך / ללכת"). |
 | `packs/en-he/drills/source/forms.txt` | Feminine and plural forms of adjectives that Wiktionary has none for. A spelling without nikkud in brackets follows a form when it differs: `מְזֻיֶּפֶת (מזויפת)`. |
 | `packs/en-he/drills/source/nikkud.txt` | Nikkud for the few words Wiktionary has none for (written by Claude; each needs a person's check). |
-| `packs/en-he/drills/source/sentences.txt` | The sentences, with their tenses and clauses. A word with several meanings carries its label in curly brackets: `know{a person}`. |
+| `packs/en-he/drills/source/sentences.txt` | The sentences, with their tenses and clauses. A word with several meanings carries its label in curly brackets: `know{a person}`. For Hebrew, the label is the entry as written (`השם{שֵׁם}`) or its label (`לא{שלילה}`); it can also pick the reading without attached letters: `הבן{בֵּן}` is ה + בֵּן ("the son"), not the command הָבֵן. |
 
 `tools/build-dictionary.py` fills in everything else from the sources in spec 3.3: the nikkud, every
 Hebrew past form, the infinitive, present and future forms, feminine and plural forms (English

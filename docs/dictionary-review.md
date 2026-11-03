@@ -14,7 +14,7 @@ These lines are not in the dictionary yet. Fill in the nikkud by hand (spec: Dic
 - line 1493: doubt = פקפק / לפקפק — Wiktionary has no nikkud or past forms for it, so it was left out
 - line 1812: recover = החלים / להחלים — Wiktionary has no nikkud or past forms for it, so it was left out
 
-## Translation not confirmed by Wiktionary (160)
+## Translation not confirmed by Wiktionary (161)
 
 Wiktionary does not list this pair. Most are fine (Wiktionary is incomplete); check the meaning.
 
@@ -22,7 +22,7 @@ Wiktionary does not list this pair. Most are fine (Wiktionary is incomplete); ch
 - line 42: yours = שֶׁלְּךָ
 - line 44: yourself = עַצְמְךָ
 - line 45: himself = עַצְמוֹ
-- line 46: herself = עׇצְמָה
+- line 46: herself = עַצְמָהּ
 - line 47: ourselves = עַצְמֵנוּ
 - line 48: themselves = עַצְמָם
 - line 51: these = אֵלֶּה
@@ -87,12 +87,13 @@ Wiktionary does not list this pair. Most are fine (Wiktionary is incomplete); ch
 - line 619: gentleman = אָדוֹן
 - line 623: stranger = זָר
 - line 680: criminal = פּוֹשֵׁעַ
+- line 711: foot = כַּף רֶגֶל
 - line 776: TV = טֶלֶוִיזְיָה
 - line 792: present = מַתָּנָה
 - line 796: weapon = נֶשֶׁק
 - line 884: park = פַּארְק
 - line 915: top = חֵלֶק עֶלְיוֹן
-- line 917: inside = פָּנִים
+- line 917: inside = פְּנִים
 - line 918: edge = קָצֶה
 - line 928: space = מָקוֹם
 - line 970: sheep = כִּבְשָׂה
@@ -179,17 +180,16 @@ Wiktionary does not list this pair. Most are fine (Wiktionary is incomplete); ch
 - line 1834: reservation = הַזְמָנָה
 - line 1843: fridge = מְקָרֵר
 
-## Nikkud put together word by word (8)
+## Nikkud put together word by word (7)
 
 Phrases not in Wiktionary as a whole. Check the nikkud of each word (for example construct forms like בֵּית).
 
-- line 64: each other = זה את זה — nikkud put together word by word: זֶה אֵת זֶה
 - line 218: never mind = לא משנה — nikkud put together word by word: לֹא מִשְׁנֶה
 - line 219: no problem = אין בעיה — nikkud put together word by word: אֵין בְּעָיָה
 - line 220: of course not = ממש לא — nikkud put together word by word: מַמָּשׁ לֹא
 - line 395: deserve = הגיע לו — nikkud put together word by word: הִגִּיעַ לוֹ
+- line 711: foot = כף רגל — nikkud put together word by word: כַּף רֶגֶל
 - line 924: earth = כדור הארץ — nikkud put together word by word: כַּדּוּר הָאָרֶץ
-- line 1475: while = בזמן ש — nikkud put together word by word: בַּזְמַן שָׁ
 - line 1794: someday = יום אחד — nikkud put together word by word: יוֹם אֶחָד
 
 ## Adjectives without feminine and plural forms in Wiktionary (0)
@@ -197,7 +197,7 @@ Phrases not in Wiktionary as a whole. Check the nikkud of each word (for example
 Left out until their forms are added. Add them after the Hebrew in words.txt, separated by commas: "lazy | adj | עצלן, עצלנית, עצלנים, עצלניות".
 
 
-## Adjective forms written by hand (8)
+## Adjective forms written by hand (9)
 
 Check these extra forms and spellings.
 
@@ -209,6 +209,7 @@ Check these extra forms and spellings.
 - line 1359: rude = גס רוח — other forms or spellings written by hand in words.txt: גסת רוח, גסי רוח, גסות רוח
 - line 1367: pregnant = בהריון — other forms or spellings written by hand in words.txt: בהיריון, הרה
 - line 1370: innocent = חף מפשע — other forms or spellings written by hand in words.txt: חפה מפשע, חפים מפשע, חפות מפשע
+- line 1539: asleep = יָשֵׁן — other forms or spellings written by hand in words.txt: ישנה, ישנים, ישנות
 
 ## Adjective forms from forms.txt (55)
 
@@ -270,7 +271,7 @@ Feminine and plural forms given by the owner; the masculine plurals there were a
 - line 1781: desperate = נוֹאָשׁ — forms from forms.txt
 - line 1798: precious = יְקַר עֵרֶךְ — forms from forms.txt
 
-## Nikkud written by hand (nikkud.txt) (376)
+## Nikkud written by hand (nikkud.txt) (382)
 
 Wiktionary had no nikkud for these, so Claude wrote it. Check each one.
 
@@ -280,13 +281,16 @@ Wiktionary had no nikkud for these, so Claude wrote it. Check each one.
 - line 42: yours = שֶׁלְּךָ (written with nikkud in words.txt)
 - line 44: yourself = עַצְמְךָ
 - line 45: himself = עַצְמוֹ
+- line 46: herself = עַצְמָהּ (written with nikkud in words.txt)
 - line 47: ourselves = עַצְמֵנוּ
 - line 48: themselves = עַצְמָם
 - line 52: those = הָהֵם
 - line 62: everything = הַכֹּל
+- line 64: each other = זֶה אֶת זֶה (written with nikkud in words.txt)
 - line 69: each = כׇּל אֶחָד (written with nikkud in words.txt)
 - line 74: both = שְׁנֵיהֶם
 - line 95: from = מִן (written with nikkud in words.txt)
+- line 114: across = מֵעֵבֶר (written with nikkud in words.txt)
 - line 115: toward = לְכִוּוּן
 - line 162: away = מִשָּׁם
 - line 163: back = בַּחֲזָרָה
@@ -416,7 +420,7 @@ Wiktionary had no nikkud for these, so Claude wrote it. Check each one.
 - line 433: mean = לְהִתְכַּוֵּן
 - line 435: worry = לִדְאֹג
 - line 436: miss = לְהִתְגַּעְגֵּעַ
-- line 437: miss = לְפַסְפֵס
+- line 437: miss = לְפַסְפֵּס
 - line 438: lose weight = לִרְזוֹת
 - line 439: sound = לְהִשָּׁמַע
 - line 440: matter = לְשַׁנּוֹת
@@ -539,6 +543,7 @@ Wiktionary had no nikkud for these, so Claude wrote it. Check each one.
 - line 884: park = פַּארְק
 - line 906: theater = תֵּאַטְרוֹן
 - line 915: top = חֵלֶק עֶלְיוֹן (written with nikkud in words.txt)
+- line 917: inside = פְּנִים (written with nikkud in words.txt)
 - line 929: sky = שָׁמַיִם
 - line 970: sheep = כִּבְשָׂה
 - line 1019: January = יָנוּאָר
@@ -586,6 +591,7 @@ Wiktionary had no nikkud for these, so Claude wrote it. Check each one.
 - line 1469: best = הֲכִי טוֹב
 - line 1470: worse = גָּרוּעַ יוֹתֵר
 - line 1471: worst = הֲכִי גָּרוּעַ
+- line 1475: while = בִּזְמַן שֶׁ (written with nikkud in words.txt)
 - line 1478: control = לִשְׁלֹט
 - line 1479: act = לִפְעֹל
 - line 1480: bet = לְהִתְעָרֵב
@@ -594,6 +600,7 @@ Wiktionary had no nikkud for these, so Claude wrote it. Check each one.
 - line 1498: issue = סוּגְיָה
 - line 1521: apart = בְּנִפְרָד
 - line 1528: fan = מַעֲרִיץ
+- line 1539: asleep = יָשֵׁן (written with nikkud in words.txt)
 - line 1540: claim = לִטְעֹן
 - line 1541: remain = לְהִשָּׁאֵר
 - line 1542: discuss = לָדוּן
@@ -651,11 +658,10 @@ Wiktionary had no nikkud for these, so Claude wrote it. Check each one.
 - line 1827: cough = שִׁעוּל
 - line 1829: dentist = רוֹפֵא שִׁנַּיִם
 
-## Several Hebrew spellings to choose from (32)
+## Several Hebrew spellings to choose from (20)
 
 The build picked one; check it is the right word.
 
-- line 173: rather = די — chose דַּי from several spellings (דֵּי)
 - line 173: rather = די — chose דַּי from several spellings (דֵּי)
 - line 264: like = אהב — chose אָהַב from several spellings (אֹהַב)
 - line 362: notice = שם — chose שָׂם from several spellings (שָׁם)
@@ -664,29 +670,54 @@ The build picked one; check it is the right word.
 - line 546: look after = שמר — chose שָׁמַר from several spellings (שֻׁמַּר, שִׁמֵּר)
 - line 572: pay attention = שם — chose שָׂם from several spellings (שָׁם)
 - line 583: call back = חזר — chose חָזַר from several spellings (חִזֵּר)
-- line 590: person = אדם — chose אָדֹם from several spellings (אָדָם, אֹדֶם)
 - line 623: stranger = זר — chose זָר from several spellings (זֵר)
-- line 623: stranger = זר — chose זָר from several spellings (זֵר)
-- line 714: stomach = בטן — chose בֶּטֶן from several spellings (בֹּטֶן)
+- line 711: foot = כף — chose כַּף from several spellings (כָּ״ף)
 - line 714: stomach = בטן — chose בֶּטֶן from several spellings (בֹּטֶן)
 - line 723: illness = מחלה — chose מַחֲלָה from several spellings (מְחִלָּה)
-- line 723: illness = מחלה — chose מַחֲלָה from several spellings (מְחִלָּה)
-- line 734: home = בית — chose בַּיִת from several spellings (בֵּי״ת)
 - line 734: home = בית — chose בַּיִת from several spellings (בֵּי״ת)
 - line 818: trash = זבל — chose זֶבֶל from several spellings (זְבֻל)
-- line 818: trash = זבל — chose זֶבֶל from several spellings (זְבֻל)
 - line 928: space = מקום — chose מָקוֹם from several spellings (מִקּוּם)
-- line 928: space = מקום — chose מָקוֹם from several spellings (מִקּוּם)
-- line 1024: June = יוני — chose יְוָנִי from several spellings (יוֹנֵי־)
-- line 1034: stuff = דברים — chose דְּבָרִים from several spellings (דַּבָּרִים)
 - line 1034: stuff = דברים — chose דְּבָרִים from several spellings (דַּבָּרִים)
 - line 1099: crime = פשע — chose פֶּשַׁע from several spellings (פֶּשַׂע)
-- line 1099: crime = פשע — chose פֶּשַׁע from several spellings (פֶּשַׂע)
 - line 1211: website = אתר — chose אֲתָר from several spellings (אֶתֶר)
-- line 1211: website = אתר — chose אֲתָר from several spellings (אֶתֶר)
-- line 1554: gate = שער — chose שַׁעַר from several spellings (שֵׂעָר, שֵׂעָר)
 - line 1554: gate = שער — chose שַׁעַר from several spellings (שֵׂעָר, שֵׂעָר)
 - line 1617: ruin = הרס — chose הָרַס from several spellings (הֵרֵס)
+
+## Another word with the same letters (8)
+
+Written with nikkud in words.txt because Wiktionary's word with the same letters is a different word, so none of its forms are used. Check the nikkud, and that the forms written in words.txt are complete.
+
+- line 35: your = שֶׁלְּךָ — Wiktionary's שָׁלָךְ is another word: "osprey"
+- line 42: yours = שֶׁלְּךָ — Wiktionary's שָׁלָךְ is another word: "osprey"
+- line 46: herself = עַצְמָהּ — Wiktionary's עׇצְמָה is another word: "strength, power, intensity cardinality intensity"
+- line 114: across = מֵעֵבֶר — Wiktionary's מְעֻבָּר is another word: "pregnant"
+- line 590: person = אָדָם — Wiktionary's אָדֹם is another word: "red"
+- line 917: inside = פְּנִים — Wiktionary's פָּנִים is another word: "face interior"
+- line 1024: June = יוּנִי — Wiktionary's יְוָנִי is another word: "a greek (person)"
+- line 1539: asleep = יָשֵׁן — Wiktionary's יָשָׁן is another word: "old, having existed for a long time old, veteran dated, no l"
+
+## Nikkud from another part of speech (18)
+
+Wiktionary has these letters only as another part of speech, so the nikkud comes from there. Usually the same word (שֶׁלִּי is filed as a preposition); check it is not a different word with the same letters. To fix one, write the Hebrew with nikkud in words.txt.
+
+- line 29: me = אוֹתִי — Wiktionary has it as a prep: "form of אֵת (et) including first-person singular personal pronoun as o"
+- line 32: us = אוֹתָנוּ — Wiktionary has it as a prep: "form of את (et) including first-person plural personal pronoun as obje"
+- line 33: them = אוֹתָם — Wiktionary has it as a prep: "form of את (et) including third-person masculine plural personal prono"
+- line 34: my = שֶׁלִּי — Wiktionary has it as a prep: "form of שֶׁל (shel) including first-person singular personal pronoun a"
+- line 37: his = שֶׁלּוֹ — Wiktionary has it as a prep: "form of שֶׁל (shel) including third-person masculine singular personal"
+- line 38: her = שֶׁלָּהּ — Wiktionary has it as a prep: "form of שֶׁל (shel) including third-person feminine singular personal "
+- line 39: our = שֶׁלָּנוּ — Wiktionary has it as a prep: "form of שֶׁל (shel) including first-person plural personal pronoun as "
+- line 41: mine = שֶׁלִּי — Wiktionary has it as a prep: "form of שֶׁל (shel) including first-person singular personal pronoun a"
+- line 43: myself = עַצְמִי — Wiktionary has it as a adj: "self-"
+- line 67: all = כֹּל — Wiktionary has it as a noun: "all, whole, entirety, everything; found almost exclusively in singular"
+- line 68: every = כֹּל — Wiktionary has it as a noun: "all, whole, entirety, everything; found almost exclusively in singular"
+- line 78: most = רֹב — Wiktionary has it as a noun: "majority"
+- line 224: by the way = אַגַּב — Wiktionary has it as a conj: "by the way"
+- line 227: for example = לְמָשָׁל — Wiktionary has it as a prep_phrase: "for example: used to introduce or otherwise mark an example."
+- line 362: notice = לֵב — Wiktionary has it as a noun: "heart (a muscular organ that pumps blood through the body, traditional"
+- line 572: pay attention = לֵב — Wiktionary has it as a noun: "heart (a muscular organ that pumps blood through the body, traditional"
+- line 1587: pretend = פָּנִים — Wiktionary has it as a noun: "face interior"
+- line 1710: eventually = בְּסוֹפוֹ שֶׁל דָּבָר — Wiktionary has it as a prep_phrase: "in the end, ultimately"
 
 ## Labels to improve (0)
 
