@@ -134,6 +134,9 @@ $('#bfile').onchange = async e => {
     saveSettings(settings);
     if (relang) relabel();
     fill(); fillStats(); speech.load();
+    /* An open Drills session would write its older progress back over the restored one, so it
+       starts again from the Drills start card. */
+    if (document.body.dataset.view === 'drills') { closeDrills(); openDrills(); }
     toast(words.length || notes.length ? t('backup.restored', { words: words.length, notes: notes.length }) : t('backup.nothingNew'), { good: true });
   } catch (err) {
     if (!(err instanceof Backup.BackupError)) console.error(err);
@@ -162,4 +165,4 @@ showInstall();
 if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
   navigator.serviceWorker.register('sw.js').catch(e => console.warn('Service worker not registered', e));
 }
-$('#toast').onclick = e => { if (e.target === e.currentTarget) hideToast(); };
+$('#toast').onclick = hideToast;

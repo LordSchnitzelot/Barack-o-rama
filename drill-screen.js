@@ -26,8 +26,9 @@ export async function openDrills() {
   $('#dm').onchange = e => { mode = e.target.value; saveSettings({ drillMode: mode }); };
   $('#dgo').onclick = start;
 }
-/* Leaving Drills: a recording still running is thrown away, so it cannot answer a drill that is gone. */
-export function closeDrills() { stopAudio(); if (rec) { rec.cancel(); rec = null; } session = null; }
+/* A recording still running is thrown away, so it cannot answer a drill that is gone. */
+function dropRec() { if (rec) { rec.cancel(); rec = null; } }
+export function closeDrills() { stopAudio(); dropRec(); session = null; }
 /* After the interface language changes: redraws the start card (a drill in progress keeps its texts
    until the next drill). */
 export function relabelDrills() { if (!session && document.body.dataset.view === 'drills' && $('#dgo')) openDrills(); }
@@ -43,7 +44,7 @@ async function start() {
   next();
 }
 function next() {
-  stopAudio();
+  stopAudio(); dropRec();
   if (!session) return;
   drill = D.nextDrill(session); hinted = [];
   if (!drill) return finish();
@@ -110,7 +111,9 @@ function showIntro() {
   $('#dnext').onclick = showDrill;
   /* The learner already knows it: no test and no early reviews; the next drill takes its place. */
   $('#dknow').onclick = async () => {
-    const now = Date.now(), s = session;
+    const now = Date.now(), s = session, d = drill;
+    if (!s || d.answered) return; // a second tap does nothing
+    d.answered = true;
     D.markKnown(s.profile, drill.item, now);
     D.skipDrill(s, drill);
     await saveProgress(s, now);
@@ -120,6 +123,7 @@ function showIntro() {
 }
 
 function showDrill() {
+  dropRec(); // "Now test me" tapped while repeating the new word
   const answerLang = drill.prompt.lang === data.target ? data.native : data.target;
   box().innerHTML = `${progress()}<div class="card"><span class="kind">${esc(kindText())}</span>${promptLine()}
     <div class="center"><button class="ic" id="dp" aria-label="${esc(t('drills.playAgain'))}">▶</button>${drill.prompt.lang === data.target ? `<button class="ic" id="ds" aria-label="${esc(t('talk.slower'))}">🐢</button>` : ''}</div>

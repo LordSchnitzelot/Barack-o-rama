@@ -36,17 +36,15 @@ export function applyUiLang() { setUiLang(S.ui); applyStrings(); }
 applyUiLang();
 
 export const setStatus = text => { const el = $('#st'); if (el) el.textContent = text; };
-/* A short message over the screen: red for problems, green with good: true. action = { label, run }
-   adds a button (for example "Reload"); such a message stays until it is tapped.
+/* A short message over the screen: red for problems, green with good: true.
    The message is a popover where the browser supports it, so it shows above an open dialog
    (Settings) instead of behind it. */
-export function toast(m, { good = false, action = null } = {}) {
+export function toast(m, { good = false } = {}) {
   const el = $('#toast');
   el.textContent = m; el.className = good ? 'good' : ''; el.hidden = false;
-  if (action) { const b = document.createElement('button'); b.className = 'pill'; b.textContent = action.label; b.onclick = action.run; el.appendChild(b); }
   if (el.showPopover) try { if (el.matches(':popover-open')) el.hidePopover(); el.showPopover(); } catch (e) {}
   clearTimeout(toast.timer);
-  if (!action) toast.timer = setTimeout(hideToast, 5000);
+  toast.timer = setTimeout(hideToast, 5000);
 }
 export function hideToast() {
   const el = $('#toast');

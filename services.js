@@ -238,8 +238,9 @@ export function createSpeech(opts) {
     if (!P.voices.has(name)) {
       const v = catalog.list.find(x => x.name === name);
       status(t('voice.loadingVoice', { name }));
+      /* A voice that fails to load is not tried again until the model reloads (speed change or a
+         new visit): the model's own voice is used instead, with one message, not one per sentence. */
       P.voices.set(name, P.tts.addVoice(name, catalog.base + v.file).then(() => { status(speedNote(P)); return name; }, e => {
-        P.voices.delete(name);
         toast(t('voice.voiceFailed', { name, e: (e && e.message) || e }));
         return '';
       }));
@@ -253,7 +254,9 @@ export function createSpeech(opts) {
   function synth(P, text, voice, now) {
     const k = P.delta + '|' + voice + '|' + text;
     let e = cache.get(k);
-    if (!e) {
+    /* Used again: it moves to the end, so the least recently used sentence is dropped first. */
+    if (e) { cache.delete(k); cache.set(k, e); }
+    else {
       e = { stops, now: false };
       e.url = q.then(() => {
         if (!e.now && e.stops !== stops) throw new Error('skipped');
@@ -264,7 +267,7 @@ export function createSpeech(opts) {
       e.url.catch(() => { if (cache.get(k) === e) cache.delete(k); });
       if (cache.size > KEEP_AUDIO) {
         const [oldest, o] = cache.entries().next().value;
-        cache.delete(oldest); o.url.then(u => URL.revokeObjectURL(u), () => {});
+        cache.delete(oldest); o.url.then(u => { if (player.src !== u) URL.revokeObjectURL(u); }, () => {});
       }
     }
     if (now) e.now = true;
@@ -293,9 +296,11 @@ export function createSpeech(opts) {
       /* Starts generating every sentence of a reply at once, so each one is ready by the time
          the one before it finishes playing (spec 3.2, Streaming by sentence). */
       prepare: async texts => {
+        const my = stops;
         const P = await phonon();
         if (!P) return;
         const voice = await useVoice(P, S().voice);
+        if (my !== stops) return; // the learner moved on while the voice loaded
         texts.forEach(x => synth(P, x, voice, false).catch(() => {}));
       },
     },

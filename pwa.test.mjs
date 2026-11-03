@@ -33,6 +33,15 @@ test('the page links the manifest and the iPhone icon', () => {
   assert.deepEqual(pngSize(apple), [180, 180]);
 });
 
+test('the service worker saves every icon the page and the manifest use', () => {
+  const saved = new Set(swFiles());
+  const html = readFileSync('index.html', 'utf8');
+  const icons = [...html.matchAll(/<link rel="(?:apple-touch-)?icon"[^>]*href="([^"]+)"/g)].map(m => m[1])
+    .concat(JSON.parse(readFileSync('manifest.webmanifest', 'utf8')).icons.map(i => i.src));
+  assert.ok(icons.length);
+  assert.deepEqual(icons.filter(f => !saved.has(f)), []);
+});
+
 test('every file the service worker saves exists', () => {
   for (const f of swFiles()) if (f !== './') assert.ok(existsSync(f), f);
 });

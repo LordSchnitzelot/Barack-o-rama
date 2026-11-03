@@ -386,11 +386,12 @@ export function recordAnswer(s, drill, { correct, matched = null, hinted = [] })
 
 /* The learner already knows this word (an assumed word answered right, or "I already know this
    word" on a new word's intro): both directions go to KNOWN_LEVEL, so it comes back only as a
-   rare check, after INTERVALS[KNOWN_LEVEL] drills. */
+   rare check, after INTERVALS[KNOWN_LEVEL] drills. A direction where the word is weak (missed
+   before) stays weak: a right answer the other way does not fix it. */
 export function markKnown(profile, ref, now, count = profile.count || 0) {
   for (const dir of ['understand', 'say']) {
     const r = ensureRecord(profile, ref, dir, now);
-    if (r.level >= KNOWN_LEVEL) continue;
+    if (r.level >= KNOWN_LEVEL || r.weak) continue;
     r.level = KNOWN_LEVEL; r.due = count + INTERVALS[KNOWN_LEVEL]; r.weak = false; r.modified = now;
   }
 }

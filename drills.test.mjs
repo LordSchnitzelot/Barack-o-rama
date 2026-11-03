@@ -250,6 +250,18 @@ test('placement: an assumed word that is missed becomes weak', () => {
   assert.equal(D.getRecord(p, dr.item, 'understand').weak, true);
 });
 
+test('placement: a word missed one way stays weak when it is right the other way', () => {
+  const d = sample(), p = fresh(), now = clock();
+  const s = D.startSession(d, p, { mode: 'comprehension', rng: always(0.9), now, placement: 50 });
+  let dr;
+  while ((dr = D.nextDrill(s)) && !dr.assumed) D.recordAnswer(s, dr, { correct: true });
+  D.recordAnswer(s, dr, { correct: false }); // missed in Understand
+  /* The same word as a quick check in Say, answered right. */
+  D.recordAnswer(s, { type: 'word', dir: 'say', bucket: 'known', item: dr.item, assumed: true }, { correct: true });
+  assert.equal(D.getRecord(p, dr.item, 'say').level, D.KNOWN_LEVEL);
+  assert.equal(D.getRecord(p, dr.item, 'understand').weak, true);
+});
+
 test('placement: sentences with assumed words are ready for drills', () => {
   const d = sample(), p = fresh(), now = clock();
   const dog = { group: '1', word: 0 };
