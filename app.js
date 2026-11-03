@@ -60,7 +60,7 @@ async function fillStats() {
 function relabel() {
   applyUiLang();
   setStatus('');
-  $('#title').textContent = t(TITLES[document.body.dataset.view]);
+  show(document.body.dataset.view);
   countWords(); fillVoices(); relabelTalk(); relabelDrills(); fillStats();
 }
 fillVoices();
@@ -69,11 +69,15 @@ $('#save').onclick = () => {
   const c = {};
   for (const [id, k] of Object.entries(FIELDS)) c[k] = $('#' + id).value.trim();
   c.model = c.model || S.model;
-  const relang = c.ui !== S.ui;
+  applySettings(c); $('#set').close();
+};
+/* Saves changed settings and updates what depends on them: the interface language and the voice. */
+function applySettings(c) {
+  const relang = c.ui && c.ui !== S.ui;
   saveSettings(c);
   if (relang) relabel();
-  fill(); $('#set').close(); speech.load();
-};
+  fill(); speech.load();
+}
 $('#sp').onchange = e => { saveSettings({ speed: e.target.value }); speech.load(); };
 /* Plays a short sentence in the voice picked in the list, before it is saved. */
 $('#vtry').onclick = () => { stopAudio(); speech.speak(T.voices.sample, T, { voice: $('#vo').value }); };
@@ -106,7 +110,7 @@ function validSettings(incoming) {
   const out = {};
   for (const [id, k] of Object.entries(FIELDS)) {
     const v = incoming[k], el = $('#' + id);
-    if (!(k in incoming) || Backup.SECRET_SETTINGS.includes(k) || typeof v !== 'string') continue;
+    if (!(k in incoming) || typeof v !== 'string') continue; // readBackup already left out the API keys
     if (el.tagName === 'SELECT' && ![...el.options].some(o => o.value === v)) continue;
     out[k] = v;
   }
@@ -121,19 +125,14 @@ $('#bfile').onchange = async e => {
   try {
     const b = Backup.readBackup(await f.text());
     await wordsReady;
-    const words = Backup.newer(await store.allWords(), b.words);
-    const notes = Backup.newer(await store.allNotes(), b.notes);
-    const meta = Backup.mergeMeta(await store.allMeta(), b.meta);
-    await store.putWords(words); await store.putNotes(notes); await store.putMetas(meta);
+    const [allWords, allNotes, allMeta] = await Promise.all([store.allWords(), store.allNotes(), store.allMeta()]);
+    const words = Backup.newer(allWords, b.words), notes = Backup.newer(allNotes, b.notes), meta = Backup.mergeMeta(allMeta, b.meta);
+    await Promise.all([store.putWords(words), store.putNotes(notes), store.putMetas(meta)]);
     await store.trimNotes(MAX_NOTES);
     words.forEach(r => W.set(r.id, r));
     countWords();
     /* The settings come back too, except the API keys, which stay as they are on this device. */
-    const settings = validSettings(b.settings);
-    const relang = settings.ui && settings.ui !== S.ui;
-    saveSettings(settings);
-    if (relang) relabel();
-    fill(); fillStats(); speech.load();
+    applySettings(validSettings(b.settings)); fillStats();
     /* An open Drills session would write its older progress back over the restored one, so it
        starts again from the Drills start card. */
     if (document.body.dataset.view === 'drills') { closeDrills(); openDrills(); }

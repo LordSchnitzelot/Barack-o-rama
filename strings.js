@@ -450,13 +450,12 @@ export const STRINGS = {
   },
 };
 
-/* The interface languages, with their names as shown in the setting and their direction. */
-export const UI_LANGS = { en: { name: 'English', dir: 'ltr' }, he: { name: 'עברית', dir: 'rtl' } };
+/* The direction of each interface language. */
+const UI_DIR = { en: 'ltr', he: 'rtl' };
 
 let current = 'en';
 let langs = { target: 'en', native: 'he' };
 
-export const uiLang = () => current;
 export const setUiLang = code => { current = STRINGS[code] ? code : 'en'; };
 /* The codes of the language being learned and the learner's own, for {target} and {native}. */
 export const setLanguages = (target, native) => { langs = { target, native }; };
@@ -472,12 +471,10 @@ export function t(key, vars = {}) {
 
 /* Fills the static page: data-t sets the text, data-t-aria the aria-label, data-t-ph the
    placeholder. Also sets the page's language and direction. */
-export function applyStrings(root = document) {
-  if (root === document) {
-    document.documentElement.lang = current;
-    document.documentElement.dir = UI_LANGS[current].dir;
-  }
-  root.querySelectorAll('[data-t]').forEach(el => { el.textContent = t(el.dataset.t); });
-  root.querySelectorAll('[data-t-aria]').forEach(el => el.setAttribute('aria-label', t(el.dataset.tAria)));
-  root.querySelectorAll('[data-t-ph]').forEach(el => el.setAttribute('placeholder', t(el.dataset.tPh)));
+export function applyStrings() {
+  document.documentElement.lang = current;
+  document.documentElement.dir = UI_DIR[current];
+  document.querySelectorAll('[data-t]').forEach(el => { el.textContent = t(el.dataset.t); });
+  document.querySelectorAll('[data-t-aria]').forEach(el => el.setAttribute('aria-label', t(el.dataset.tAria)));
+  document.querySelectorAll('[data-t-ph]').forEach(el => el.setAttribute('placeholder', t(el.dataset.tPh)));
 }

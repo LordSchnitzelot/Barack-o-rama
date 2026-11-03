@@ -56,6 +56,7 @@ def nfc(t):
     t = ''.join(c for c in t if ('\u05d0' <= c <= '\u05ea') or ('\u05b0' <= c <= '\u05c7' and c not in '\u05bd\u05be\u05c0\u05c3\u05c6') or c == ' ' or not '\u0590' <= c <= '\u05ff' and c.isalpha())
     return unicodedata.normalize('NFC', re.sub(r'\s+', ' ', t).strip())
 def has_nikkud(word): return any('ְ' <= c <= 'ׇ' and c not in '־׀׃׆' for c in word)
+def is_pointed(text): return is_pointed(text)   # every word has nikkud
 
 SHEVA, HIRIQ, HOLAM, HOLAM_VAV, QUBUTZ, DAGESH = 'ְ', 'ִ', 'ֹ', 'ֺ', 'ֻ', 'ּ'
 FULL_VOWELS = '\u05b1\u05b2\u05b3\u05b5\u05b6\u05b7\u05b8\u05b9'  # hataf vowels, tsere, segol, patah, qamatz, holam
@@ -190,7 +191,7 @@ def find_he(he, word, pos, english, line, part=False):
     """The Wiktionary entry for an unpointed Hebrew word, preferring our part of speech and an
     English gloss that mentions our English word. part: one word of a phrase put together word by
     word, which has its own review section."""
-    pointed = all(has_nikkud(w) for w in word.split(' '))   # written with nikkud: that nikkud is used
+    pointed = is_pointed(word)   # written with nikkud: that nikkud is used
     if pointed: word = normalize(word)
     cands = he.get(normalize(word), [])
     if not cands: return None
@@ -256,7 +257,7 @@ def point_phrase(he, text, pos, english, line):
     """Pointed text for a Hebrew word or phrase, or None. Phrases are looked up whole first,
     then in nikkud.txt, then word by word (listed for review). Text already written with nikkud
     in words.txt is used as it is."""
-    if all(has_nikkud(w) for w in text.split(' ')):
+    if is_pointed(text):
         review['hand'].append('line %d: %s = %s (written with nikkud in words.txt)' % (line, english, text))
         return text
     whole = find_he(he, text, pos, english, line)
@@ -315,7 +316,7 @@ def he_word(he, text, extras, pos, english, line):
     pointed = point_phrase(he, text, pos, english, line)
     if not pointed: return None
     e = find_he(he, text, pos, english, line)
-    if e and all(has_nikkud(w) for w in text.split(' ')) and nfc(e['canon']) != nfc(text):
+    if e and is_pointed(text) and nfc(e['canon']) != nfc(text):
         # Written with nikkud in words.txt, and Wiktionary's word with these letters is another word
         # (פָּנִים "face" for פְּנִים "inside"): its forms and meanings are not used.
         review['homograph'].append('line %d: %s = %s — Wiktionary\'s %s is another word: "%s"' % (line, english, nfc(text), e['canon'], e['glosses'][:60]))

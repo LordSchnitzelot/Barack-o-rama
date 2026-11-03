@@ -24,11 +24,11 @@ export function openTalk(m) {
   mode = m; msgs = []; session = { flagged: new Map(), turns: 0 }; talkId++;
   stopAudio();
   document.body.dataset.mode = m;
-  showEmpty();
+  modeLabel(); showEmpty();
   ui();
 }
+const modeLabel = () => { $('#mode').textContent = t(mode === 'guide' ? 'talk.guide' : 'talk.chat'); };
 function showEmpty() {
-  $('#mode').textContent = t(mode === 'guide' ? 'talk.guide' : 'talk.chat');
   $('#chat').innerHTML = `<div class="empty" id="empty"><p>${esc(t(mode === 'guide' ? 'talk.guideIntro' : 'talk.chatIntro'))}</p><p>${esc(t('talk.orStart'))}</p><button class="pill" id="go">${esc(t('talk.start'))}</button></div>`;
   $('#go').onclick = start;
 }
@@ -36,7 +36,7 @@ const isOpen = () => document.body.dataset.view === 'talk';
 /* After the interface language changes: the texts that are not part of the conversation. */
 export function relabelTalk() {
   if (!session) return;
-  $('#mode').textContent = t(mode === 'guide' ? 'talk.guide' : 'talk.chat');
+  modeLabel();
   if ($('#empty')) showEmpty();
   ui();
 }
@@ -196,7 +196,7 @@ export function endTalk(goHome) {
     try {
       const sum = parseSummary(await ai.complete(summaryPrompt(pack, S), [{ role: 'user', content: transcriptText(pack, history) }]));
       const now = Date.now();
-      for (const w of sum.weakSpots) await store.putNote({ id: 'n' + now + Math.random().toString(36).slice(2, 6), note: w.note, kind: w.kind, created: now, modified: now });
+      await store.putNotes(sum.weakSpots.map(w => ({ id: 'n' + now + Math.random().toString(36).slice(2, 6), note: w.note, kind: w.kind, created: now, modified: now })));
       await store.trimNotes(MAX_NOTES);
       /* Words the summary names are saved too, when the code finds them in the dictionary. */
       for (const x of sum.words) { const e = link(x.d, x.m); if (e) { flag(e, { meaning: meaning(e), source: 'model-detected' }); s.flagged.set(e.id, e); } }

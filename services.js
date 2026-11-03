@@ -111,7 +111,6 @@ function silence() {
    target: the pack's target language, voices: the pack's list of Phonon voices } */
 export function createSpeech(opts) {
   const S = () => opts.settings(), status = opts.status, toast = opts.toast;
-  const targetName = () => langName(opts.target.code);
   const catalog = opts.voices || { base: '', list: [] };
   const knownVoice = name => !!name && catalog.list.some(v => v.name === name);
   const iOS = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
@@ -204,7 +203,7 @@ export function createSpeech(opts) {
     if (phLoad && phKey === key) return phLoad;
     const old = phLoad; phKey = key;
     phLoad = (async () => {
-      status(t(old ? 'voice.changing' : 'voice.loading', { target: targetName() }));
+      status(t(old ? 'voice.changing' : 'voice.loading', {}));
       let P = null;
       /* The first time, the model (about 65 MB) is downloaded, which can take a while on a phone,
          so its progress is shown. Later loads come from the browser's cache. */
@@ -212,7 +211,7 @@ export function createSpeech(opts) {
       const onProgress = ({ file, loaded, total, cached }) => {
         if (cached || !total || file !== 'weights' || phKey !== key) return; // a newer load took over
         const pct = Math.min(99, Math.floor(loaded / total * 100));
-        if (pct !== shown) { shown = pct; status(t('voice.downloading', { target: targetName(), pct })); }
+        if (pct !== shown) { shown = pct; status(t('voice.downloading', { pct })); }
       };
       try {
         const m = await phMod();
@@ -223,7 +222,7 @@ export function createSpeech(opts) {
           P = { tts: await m.PhononTTS.load({ lang: 'en', onProgress }), delta: 0, fallback: true };
         }
         P.voices = new Map();
-      } catch (e) { console.error('Phonon failed', e); status(t('voice.failed', { target: targetName(), e: (e && e.message) || e })); }
+      } catch (e) { console.error('Phonon failed', e); status(t('voice.failed', { e: (e && e.message) || e })); }
       /* Free the previous model once anything it was still generating has finished. */
       if (old) old.then(o => { if (o && o !== P) q.then(() => o.tts.dispose()); });
       if (P) status(speedNote(P));

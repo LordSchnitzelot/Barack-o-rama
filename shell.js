@@ -15,7 +15,9 @@ export const ld = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) |
 export const sv = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
 /* The lang and dir attributes for content in one of the pack's languages, given its code ('en') or
    the pack language itself, so it keeps its own direction inside the interface. */
-export const attrs = lang => { const L = typeof lang === 'string' ? (lang === pack.target.code ? pack.target : pack.native) : lang; return `lang="${L.code}" dir="${L.dir}"`; };
+export const attrs = lang => { const L = typeof lang === 'string' ? langOf(lang) : lang; return `lang="${L.code}" dir="${L.dir}"`; };
+/* The pack language with this code. */
+export const langOf = code => code === pack.target.code ? pack.target : pack.native;
 export const esc = x => String(x).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
 /* ---------- Settings (spec 9) ----------
@@ -113,15 +115,16 @@ export async function flag(entry, info) {
   await wordsReady;
   const id = Words.wordId(entry.text, entry);
   const r = Words.flag(W.get(id), Object.assign({ text: entry.text, entry, lang: pack.target.code }, info), Date.now());
-  W.set(id, r); countWords();
-  try { await store.putWord(r); } catch (e) { toast(t('store.saveFailed', { e: e.message })); }
-  keepData();
+  await saveWords([r]);
   return r;
 }
 /* Saves a record changed elsewhere (Drills scores). */
-export async function saveWord(r) {
-  W.set(r.id, r); countWords();
-  try { await store.putWord(r); } catch (e) { toast(t('store.saveFailed', { e: e.message })); }
+/* Saves My words records, in one database write (for example the words of a sentence drill). */
+export async function saveWords(rs) {
+  if (!rs.length) return;
+  for (const r of rs) W.set(r.id, r);
+  countWords();
+  try { await store.putWords(rs); } catch (e) { toast(t('store.saveFailed', { e: e.message })); }
   keepData();
 }
 /* Once there is progress worth keeping, asks the browser not to clear this site's data when space

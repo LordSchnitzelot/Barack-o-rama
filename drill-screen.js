@@ -5,7 +5,7 @@ import * as D from './drills.js';
 import * as DD from './drill-data.js';
 import { sentenceCheckPrompt, sentenceCheckMessage, parseCheck } from './tutor.js';
 import { listen, canListen } from './services.js';
-import { pack, $, esc, attrs, S, saveSettings, toast, needKey, ai, stopAudio, play, dictReady, data as files, W, wordsReady, saveWord, flag } from './shell.js';
+import { pack, langOf, $, esc, attrs, S, saveSettings, toast, needKey, ai, stopAudio, play, dictReady, data as files, W, wordsReady, saveWords, flag } from './shell.js';
 import { t, langName } from './strings.js';
 import * as store from './store.js';
 
@@ -14,7 +14,6 @@ let data = null, session = null, drill = null, rec = null, hinted = [], score = 
 let mode = 'mixed';
 const box = () => $('#drills');
 const side = lang => lang === pack.target.code ? 'target' : 'native';
-const langOf = code => code === pack.target.code ? pack.target : pack.native;
 
 /* ---------- Start and end ---------- */
 export async function openDrills() {
@@ -28,7 +27,7 @@ export async function openDrills() {
 }
 /* A recording still running is thrown away, so it cannot answer a drill that is gone. */
 function dropRec() { if (rec) { rec.cancel(); rec = null; } }
-export function closeDrills() { stopAudio(); dropRec(); session = null; }
+export function closeDrills() { stopAudio(); dropRec(); session = null; drill = null; }
 /* After the interface language changes: redraws the start card (a drill in progress keeps its texts
    until the next drill). */
 export function relabelDrills() { if (!session && document.body.dataset.view === 'drills' && $('#dgo')) openDrills(); }
@@ -56,17 +55,19 @@ function finish() {
     <div class="btns"><button class="pill" id="dagain">${esc(t('drills.another'))}</button><button class="pill" id="dhome">${esc(t('drills.home'))}</button></div></div>`;
   $('#dagain').onclick = start;
   $('#dhome').onclick = () => $('#back').click();
-  session = null;
+  session = null; drill = null;
 }
 
 /* ---------- One drill ---------- */
 const target = ref => DD.entryAt(data, ref);
 const partner = group => data.dicts[data.native][group] || [];
+/* The other language of the pack: a drill is answered in the language its prompt is not in. */
+const otherLang = lang => lang === data.target ? data.native : data.target;
+const answerLang = () => otherLang(drill.prompt.lang);
 /* The right answers: the words of the group in the answer's language (spec 6.2). */
 function answers() {
   if (drill.type === 'sentence') return [];
-  const lang = drill.prompt.lang === data.target ? data.native : data.target;
-  return (data.dicts[lang][drill.prompt.group] || []).map(e => e.text);
+  return (data.dicts[answerLang()][drill.prompt.group] || []).map(e => e.text);
 }
 const progress = () => `<p class="progress">${esc(t('drills.progress', { i: session.history.length, n: session.size }))}</p>`;
 /* The prompt text follows the subtitle settings: a hidden line is revealed by tapping it (spec 6). */
@@ -87,7 +88,7 @@ function promptLine() {
   return `<div class="line ${hidden ? 'hide' : ''}" ${attrs(p.lang)}><span class="t prompt">${text}</span></div>`;
 }
 function kindText() {
-  const to = langName(drill.prompt.lang === data.target ? data.native : data.target);
+  const to = langName(answerLang());
   return t(drill.type === 'sentence' ? 'drills.saySentence' : 'drills.sayWord', { lang: to }) + (drill.bucket === 'weak' ? t('drills.weak') : drill.bucket === 'new' ? t('drills.new') : drill.assumed ? t('drills.check') : '');
 }
 function playPrompt(slow) { stopAudio(); play(drill.prompt.speak || drill.prompt.text, side(drill.prompt.lang), slow); }
@@ -110,25 +111,16 @@ function showIntro() {
   });
   $('#dnext').onclick = showDrill;
   /* The learner already knows it: no test and no early reviews; the next drill takes its place. */
-  $('#dknow').onclick = async () => {
-    const now = Date.now(), s = session, d = drill;
-    if (!s || d.answered) return; // a second tap does nothing
-    d.answered = true;
-    D.markKnown(s.profile, drill.item, now);
-    D.skipDrill(s, drill);
-    await saveProgress(s, now);
-    if (s === session) next();
-  };
+  $('#dknow').onclick = () => answer(s => { D.markKnown(s.profile, drill.item, Date.now()); D.skipDrill(s, drill); }).then(d => d && next());
   say();
 }
 
 function showDrill() {
   dropRec(); // "Now test me" tapped while repeating the new word
-  const answerLang = drill.prompt.lang === data.target ? data.native : data.target;
   box().innerHTML = `${progress()}<div class="card"><span class="kind">${esc(kindText())}</span>${promptLine()}
     <div class="center"><button class="ic" id="dp" aria-label="${esc(t('drills.playAgain'))}">▶</button>${drill.prompt.lang === data.target ? `<button class="ic" id="ds" aria-label="${esc(t('talk.slower'))}">🐢</button>` : ''}</div>
     <div class="center"><button class="mic" id="dmic">${esc(t('drills.answer'))}</button></div>
-    <p class="he-live" id="dheard" ${attrs(answerLang)}></p><div id="dres"></div></div>`;
+    <p class="he-live" id="dheard" ${attrs(answerLang())}></p><div id="dres"></div></div>`;
   $('#dp').onclick = () => playPrompt(false);
   const slow = $('#ds'); if (slow) slow.onclick = () => playPrompt(true);
   box().querySelector('.line').onclick = e => {
@@ -137,10 +129,7 @@ function showDrill() {
     const tok = e.target.closest('.tok');
     if (tok) hint(drill.sentence.tags[+tok.dataset.tag]);
   };
-  $('#dmic').onclick = () => {
-    const to = langOf(drill.prompt.lang === data.target ? data.native : data.target);
-    record(to, check);
-  };
+  $('#dmic').onclick = () => record(langOf(answerLang()), check);
   playPrompt(false);
 }
 
@@ -149,11 +138,10 @@ function showDrill() {
 function hint(tag) {
   if (!hinted.includes(tag)) hinted.push(tag);
   const lang = drill.sentence.lang, e = data.dicts[lang][tag.group][tag.word];
-  const other = (data.dicts[lang === data.target ? data.native : data.target][tag.group] || []).map(x => x.text).join(', ');
+  const other = (data.dicts[otherLang(lang)][tag.group] || []).map(x => x.text).join(', ');
   const word = DD.entryAt(data, { group: tag.group, word: lang === data.target ? tag.word : 0 });
   const d = $('#wd');
-  const otherLang = lang === data.target ? data.native : data.target;
-  d.innerHTML = `<h3 ${attrs(lang)}>${esc(e.text)}</h3><p ${attrs(otherLang)} class="mean">${esc(other)}</p><button class="pill" id="wp">${esc(t('common.hear'))}</button><p class="note" style="margin-top:12px">${esc(t('word.saved'))}</p><button class="close" onclick="this.closest('dialog').close()">${esc(t('common.close'))}</button>`;
+  d.innerHTML = `<h3 ${attrs(lang)}>${esc(e.text)}</h3><p ${attrs(otherLang(lang))} class="mean">${esc(other)}</p><button class="pill" id="wp">${esc(t('common.hear'))}</button><p class="note" style="margin-top:12px">${esc(t('word.saved'))}</p><button class="close" onclick="this.closest('dialog').close()">${esc(t('common.close'))}</button>`;
   $('#wp').onclick = () => { stopAudio(); play(e.sayAs || e.text, side(lang)); };
   d.showModal();
   if (word) flag({ id: word.id, text: word.text }, { meaning: partner(tag.group).map(x => x.text)[0] || '', example: drill.sentence.text, source: 'tapped' });
@@ -191,17 +179,16 @@ async function check(heard) {
   const res = $('#dres'); res.innerHTML = `<p class="note">${esc(t('drills.checking'))}</p>`; $('#dmic').disabled = true;
   const asked = drill;
   try {
-    const answerLang = drill.prompt.lang === data.target ? pack.native.name : pack.target.name;
-    const c = parseCheck(await ai.complete(sentenceCheckPrompt(pack), [{ role: 'user', content: sentenceCheckMessage(drill.prompt.text, heard, answerLang) }]));
-    if (asked !== drill || !session) return; // the learner left while the answer was checked
+    const c = parseCheck(await ai.complete(sentenceCheckPrompt(pack), [{ role: 'user', content: sentenceCheckMessage(drill.prompt.text, heard, langOf(answerLang()).name) }]));
+    if (asked !== drill) return; // the learner left while the answer was checked
     done(c.correct, { hinted, better: c.better, note: c.note });
-  } catch (e) { if (asked !== drill || !session) return; res.innerHTML = ''; $('#dmic').disabled = false; toast(e.message); }
+  } catch (e) { if (asked !== drill) return; res.innerHTML = ''; $('#dmic').disabled = false; toast(e.message); }
 }
 /* Saves to My words the words whose progress changed since now, and the drill count. */
 async function saveProgress(s, now) {
   const keys = Object.keys(s.profile.progress).filter(k => Object.values(s.profile.progress[k]).some(r => r && r.modified >= now));
   const meaningOf = e => partner(data.where[e.id].group).map(x => x.text)[0] || '';
-  for (const r of DD.wordsFromProgress(data, s.profile, W, keys, meaningOf, now)) await saveWord(r);
+  await saveWords(DD.wordsFromProgress(data, s.profile, W, keys, meaningOf, now));
   store.setMeta('drills', s.profile.count);
 }
 /* Likely misheard: the closest option and two buttons (spec 6.7). */
@@ -213,24 +200,31 @@ function didYouMean(closest, heard) {
   };
   $('#dno').onclick = () => { $('#dres').innerHTML = ''; $('#dheard').textContent = ''; };
 }
-async function done(correct, info) {
+/* One answer per drill, even if a button is tapped twice: record(session) changes the progress,
+   which is then saved. Resolves to the drill if it is still on screen afterwards, else null. */
+async function answer(record) {
   const now = Date.now(), s = session, d = drill;
-  if (!s || d.answered) return; // one answer per drill, even if a button is tapped twice
+  if (!d || d.answered) return null;
   d.answered = true;
-  D.recordAnswer(s, d, Object.assign({ correct }, info));
-  score.total++; if (correct) score.right++;
-  if (!correct) missed.push(d.type === 'word' ? { text: target(d.item).text, lang: data.target } : { text: d.prompt.text, lang: d.prompt.lang });
+  record(s);
   await saveProgress(s, now);
-  if (s !== session || d !== drill) return; // the learner left while the answer was saved
+  return d === drill ? d : null; // null: the learner left while the answer was saved
+}
+async function done(correct, info) {
+  const d = await answer(s => {
+    D.recordAnswer(s, drill, Object.assign({ correct }, info));
+    score.total++; if (correct) score.right++;
+    if (!correct) missed.push(drill.type === 'word' ? { text: target(drill.item).text, lang: data.target } : { text: drill.prompt.text, lang: drill.prompt.lang });
+  });
+  if (!d) return;
 
   const right = drill.type === 'word' ? answers() : [info.better].filter(Boolean);
-  const answerSide = drill.prompt.lang === data.target ? 'native' : 'target';
-  const answerLang = answerSide === 'native' ? data.native : data.target;
+  const ansLang = answerLang(), answerSide = side(ansLang);
   $('#dmic').disabled = true;
   $('#dres').innerHTML = (correct
-    ? `<p class="verdict ok">${esc(t('drills.right'))}</p>${right.length && drill.type === 'word' ? `<p class="note" ${attrs(answerLang)}>${esc(right.join(', '))}</p>` : ''}`
+    ? `<p class="verdict ok">${esc(t('drills.right'))}</p>${right.length && drill.type === 'word' ? `<p class="note" ${attrs(ansLang)}>${esc(right.join(', '))}</p>` : ''}`
     : `<p class="verdict bad">${esc(t('drills.wrong'))}</p>${info.note ? `<p class="note" ${attrs(data.target)}>${esc(info.note)}</p>` : ''}` +
-      (right.length ? `<p class="prompt" ${attrs(answerLang)}>${esc(right.join(', '))}</p><div class="center"><button class="ic" id="dpc" aria-label="${esc(t('drills.playRight'))}">▶</button></div>` : '')) +
+      (right.length ? `<p class="prompt" ${attrs(ansLang)}>${esc(right.join(', '))}</p><div class="center"><button class="ic" id="dpc" aria-label="${esc(t('drills.playRight'))}">▶</button></div>` : '')) +
     `<div class="btns"><button class="pill" id="dnext">${esc(t('drills.next'))}</button></div>`;
   /* A real mistake: show and play the correct version (spec 6.7). */
   if (!correct && right.length) { const say = () => { stopAudio(); play(right[0], answerSide); }; $('#dpc').onclick = say; say(); }

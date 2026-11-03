@@ -186,12 +186,16 @@ export function flagWord(profile, ref, source, now) {
    direction (spec 6.5: a new word is tested alone first). */
 export function isReady(profile, ref) {
   const p = profile.progress[wordKey(ref)];
-  return !!p && ((p.understand && (p.understand.right > 0 || p.understand.level > 0)) || (p.say && (p.say.right > 0 || p.say.level > 0)));
+  const started = r => !!r && (r.right > 0 || r.level > 0);
+  return !!p && (started(p.understand) || started(p.say));
 }
+
+/* The target-language entry at a { group, word } reference. */
+export const entryAt = (data, ref) => (data.dicts[data.target][ref.group] || [])[ref.word];
 
 /* Within the placement (see PLACEMENT): more common than the session's starting rank. */
 function placed(s, ref) {
-  const e = (s.data.dicts[s.data.target][ref.group] || [])[ref.word];
+  const e = entryAt(s.data, ref);
   return !!s.placement && !!e && (e.rank ?? Infinity) <= s.placement;
 }
 /* Assumed known: within the placement and never drilled in either direction. */
@@ -245,10 +249,9 @@ export function candidates(s, dir) {
   const fresh = [], weak = [], known = [], assumed = [], other = [];
   for (const w of all) {
     const r = getRecord(profile, w, dir);
-    /* Started only in the other direction: not new again (no second intro), just due here. */
-    if (!r && profile.progress[wordKey(w)]) (placed(s, w) ? assumed : other).push(w);
-    else if (!r && isAssumed(s, w)) assumed.push(w);
-    else if (!r) fresh.push(w);
+    /* Not drilled in this direction: assumed known within the placement; started only in the
+       other direction: not new again (no second intro), just due here; otherwise new. */
+    if (!r) (placed(s, w) ? assumed : profile.progress[wordKey(w)] ? other : fresh).push(w);
     else if (r.weak) weak.push(w); // weak words come up whether due or not, until fixed
     else if (r.due <= count) known.push(w);
   }
@@ -270,17 +273,35 @@ function tagTargets(data, sentence, tag) {
   return (data.dicts[data.target][tag.group] || []).map((_, word) => ({ group: tag.group, word }));
 }
 
+/* The stored sentences by language and word, easiest first, built once per data: 'lang|word key'
+   -> [{ x: the sentence, tags: the target words each tag stands for }]. Picking a drill asks for
+   a word's sentences many times, so they are looked up instead of searched for. */
+const sentenceIndexes = new WeakMap();
+function sentenceIndex(data) {
+  let ix = sentenceIndexes.get(data);
+  if (ix) return ix;
+  ix = new Map();
+  for (const x of [...data.sentences].sort((a, b) => (a.difficulty ?? 0) - (b.difficulty ?? 0))) {
+    const tags = x.tags.map(tag => tagTargets(data, x, tag));
+    for (const k of new Set(tags.flat().map(wordKey))) {
+      const id = x.lang + '|' + k;
+      if (!ix.has(id)) ix.set(id, []);
+      ix.get(id).push({ x, tags });
+    }
+  }
+  sentenceIndexes.set(data, ix);
+  return ix;
+}
+
 /* Stored sentences that can drill this word in this direction (spec 6.5): in the right
    language, containing the word, and with every other word already ready. */
 export function sentencesFor(s, ref, dir) {
   const { data } = s;
   const lang = dir === 'understand' ? data.target : data.native;
   const asked = new Set(s.history.filter(d => d.sentence).map(d => d.sentence.id));
-  return data.sentences
-    .filter(x => x.lang === lang && !asked.has(x.id))
-    .filter(x => x.tags.some(tag => tagTargets(data, x, tag).some(r => wordKey(r) === wordKey(ref))))
-    .filter(x => x.tags.every(tag => tagTargets(data, x, tag).some(r => readyIn(s, r))))
-    .sort((a, b) => (a.difficulty ?? 0) - (b.difficulty ?? 0));
+  return (sentenceIndex(data).get(lang + '|' + wordKey(ref)) || [])
+    .filter(({ x, tags }) => !asked.has(x.id) && tags.every(refs => refs.some(r => readyIn(s, r))))
+    .map(({ x }) => x);
 }
 
 /* Picks the next drill, or returns null when the session is over.
@@ -392,7 +413,7 @@ export function markKnown(profile, ref, now, count = profile.count || 0) {
   for (const dir of ['understand', 'say']) {
     const r = ensureRecord(profile, ref, dir, now);
     if (r.level >= KNOWN_LEVEL || r.weak) continue;
-    r.level = KNOWN_LEVEL; r.due = count + INTERVALS[KNOWN_LEVEL]; r.weak = false; r.modified = now;
+    r.level = KNOWN_LEVEL; r.due = count + INTERVALS[KNOWN_LEVEL]; r.modified = now;
   }
 }
 

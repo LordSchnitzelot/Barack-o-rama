@@ -26,8 +26,9 @@ const FILES = [
 
 self.addEventListener('install', e => {
   self.skipWaiting();
-  /* One file failing (for example a slow connection) does not stop the others. */
-  e.waitUntil(caches.open(CACHE).then(c => Promise.allSettled(FILES.map(f => c.add(new Request(f, { cache: 'reload' }))))));
+  /* One file failing (for example a slow connection) does not stop the others. no-cache: the
+     server is asked whether each file changed, so an unchanged one is not downloaded again. */
+  e.waitUntil(caches.open(CACHE).then(c => Promise.allSettled(FILES.map(f => c.add(new Request(f, { cache: 'no-cache' }))))));
 });
 self.addEventListener('activate', e => {
   e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));

@@ -15,10 +15,10 @@ export const FORMAT = 'speaking-app-backup';
 export const VERSION = 1;
 /* Settings that never go into a backup: the API keys, since a backup file may be shared. */
 export const SECRET_SETTINGS = ['rk', 'gk'];
+const withoutSecrets = settings => Object.fromEntries(Object.entries(settings).filter(([k]) => !SECRET_SETTINGS.includes(k)));
 
 export function makeBackup({ words = [], notes = [], meta = [], settings = {} }, now = Date.now()) {
-  const safe = Object.fromEntries(Object.entries(settings).filter(([k]) => !SECRET_SETTINGS.includes(k)));
-  return { format: FORMAT, version: VERSION, exported: new Date(now).toISOString(), words, notes, meta, settings: safe };
+  return { format: FORMAT, version: VERSION, exported: new Date(now).toISOString(), words, notes, meta, settings: withoutSecrets(settings) };
 }
 
 /* speaking-backup-2026-10-31.json */
@@ -43,7 +43,7 @@ export function readBackup(text) {
     words: records(d.words).filter(r => typeof r.entry === 'string' && r.entry),
     notes: records(d.notes).filter(r => typeof r.note === 'string'),
     meta: records(d.meta),
-    settings: Object.fromEntries(Object.entries(settings).filter(([k]) => !SECRET_SETTINGS.includes(k))),
+    settings: withoutSecrets(settings),
   };
 }
 
@@ -56,14 +56,11 @@ export function newer(local, incoming) {
 /* The single values to save. The drill count (spec 8: review times are counted in drills) keeps
    the larger number, so words never wait longer than they would have on either device. */
 export function mergeMeta(local, incoming, now = Date.now()) {
-  const have = new Map(local.map(r => [r.id, r]));
   const out = [];
-  for (const r of incoming) {
-    const mine = have.get(r.id);
-    if (r.id === 'drills') {
-      const n = Math.max(Number(r.value) || 0, Number(mine && mine.value) || 0);
-      if (!mine || n !== mine.value) out.push({ id: 'drills', value: n, modified: now });
-    } else if (!mine || r.modified > mine.modified) out.push(r);
+  const r = incoming.find(x => x.id === 'drills'), mine = local.find(x => x.id === 'drills');
+  if (r) {
+    const n = Math.max(Number(r.value) || 0, Number(mine && mine.value) || 0);
+    if (!mine || n !== mine.value) out.push({ id: 'drills', value: n, modified: now });
   }
-  return out;
+  return out.concat(newer(local, incoming.filter(x => x.id !== 'drills')));
 }

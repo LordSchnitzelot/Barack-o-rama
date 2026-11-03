@@ -42,7 +42,6 @@ export const available = () => open().then(d => !!d);
 
 /* My words (words.js describes a record). */
 export const allWords = () => getAll(WORDS);
-export const putWord = w => putAll(WORDS, [w]);
 export const putWords = ws => putAll(WORDS, ws);
 export const deleteWords = ids => deleteAll(WORDS, ids);
 
